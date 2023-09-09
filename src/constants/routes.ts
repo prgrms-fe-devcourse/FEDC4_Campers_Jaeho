@@ -1,8 +1,7 @@
 export const ROUTES = {
   MAIN: '/',
   NOT_FOUND: '/not-found',
-  LOGIN: '/login',
-  SIGNUP: '/signup',
+  AUTH: '/auth',
   SEARCH: '/search',
   CREATE_POST: '/createpost',
   MY_PROFILE: '/my',
