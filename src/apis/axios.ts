@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getStorage } from '../utils/storage';
+import { getLocalStorage } from '../utils/storage';
 
 export const axiosInterface = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -12,7 +12,7 @@ export const axiosInterface = axios.create({
 axiosInterface.interceptors.request.use(
   (config) => {
     console.log(config);
-    const storageValue = getStorage('token', '');
+    const storageValue = getLocalStorage('token', '');
     if (storageValue.trim().length > 1) {
       config.headers.Authorization = `bearer ${storageValue}`;
     }

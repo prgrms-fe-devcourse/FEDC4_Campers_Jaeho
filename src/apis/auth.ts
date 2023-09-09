@@ -2,21 +2,21 @@ import { isAxiosError } from 'axios';
 
 import { ROUTES } from '../constants/routes';
 import { axiosInterface } from './axios';
-import { setStorage, removeStorage } from '../utils/storage';
+import { setLocalStorage, removeLocalStorage } from '../utils/storage';
 
-interface loginParams {
+interface LoginParams {
   email: string;
   password: string;
 }
 
-interface singupParams {
+interface SignupParams {
   email: string;
   fullName: string;
   password: string;
 }
 
 // 회원가입
-export const signup = async (params: singupParams) => {
+export const signup = async (params: SignupParams) => {
   await axiosInterface.post('signup', {
     email: params.email,
     fullName: params.fullName,
@@ -25,7 +25,7 @@ export const signup = async (params: singupParams) => {
 };
 
 // 로그인
-export const login = async (params: loginParams) => {
+export const login = async (params: LoginParams) => {
   try {
     const {
       data: { user, token },
@@ -33,7 +33,7 @@ export const login = async (params: loginParams) => {
       email: params.email,
       password: params.password,
     });
-    token && setStorage('token', token);
+    token && setLocalStorage('token', token);
     return user;
   } catch (error) {
     console.error(error);
@@ -49,7 +49,7 @@ export const logout = async () => {
   try {
     const { status } = await axiosInterface.post('logout');
     if (status === 200) {
-      removeStorage('token');
+      removeLocalStorage('token');
       location.href = ROUTES.MAIN;
     }
   } catch (error) {
