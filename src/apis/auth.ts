@@ -16,22 +16,26 @@ interface SignupParams {
 }
 
 // 회원가입
-export const signup = async (params: SignupParams) => {
-  await axiosInterface.post('signup', {
-    email: params.email,
-    fullName: params.fullName,
-    password: params.password,
-  });
+export const signup = async ({ email, fullName, password }: SignupParams) => {
+  try {
+    await axiosInterface.post('signup', {
+      email,
+      fullName,
+      password,
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
 };
 
 // 로그인
-export const login = async (params: LoginParams) => {
+export const login = async ({ email, password }: LoginParams) => {
   try {
     const {
       data: { user, token },
     } = await axiosInterface.post('login', {
-      email: params.email,
-      password: params.password,
+      email,
+      password,
     });
     token && setLocalStorage('token', token);
     return user;

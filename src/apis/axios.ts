@@ -11,10 +11,9 @@ export const axiosInterface = axios.create({
 
 axiosInterface.interceptors.request.use(
   (config) => {
-    console.log(config);
-    const storageValue = getLocalStorage('token', '');
-    if (storageValue.trim().length > 1) {
-      config.headers.Authorization = `bearer ${storageValue}`;
+    const storagedValue = getLocalStorage('token', '');
+    if (storagedValue.trim().length > 1) {
+      config.headers.Authorization = `bearer ${storagedValue}`;
     }
     return config;
   },
