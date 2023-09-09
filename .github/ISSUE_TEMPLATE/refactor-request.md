@@ -1,8 +1,8 @@
 ---
-name: Feature request
-about: 기능에 대한 이슈를 작성해주세요.
-title: 'feat: '
-labels: feature
+name: Refactor request
+about: 리펙토링에 대한 이슈를 작성해주세요.
+title: 'refactor: '
+labels: refactor
 assignees: ''
 
 ---
@@ -15,8 +15,8 @@ assignees: ''
 ## 체크리스트
 <!-- 이슈에 대해 체크리스트로 나눠 상세하게 정리해주세요. -->
 
-- [ ] 상세 기능 1 
-- [ ] 상세 기능 2 
+- [ ] 상세 리펙토링 1 
+- [ ] 상세 리펙토링 2 
 
 ## 기타
 <!-- 팀원과 상의가 필요한 부분들을 적어주세요. -->
