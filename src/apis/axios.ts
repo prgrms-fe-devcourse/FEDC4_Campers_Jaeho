@@ -20,11 +20,16 @@ axiosInterface.interceptors.request.use(
   },
   (error) => {
     // error 로직 설정
+    // 요청 오류시 표시
     console.error(error);
   }
 );
 
-axiosInterface.interceptors.response.use((error) => {
-  // 응답받은 모든 error 로직 설정
-  console.error(error);
-});
+axiosInterface.interceptors.response.use(
+  (config) => config,
+  (error) => {
+    // 200번대가 아닐시 로직 정의
+    // 오류시 메인 페이지 이동 ? modal로 표시?
+    console.error(error);
+  }
+);
