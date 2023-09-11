@@ -9,6 +9,7 @@ import {
   Container,
 } from '@chakra-ui/react';
 import SignUp from '../components/SignUp';
+import Login from '../components/Login';
 
 const Auth = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -33,7 +34,9 @@ const Auth = () => {
           </Tab>
         </TabList>
         <TabPanels>
-          <TabPanel>로그인</TabPanel>
+          <TabPanel>
+            <Login />
+          </TabPanel>
           <TabPanel>
             <SignUp />
           </TabPanel>
