@@ -86,8 +86,8 @@ const SignUp = () => {
           </InputRightElement>
         </InputGroup>
         <Text fontSize={'xs'} color={'blackAlpha.600'}>
-          특수문자(!, @, #, $, %, ^, &, *, (, )), 영어 대소문자, 숫자는 각각
-          최소 1개 이상 있어야합니다
+          비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어
+          대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.
         </Text>
         <FormErrorMessage>
           {errors.password && errors.password.message}
