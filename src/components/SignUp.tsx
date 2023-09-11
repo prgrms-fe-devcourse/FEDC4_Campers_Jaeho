@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
-  Button,
   ButtonGroup,
   FormControl,
   FormErrorMessage,
@@ -12,9 +11,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import AuthButton from './common/Auth/AuthButton';
 import passwordValidation from '../utils/passwordValidation';
 
-interface SignUpFormValues {
+export interface SignUpFormValues {
   email: string;
   password: string;
   passwordConfilm: string;
@@ -140,27 +140,8 @@ const SignUp = () => {
         </FormErrorMessage>
       </FormControl>
       <ButtonGroup my={2} justifyContent={'center'} width="100%">
-        <Button
-          type="submit"
-          my={2}
-          px={4}
-          backgroundColor={'green.400'}
-          color={'white'}
-          _hover={{
-            backgroundColor: 'green.500',
-          }}
-        >
-          회원가입
-        </Button>
-        <Button
-          type="button"
-          my={2}
-          px={4}
-          backgroundColor={'green.400'}
-          color={'white'}
-          _hover={{
-            backgroundColor: 'green.500',
-          }}
+        <AuthButton type="submit">회원가입</AuthButton>
+        <AuthButton
           onClick={() =>
             reset({
               email: '',
@@ -171,7 +152,7 @@ const SignUp = () => {
           }
         >
           초기화
-        </Button>
+        </AuthButton>
       </ButtonGroup>
     </form>
   );
