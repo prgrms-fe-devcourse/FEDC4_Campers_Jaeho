@@ -8,6 +8,7 @@ import {
   TabPanel,
   Container,
 } from '@chakra-ui/react';
+import SignUp from '../components/SignUp';
 
 const Auth = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -17,7 +18,7 @@ const Auth = () => {
   };
 
   return (
-    <Container>
+    <Container maxW={'container.sm'}>
       <Tabs index={tabIndex} onChange={handleTabsChange}>
         <TabList borderBottom={'none'} justifyContent={'center'}>
           <Tab color={'green.400'}>
@@ -33,7 +34,9 @@ const Auth = () => {
         </TabList>
         <TabPanels>
           <TabPanel>로그인</TabPanel>
-          <TabPanel>회원가입</TabPanel>
+          <TabPanel>
+            <SignUp />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </Container>
