@@ -23,7 +23,7 @@ const Login = () => {
   const [isShow, setIsShow] = useState(false);
   const {
     register,
-    handleSubmit: onSubmit,
+    handleSubmit,
     setFocus,
     reset,
     formState: { errors },
@@ -34,7 +34,7 @@ const Login = () => {
     },
   });
 
-  const handleSubmit = async (data: LoginFormValues) => {
+  const onSubmit = async (data: LoginFormValues) => {
     console.log(data);
 
     reset();
@@ -49,7 +49,7 @@ const Login = () => {
   }, [setFocus]);
 
   return (
-    <form onSubmit={onSubmit(handleSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <FormControl isRequired isInvalid={errors.email && true}>
         <FormLabel htmlFor="email">이메일</FormLabel>
         <InputGroup>
