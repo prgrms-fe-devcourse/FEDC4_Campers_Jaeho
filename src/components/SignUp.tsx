@@ -7,7 +7,7 @@ import passwordValidation from '../utils/passwordValidation';
 type SignUpFormValues = {
   signUpEmail: string;
   signUpPassword: string;
-  signUpPasswordConfilm: string;
+  signUpPasswordConfirm: string;
   signUpNickname: string;
 };
 
@@ -37,13 +37,13 @@ const SignUp = () => {
       },
       validate: passwordValidation,
     }),
-    signUpPasswordConfilm: register('signUpPasswordConfilm', {
+    signUpPasswordConfirm: register('signUpPasswordConfirm', {
       required: '재확인 비밀번호를 입력해주세요',
       validate: (
         _: string,
-        { signUpPassword, signUpPasswordConfilm }: SignUpFormValues
+        { signUpPassword, signUpPasswordConfirm }: SignUpFormValues
       ) =>
-        signUpPassword === signUpPasswordConfilm ||
+        signUpPassword === signUpPasswordConfirm ||
         '비밀번호가 일치하지 않습니다',
     }),
     signUpNickname: register('signUpNickname', {
@@ -78,9 +78,9 @@ const SignUp = () => {
         </Text>
       </AuthInputField>
       <AuthInputField
-        {...registers.signUpPasswordConfilm}
-        error={errors.signUpPasswordConfilm}
-        id={'signup-password-confilm'}
+        {...registers.signUpPasswordConfirm}
+        error={errors.signUpPasswordConfirm}
+        id={'signup-password-confirm'}
         label={'비밀번호 확인'}
         placeholder={'비밀번호를 다시 입력해주세요'}
         isPassword
