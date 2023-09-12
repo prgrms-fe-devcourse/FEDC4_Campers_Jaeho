@@ -4,24 +4,20 @@ import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
 function BottomNavBar() {
-  const [isLogin] = useState(0); // 임시로 로그인 버튼이 보일지 네브바가 보일지 결정하는 상태입니다
-
-  const bottomFixedEl = {
-    width: '100%',
-    padding: '10px',
-    textAlign: 'center' as const,
-    position: 'fixed' as const,
-    color: 'white',
-    bottom: '0',
-    left: '0',
-    right: '0',
-    cursor: 'pointer',
-  };
+  const [isLogin] = useState(1); // 임시로 (네브바 : 로그인 버튼) 중 뭐가 보일지 결정하는 상태입니다
 
   return (
     <>
       <Flex
-        style={bottomFixedEl}
+        position="fixed"
+        w="100%"
+        padding="10px"
+        color="white"
+        textAlign="center"
+        bottom="0"
+        left="0"
+        right="0"
+        cursor="pointer"
         backgroundColor={isLogin ? '#ECE9E9' : '#28B67E'}
         alignItems="center"
         justifyContent="center"
