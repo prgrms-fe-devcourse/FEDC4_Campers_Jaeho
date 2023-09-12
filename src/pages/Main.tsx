@@ -1,5 +1,5 @@
 import MainPageContent from '../components/MainPageContent';
-import BottomNavBar from '../components/BottomNavbar';
+import BottomNavBar from '../components/BottomNavBar';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Flex, Text } from '@chakra-ui/react';
 
