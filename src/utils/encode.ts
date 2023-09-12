@@ -1,5 +1,5 @@
 export default async function convertImagesToBase64(
-  images: File[]|null
+  images: File[] | null
 ): Promise<string[]> {
   const base64Images: string[] = await Promise.all(
     images.map(async (imageFile) => {
