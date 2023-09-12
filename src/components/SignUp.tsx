@@ -1,17 +1,7 @@
 import { useForm } from 'react-hook-form';
-import {
-  ButtonGroup,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  Input,
-  InputGroup,
-  InputRightElement,
-  Text,
-  useBoolean,
-} from '@chakra-ui/react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import { ButtonGroup, Text } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
+import AuthInputField from './Auth/AuthInputField';
 import passwordValidation from '../utils/passwordValidation';
 
 type SignUpFormValues = {
@@ -22,17 +12,12 @@ type SignUpFormValues = {
 };
 
 const SignUp = () => {
-  const [isShow, setIsShow] = useBoolean();
   const {
     handleSubmit,
     register,
     formState: { errors },
     reset,
   } = useForm<SignUpFormValues>();
-
-  const handlePasswordShow = () => {
-    setIsShow.toggle();
-  };
 
   const onSubmit = (data: SignUpFormValues) => {
     console.log(data);
@@ -72,76 +57,41 @@ const SignUp = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isRequired isInvalid={errors.signUpEmail && true}>
-        <FormLabel htmlFor="signup-email">이메일</FormLabel>
-        <InputGroup>
-          <Input
-            id="signup-email"
-            type="email"
-            placeholder="이메일을 형식에 맞게 입력해주세요"
-            {...registers.signUpEmail}
-          />
-        </InputGroup>
-        <FormErrorMessage>
-          {errors.signUpEmail && errors.signUpEmail.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl isRequired isInvalid={errors.signUpPassword && true}>
-        <FormLabel my={2} htmlFor="signup-password">
-          비밀번호
-        </FormLabel>
-        <InputGroup>
-          <Input
-            id="signup-password"
-            type={isShow ? 'text' : 'password'}
-            placeholder="비밀번호를 형식에 맞게 입력해주세요"
-            {...registers.signUpPassword}
-          />
-          <InputRightElement onClick={handlePasswordShow}>
-            {isShow ? <ViewOffIcon /> : <ViewIcon />}
-          </InputRightElement>
-        </InputGroup>
+      <AuthInputField
+        {...registers.signUpEmail}
+        error={errors.signUpEmail}
+        id={'signup-email'}
+        label={'이메일'}
+        placeholder={'이메일을 형식에 맞게 입력해주세요'}
+      />
+      <AuthInputField
+        {...registers.signUpPassword}
+        error={errors.signUpPassword}
+        id={'signup-password'}
+        label={'비밀번호'}
+        placeholder={'비밀번호를 형식에 맞게 입력해주세요'}
+        isPassword
+      >
         <Text fontSize={'xs'} color={'blackAlpha.600'}>
           비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어
           대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.
         </Text>
-        <FormErrorMessage>
-          {errors.signUpPassword && errors.signUpPassword.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl isRequired isInvalid={errors.signUpPasswordConfilm && true}>
-        <FormLabel my={2} htmlFor="signup-password-confilm">
-          비밀번호 재입력
-        </FormLabel>
-        <InputGroup>
-          <Input
-            id="singup-password-confilm"
-            type={isShow ? 'text' : 'password'}
-            placeholder="재확인 비밀번호를 입력해주세요"
-            {...registers.signUpPasswordConfilm}
-          />
-          <InputRightElement onClick={handlePasswordShow}>
-            {isShow ? <ViewOffIcon /> : <ViewIcon />}
-          </InputRightElement>
-        </InputGroup>
-        <FormErrorMessage>
-          {errors.signUpPasswordConfilm && errors.signUpPasswordConfilm.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl isRequired isInvalid={errors.signUpNickname && true}>
-        <FormLabel my={2} htmlFor="signup-nickname">
-          닉네임
-        </FormLabel>
-        <Input
-          id="signup-nickname"
-          type="text"
-          placeholder="닉네임은 2글자 이상입니다"
-          {...registers.signUpNickname}
-        />
-        <FormErrorMessage>
-          {errors.signUpNickname && errors.signUpNickname.message}
-        </FormErrorMessage>
-      </FormControl>
+      </AuthInputField>
+      <AuthInputField
+        {...registers.signUpPasswordConfilm}
+        error={errors.signUpPasswordConfilm}
+        id={'signup-password-confilm'}
+        label={'비밀번호 확인'}
+        placeholder={'비밀번호를 다시 입력해주세요'}
+        isPassword
+      />
+      <AuthInputField
+        {...registers.signUpNickname}
+        error={errors.signUpNickname}
+        id={'signup-nickname'}
+        label={'닉네임'}
+        placeholder={'닉네임을 2자 이상 입력해주세요'}
+      />
       <ButtonGroup my={2} justifyContent={'center'} width="100%">
         <PrimaryButton type="submit">회원가입</PrimaryButton>
         <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
