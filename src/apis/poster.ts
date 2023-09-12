@@ -6,7 +6,7 @@ export const SingupPoster = async ({
   channelId,
 }: {
   title: string;
-  images: File[]|null;
+  images: File[] | null;
   channelId: string;
 }) => {
   try {
