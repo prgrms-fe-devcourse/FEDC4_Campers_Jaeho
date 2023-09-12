@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   ButtonGroup,
@@ -9,6 +8,7 @@ import {
   InputGroup,
   InputRightElement,
   Text,
+  useBoolean,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import AuthButton from './Auth/AuthButton';
@@ -22,7 +22,7 @@ type SignUpFormValues = {
 };
 
 const SignUp = () => {
-  const [isShow, setIsShow] = useState(false);
+  const [isShow, setIsShow] = useBoolean();
   const {
     handleSubmit,
     register,
@@ -31,7 +31,7 @@ const SignUp = () => {
   } = useForm<SignUpFormValues>();
 
   const handlePasswordShow = () => {
-    setIsShow((prev) => !prev);
+    setIsShow.toggle();
   };
 
   const onSubmit = (data: SignUpFormValues) => {
