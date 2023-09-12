@@ -11,7 +11,7 @@ import {
   useBoolean,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import AuthButton from './Auth/AuthButton';
+import PrimaryButton from './common/PrimaryButton';
 import passwordValidation from '../utils/passwordValidation';
 
 type SignUpFormValues = {
@@ -143,8 +143,8 @@ const SignUp = () => {
         </FormErrorMessage>
       </FormControl>
       <ButtonGroup my={2} justifyContent={'center'} width="100%">
-        <AuthButton type="submit">회원가입</AuthButton>
-        <AuthButton onClick={() => reset()}>초기화</AuthButton>
+        <PrimaryButton type="submit">회원가입</PrimaryButton>
+        <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
       </ButtonGroup>
     </form>
   );
