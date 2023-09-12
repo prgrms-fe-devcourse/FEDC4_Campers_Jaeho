@@ -1,7 +1,7 @@
+import MainPageContent from '../components/MainPageContent';
+import BottomNavBar from '../components/BottomNavbar';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Flex, Text } from '@chakra-ui/react';
-import MainPageContent from '../components/MainPageContent';
-// import BottomNavBar from '../components/BottomNavbar';
 
 function Main() {
   return (
@@ -21,7 +21,7 @@ function Main() {
 
       <MainPageContent />
 
-      {/* <BottomNavBar /> */}
+      <BottomNavBar />
     </>
   );
 }

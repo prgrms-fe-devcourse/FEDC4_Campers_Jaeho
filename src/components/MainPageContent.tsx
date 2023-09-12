@@ -1,13 +1,14 @@
-import { Spinner, Box, Text, Flex } from '@chakra-ui/react';
 import ContentList from './ContentList';
-import { useState, useRef, useCallback } from 'react';
+import { Spinner, Box, Text, Flex } from '@chakra-ui/react';
 import useObserver from '../hooks/useObserver';
+import { useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 
 type contents = [] | { title: string; _id: string }[];
 
-export const axiosMainData = async (offset = 0, limit = 0) => {
+const axiosMainData = async (offset = 0, limit = 0) => {
   return await axios.get(
+    // 정호님이 만드신 요청으로 변경이 필요할 수 있습니다
     `https://kdt.frontend.4th.programmers.co.kr:5009/posts/channel/64f806ccb3b4d210bb7b4fcb?offset=${offset}&limit=${limit}`
   );
 };

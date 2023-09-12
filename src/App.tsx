@@ -1,11 +1,12 @@
 import { Routes, Route } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
+import Main from './pages/Main';
 import Auth from './pages/Auth';
 
 const App = () => {
   return (
     <Routes>
-      <Route path={ROUTES.MAIN} element={<></>} />
+      <Route path={ROUTES.MAIN} element={<Main />} />
       <Route path={ROUTES.NOT_FOUND} element={<></>} />
       <Route path={ROUTES.AUTH} element={<Auth />} />
       <Route path={ROUTES.SEARCH} element={<></>} />

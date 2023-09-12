@@ -46,7 +46,7 @@ const ContentList = ({
               {title}
             </Text>
             <Link
-              to={`${ROUTES.USER_PROFILE}${_id}`}
+              to={`${ROUTES.USER_PROFILE}${_id}`} // 임시로 테스트를 위해 적은 url 이여서 수정이 필요합니다
               style={{ position: 'absolute', width: '100%', height: '100%' }}
             />
           </Box>
