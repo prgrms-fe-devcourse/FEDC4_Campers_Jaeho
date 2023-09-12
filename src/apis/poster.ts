@@ -1,6 +1,5 @@
 import { axiosInterface } from './axios';
 import convertImagesToBase64 from '../utils/encode';
-
 export const SingupPoster = async ({
   title,
   images,
