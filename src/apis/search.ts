@@ -27,6 +27,13 @@ type SearchUserParams = UserParams & {
   title?: string;
 };
 
+type CommentInfo = {
+  _id: string;
+  comment: string;
+  author: { fullName: string };
+};
+
+
 // 특정 포스터 조회
 export const searchPoster = async (id: string) => {
   try {
@@ -34,20 +41,31 @@ export const searchPoster = async (id: string) => {
       data: {
         title,
         updatedAt,
-        author: { fullName },
+        author: { fullName, _id, isOnline },
         comments,
         likes,
         channel: { description },
       },
     } = await axiosInterface.get(`posts/${id}`);
+    
+    const commentInfo = comments.map(
+      ({ _id, comment, author: { fullName } }: CommentInfo) => ({
+        _id,
+        comment,
+        fullName,
+      })
+    );
+    
     return {
-      posterInfo: {
+       posterInfo: {
         title,
         updatedAt,
         fullName,
         description,
+        _id,
+        isOnline,
       },
-      comments,
+      commentInfo,
       likeCount: likes.length,
     };
   } catch (error) {
