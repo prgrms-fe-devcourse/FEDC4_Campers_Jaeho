@@ -1,5 +1,9 @@
 import { axiosInterface } from './axios';
 
+type ChannelInfo = { _id: string; image: number | null };
+
+type AuthorInfo = { fullName: string; isOnline: boolean };
+
 type Likes = {
   _id: string;
   user: string;
@@ -12,7 +16,7 @@ type Likes = {
 type PosterParams = {
   title: string;
   updatedAt: string;
-  channel: { _id: string; image: number | null };
+  channel: ChannelInfo;
   likes: Likes[];
 };
 
@@ -30,9 +34,8 @@ type SearchUserParams = UserParams & {
 type CommentInfo = {
   _id: string;
   comment: string;
-  author: { fullName: string };
+  author: AuthorInfo;
 };
-
 
 // 특정 포스터 조회
 export const searchPoster = async (id: string) => {
@@ -47,21 +50,20 @@ export const searchPoster = async (id: string) => {
         channel: { description },
       },
     } = await axiosInterface.get(`posts/${id}`);
-    
 
     const commentInfo = comments.map(
       ({ _id, comment, author: { fullName, isOnline } }: CommentInfo) => {
-        return {
+        ({
           _id,
           comment,
           fullName,
           isOnline,
-        };
+        });
       }
     );
-    
+
     return {
-       posterInfo: {
+      posterInfo: {
         title,
         updatedAt,
         fullName,
@@ -73,7 +75,7 @@ export const searchPoster = async (id: string) => {
       likeCount: likes.length,
     };
   } catch (error) {
-    console.error(error);
+    console.error(error as Error);
   }
 };
 
@@ -81,18 +83,23 @@ export const searchPoster = async (id: string) => {
 export const searchPosterAll = async (id: string) => {
   try {
     const { data } = await axiosInterface.get(`posts/channel/${id}`);
+
     return data.map(
       ({
         title,
         updatedAt,
         channel: { _id, image = null },
         likes,
-      }: PosterParams) => {
-        return { title, updatedAt, _id, image, likeCount: likes.length };
-      }
+      }: PosterParams) => ({
+        title,
+        updatedAt,
+        _id,
+        image,
+        likeCount: likes.length,
+      })
     );
   } catch (error) {
-    console.error(error);
+    console.error(error as Error);
   }
 };
 
@@ -100,11 +107,14 @@ export const searchPosterAll = async (id: string) => {
 export const searchUserAll = async () => {
   try {
     const { data } = await axiosInterface.get('users/get-users');
-    return data.map(({ _id, fullName, isOnline }: UserParams) => {
-      return { _id, fullName, isOnline };
-    });
+
+    return data.map(({ _id, fullName, isOnline }: UserParams) => ({
+      _id,
+      fullName,
+      isOnline,
+    }));
   } catch (error) {
-    console.error(error);
+    console.error(error as Error);
   }
 };
 
@@ -112,11 +122,12 @@ export const searchUserAll = async () => {
 export const searchUserOnline = async () => {
   try {
     const { data } = await axiosInterface.get('users/online-users');
+
     return data.map(({ _id, fullName, isOnline }: UserParams) => {
-      return { _id, fullName, isOnline };
+      ({ _id, fullName, isOnline });
     });
   } catch (error) {
-    console.error(error);
+    console.error(error as Error);
   }
 };
 
@@ -124,13 +135,14 @@ export const searchUserOnline = async () => {
 export const searchUser = async (username: string) => {
   try {
     const { data } = await axiosInterface.get(`search/users/${username}`);
+
     return data.map(
       ({ _id, fullName, isOnline, createdAt }: SearchUserParams) => {
-        return { _id, fullName, isOnline, createdAt };
+        ({ _id, fullName, isOnline, createdAt });
       }
     );
   } catch (error) {
-    console.error(error);
+    console.error(error as Error);
   }
 };
 
@@ -138,13 +150,13 @@ export const searchUser = async (username: string) => {
 export const searchAll = async (title: string) => {
   try {
     const { data } = await axiosInterface.get(`search/all/${title}`);
+
     return data.map(
       ({ _id, fullName, isOnline, createdAt, title }: SearchUserParams) => {
-        //
-        return { _id, fullName, isOnline, createdAt, title };
+        ({ _id, fullName, isOnline, createdAt, title });
       }
     );
   } catch (error) {
-    console.error(error);
+    console.error(error as Error);
   }
 };
