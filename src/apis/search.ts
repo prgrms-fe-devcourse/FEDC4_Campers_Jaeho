@@ -48,12 +48,16 @@ export const searchPoster = async (id: string) => {
       },
     } = await axiosInterface.get(`posts/${id}`);
     
+
     const commentInfo = comments.map(
-      ({ _id, comment, author: { fullName } }: CommentInfo) => ({
-        _id,
-        comment,
-        fullName,
-      })
+      ({ _id, comment, author: { fullName, isOnline } }: CommentInfo) => {
+        return {
+          _id,
+          comment,
+          fullName,
+          isOnline,
+        };
+      }
     );
     
     return {
