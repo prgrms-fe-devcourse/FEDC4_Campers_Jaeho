@@ -1,28 +1,27 @@
-import { Flex, Text, Center, Avatar } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Flex, Text, Center, Avatar, useBoolean } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
 function BottomNavBar() {
-  const [isLogin] = useState(1); // 임시로 (네브바 : 로그인 버튼) 중 뭐가 보일지 결정하는 상태입니다
+  const [loginFlag] = useBoolean(true); // 임시로 (네브바 : 로그인 버튼) 중 뭐가 보일지 결정하는 상태입니다
 
   return (
     <>
       <Flex
-        position="fixed"
+        pos="fixed"
         w="100%"
-        padding="10px"
+        p="10px"
         color="white"
         textAlign="center"
         bottom="0"
         left="0"
         right="0"
         cursor="pointer"
-        backgroundColor={isLogin ? '#ECE9E9' : '#28B67E'}
-        alignItems="center"
-        justifyContent="center"
+        bgColor={loginFlag ? '#ECE9E9' : '#28B67E'}
+        align="center"
+        justify="center"
       >
-        {isLogin ? (
+        {loginFlag ? (
           <>
             <Center flex="1">
               <Text color="#0D1321">홈</Text>

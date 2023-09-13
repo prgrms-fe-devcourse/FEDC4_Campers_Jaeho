@@ -1,45 +1,42 @@
 import { SimpleGrid, Box, Text } from '@chakra-ui/react';
-
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
-const ContentList = ({
-  contents,
-}: {
-  contents: { title: string; _id: string }[];
-}) => {
+type contents = { title: string; _id: string }[];
+
+const ContentList = ({ contents }: { contents: contents }) => {
   return (
     <SimpleGrid w="100%" columns={2} spacing={2}>
       {contents.map(({ title, _id }) => (
         <Box
-          backgroundImage={'https://bit.ly/dan-abramov'}
-          backgroundRepeat="no-repeat"
-          backgroundSize="cover"
-          backgroundPosition="center"
-          height="30vh"
+          bgImg={'https://bit.ly/dan-abramov'}
+          bgRepeat="no-repeat"
+          bgSize="cover"
+          bgPosition="center"
+          h="30vh"
           key={_id}
-          position="relative"
+          pos="relative"
           overflow="hidden"
-          borderRadius="10px"
+          borderRadius="10"
         >
           <Box
-            position="relative"
+            pos="relative"
             w="100%"
             h="100%"
-            background="linear-gradient(
+            bg="linear-gradient(
               180deg,
               rgba(2, 0, 36, 0) 0%,
               rgba(33, 33, 116, 0) 20%,
               rgba(0, 0, 0, 1) 100%
             )"
           >
-            <Text position="absolute" bottom="50px" left="15px" color="grey">
+            <Text pos="absolute" bottom="50" left="15" color="grey">
               북한
             </Text>
             <Text
-              position="absolute"
-              bottom="15px"
-              left="15px"
+              pos="absolute"
+              bottom="15"
+              left="15"
               color="white"
               fontSize="xl"
             >

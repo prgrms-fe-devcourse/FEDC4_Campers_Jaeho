@@ -4,8 +4,6 @@ import useObserver from '../hooks/useObserver';
 import { useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 
-type contents = [] | { title: string; _id: string }[];
-
 const axiosMainData = async (offset = 0, limit = 0) => {
   return await axios.get(
     // 정호님이 만드신 요청으로 변경이 필요할 수 있습니다
@@ -13,8 +11,10 @@ const axiosMainData = async (offset = 0, limit = 0) => {
   );
 };
 
+type contents = [] | { title: string; _id: string }[];
+
 function MainPageContent() {
-  const ObserveRef = useObserver(() => {
+  const observeRef = useObserver(() => {
     addContent();
   });
   const [contents, setContents] = useState<contents>([]);
@@ -34,16 +34,12 @@ function MainPageContent() {
 
   return (
     <>
-      <Flex
-        flexDirection="column"
-        position="relative"
-        padding="15px 15px 50px 15px"
-      >
+      <Flex flexDir="column" pos="relative" p="15px 15px 50px 15px">
         <ContentList contents={contents} />
-        <div ref={ObserveRef as React.MutableRefObject<HTMLDivElement>}></div>
-        <Box w="100%" p={'20px'} textAlign={'center'}>
+        <div ref={observeRef as React.MutableRefObject<HTMLDivElement>}></div>
+        <Box w="100%" p="20px" textAlign="center">
           {noMoreContent ? (
-            <Text fontSize="xl" fontWeight={'bold'}>
+            <Text fontSize="xl" fontWeight="bold">
               더 이상 게시물이 없습니다
             </Text>
           ) : (
