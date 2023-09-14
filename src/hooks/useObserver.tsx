@@ -1,8 +1,6 @@
-import { useEffect, useRef } from 'react';
+import { RefObject, useEffect, useRef } from 'react';
 
-const defaultShowEvent = () => console.log('show!');
-
-const useObserver = (showEvent = defaultShowEvent) => {
+const useObserver = (showEvent: () => void): RefObject<HTMLElement | null> => {
   const ref = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
