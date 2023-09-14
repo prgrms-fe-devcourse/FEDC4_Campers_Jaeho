@@ -1,8 +1,8 @@
-import ContentList from './ContentList';
-import { Spinner, Box, Text, Flex } from '@chakra-ui/react';
 import useObserver from '../hooks/useObserver';
-import { useState, useRef, useCallback } from 'react';
 import axios from 'axios';
+import ContentList from './ContentList';
+import { useState, useRef, useCallback } from 'react';
+import { Spinner, Box, Text, Flex } from '@chakra-ui/react';
 
 const axiosMainData = async (offset = 0, limit = 0) => {
   return await axios.get(
@@ -11,34 +11,34 @@ const axiosMainData = async (offset = 0, limit = 0) => {
   );
 };
 
-type contents = [] | { title: string; _id: string }[];
+export type Content = {
+  title: string;
+  _id: string;
+};
 
 function MainPageContent() {
+  const [contents, setContents] = useState<Content[]>([]);
+  const [isContentEmpty, setIsContentEmpty] = useState<boolean>(false);
+  const contentCount = useRef<number>(0);
   const observeRef = useObserver(() => {
-    addContent();
+    moreContent();
   });
-  const [contents, setContents] = useState<contents>([]);
-  const [noMoreContent, setNoMoreContent] = useState<boolean>(false);
-  const contentAddCount = useRef<number>(0);
-
-  const addContent = useCallback(async (limit = 6) => {
-    if (noMoreContent) return;
-    const { data } = await axiosMainData(
-      contentAddCount.current * limit,
-      limit
-    );
+  const moreContent = useCallback(async (limit = 9) => {
+    if (isContentEmpty) return;
+    const { data } = await axiosMainData(contentCount.current * limit, limit);
+    console.log(data);
     setContents((prevContents) => [...prevContents, ...data]);
-    contentAddCount.current++;
-    if (data.length !== limit) setNoMoreContent(true);
+    contentCount.current++;
+    if (data.length !== limit) setIsContentEmpty(true);
   }, []);
 
   return (
     <>
-      <Flex flexDir="column" pos="relative" p="15px 15px 50px 15px">
+      <Flex flexDir="column" pos="relative" p="15 15 50 15">
         <ContentList contents={contents} />
         <div ref={observeRef as React.MutableRefObject<HTMLDivElement>}></div>
-        <Box w="100%" p="20px" textAlign="center">
-          {noMoreContent ? (
+        <Box w="100%" p="20" textAlign="center">
+          {isContentEmpty ? (
             <Text fontSize="xl" fontWeight="bold">
               더 이상 게시물이 없습니다
             </Text>

@@ -1,19 +1,24 @@
-import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
+import { Content } from './MainPageContent';
+import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 
-type contents = { title: string; _id: string }[];
+type Props = {
+  contents: Content[];
+  spacing?: number;
+  borderRadius?: string;
+};
 
-const ContentList = ({ contents }: { contents: contents }) => {
+const ContentList = ({ contents }: Props) => {
   return (
-    <SimpleGrid w="100%" columns={2} spacing={2}>
+    <SimpleGrid w="100%" columns={{ base: 2, md: 3 }} spacing={2}>
       {contents.map(({ title, _id }) => (
         <Box
           bgImg={'https://bit.ly/dan-abramov'}
           bgRepeat="no-repeat"
           bgSize="cover"
           bgPosition="center"
-          h="30vh"
+          minH="30vh"
           key={_id}
           pos="relative"
           overflow="hidden"
