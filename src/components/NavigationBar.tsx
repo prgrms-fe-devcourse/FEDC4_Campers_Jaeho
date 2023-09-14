@@ -8,7 +8,7 @@ import { getLocalStorage } from '../utils/storage';
 import AvatarImage from './common/AvatarImage';
 import PrimaryLink from './common/PrimaryLink';
 
-const BottomNavBar = () => {
+const NavigationBar = () => {
   // context를 뭘 사용해야할지 고민
   // user정보를 context로 하면 로그인 되어있는지 id를 받을수 있음
   const isUser = getLocalStorage('token', '');
@@ -64,4 +64,4 @@ const BottomNavBar = () => {
   );
 };
 
-export default BottomNavBar;
+export default NavigationBar;
