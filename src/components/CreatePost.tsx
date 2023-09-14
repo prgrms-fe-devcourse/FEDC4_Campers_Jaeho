@@ -22,20 +22,19 @@ import {
   SmallCloseIcon,
 } from '@chakra-ui/icons';
 
-export interface NewPostData {
-  title: string;
-  image: FileImage[];
-  channelId: string;
-}
-
-export interface FileImage {
+type FileImage = {
   id: string;
   file: File;
-}
+};
+
+type PostForm = {
+  title: string;
+  // 후기 json 추가 시 타입 지정 예정
+};
 
 const CreatePost = () => {
-  const { register, handleSubmit, reset } = useForm<NewPostData>();
-  const [selectedImages, setSelectedImages] = useState<FileImage[]>([]); // File 배열 형태로 선택한 파일들이 저장
+  const { register, handleSubmit } = useForm<PostForm>();
+  const [selectedImages, setSelectedImages] = useState<FileImage[]>([]);
   const imageFileRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
@@ -43,20 +42,15 @@ const CreatePost = () => {
     navigate('/');
   };
 
-  const onSubmit = async (data: NewPostData) => {
+  const onSubmit = async (data: PostForm) => {
     const formData = new FormData();
     formData.append('title', data.title);
     formData.append('channelId', import.meta.env.VITE_MAIN_CHANNELID);
-
-    if (selectedImages[0]) {
-      formData.append('image', selectedImages[0].file);
-    }
+    selectedImages && formData.append('image', selectedImages[0].file);
 
     try {
       const response = await CreatePoster(formData);
-
-      setSelectedImages([]);
-      reset();
+      navigate('/');
       return response;
     } catch (error) {
       console.error(error);
