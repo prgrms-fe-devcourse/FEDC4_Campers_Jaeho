@@ -2,10 +2,10 @@ import { Center, CenterProps } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 type PrimaryIconProps = CenterProps & {
-  color: string;
   router: string;
 };
-const PrimaryIcon = ({ color, router, children }: PrimaryIconProps) => {
+
+const PrimaryIcon = ({ router, children, ...props }: PrimaryIconProps) => {
   const navigate = useNavigate();
 
   const handleLink = () => {
@@ -13,7 +13,7 @@ const PrimaryIcon = ({ color, router, children }: PrimaryIconProps) => {
   };
 
   return (
-    <Center flex="1" onClick={handleLink} color={color}>
+    <Center {...props} onClick={handleLink}>
       {children}
     </Center>
   );
