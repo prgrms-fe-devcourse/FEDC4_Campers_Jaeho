@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { CreatePoster } from '../apis/poster';
 import PrimaryButton from './common/PrimaryButton';
@@ -36,6 +36,7 @@ export interface FileImage {
 const CreatePost = () => {
   const { register, handleSubmit, reset } = useForm<NewPostData>();
   const [selectedImages, setSelectedImages] = useState<FileImage[]>([]); // File 배열 형태로 선택한 파일들이 저장
+  const imageFileRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
   const handlePrev = () => {
@@ -84,8 +85,7 @@ const CreatePost = () => {
   };
 
   const handleAddFile = () => {
-    const inputRef = register('image').ref as unknown as HTMLInputElement;
-    inputRef?.click();
+    imageFileRef.current?.click();
   };
 
   return (
@@ -134,7 +134,7 @@ const CreatePost = () => {
             accept="image/*"
             multiple
             display="none"
-            {...register('image')}
+            ref={imageFileRef}
             onChange={handleFileSelect}
           />
           <PlusSquareIcon boxSize={8} onClick={handleAddFile} />
