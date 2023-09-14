@@ -2,6 +2,7 @@ import { useForm } from 'react-hook-form';
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { CreatePoster } from '../apis/poster';
+import PrimaryButton from './common/PrimaryButton';
 import {
   FormControl,
   FormLabel,
@@ -13,8 +14,8 @@ import {
   Flex,
   Spacer,
   Button,
-  Center,
   Textarea,
+  Center,
 } from '@chakra-ui/react';
 import {
   ChevronLeftIcon,
@@ -145,9 +146,9 @@ const CreatePost = () => {
             <PlusSquareIcon boxSize={8} onClick={handleAddFile} />
           </FormControl>
           <Center>
-            <Button type="submit" w="200px">
-              눌러봐
-            </Button>
+            <PrimaryButton type="submit" w="200px">
+              글 올리기
+            </PrimaryButton>
           </Center>
         </Stack>
       </form>
