@@ -8,10 +8,10 @@ import { getLocalStorage } from '../utils/storage';
 import AvatarImage from './common/AvatarImage';
 import PrimaryLink from './common/PrimaryLink';
 
-const BottomNavBar = () => {
+const NavigationBar = () => {
   // context를 뭘 사용해야할지 고민
   // user정보를 context로 하면 로그인 되어있는지 id를 받을수 있음
-  const isUser = getLocalStorage('token', '');
+  const userToken = getLocalStorage('token');
 
   return (
     <>
@@ -20,15 +20,15 @@ const BottomNavBar = () => {
         w="100%"
         p="10px"
         textAlign="center"
-        bottom="0"
-        left="0"
-        right="0"
+        bottom={0}
+        left={0}
+        right={0}
         cursor="pointer"
-        bgColor={isUser ? '#ECE9E9' : '#28B67E'}
+        bgColor={userToken.length ? '#ECE9E9' : '#28B67E'}
         align="center"
         justify="center"
       >
-        {isUser ? (
+        {userToken.length ? (
           <>
             <PrimaryLink color="#0D1321" router={ROUTES.MAIN}>
               <AiFillHome />
@@ -44,7 +44,7 @@ const BottomNavBar = () => {
             </PrimaryLink>
             <PrimaryLink
               color="#0D1321"
-              router={ROUTES.USER_EDIT.replace(':id', `${isUser}`)}
+              router={`${ROUTES.MY_PROFILE}/${userToken}`}
             >
               <AvatarImage
                 size="sm"
@@ -64,4 +64,4 @@ const BottomNavBar = () => {
   );
 };
 
-export default BottomNavBar;
+export default NavigationBar;
