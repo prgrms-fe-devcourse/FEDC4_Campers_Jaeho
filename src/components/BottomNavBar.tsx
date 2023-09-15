@@ -1,9 +1,17 @@
-import { Flex, Text, Center, Avatar, useBoolean } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import { Flex } from '@chakra-ui/react';
+import { AiFillHome } from 'react-icons/ai';
+import { FaPeopleGroup } from 'react-icons/fa6';
+import { IoIosAddCircle } from 'react-icons/io';
+import { HiPaperAirplane } from 'react-icons/hi2';
 import { ROUTES } from '../constants/routes';
+import { getLocalStorage } from '../utils/storage';
+import AvatarImage from './common/AvatarImage';
+import PrimaryLink from './common/PrimaryLink';
 
-function BottomNavBar() {
-  const [loginFlag] = useBoolean(true); // 임시로 (네브바 : 로그인 버튼) 중 뭐가 보일지 결정하는 상태입니다
+const BottomNavBar = () => {
+  // context를 뭘 사용해야할지 고민
+  // user정보를 context로 하면 로그인 되어있는지 id를 받을수 있음
+  const isUser = getLocalStorage('token', '');
 
   return (
     <>
@@ -11,46 +19,49 @@ function BottomNavBar() {
         pos="fixed"
         w="100%"
         p="10px"
-        color="white"
         textAlign="center"
         bottom="0"
         left="0"
         right="0"
         cursor="pointer"
-        bgColor={loginFlag ? '#ECE9E9' : '#28B67E'}
+        bgColor={isUser ? '#ECE9E9' : '#28B67E'}
         align="center"
         justify="center"
       >
-        {loginFlag ? (
+        {isUser ? (
           <>
-            <Center flex="1">
-              <Text color="#0D1321">홈</Text>
-            </Center>
-            <Center flex="1">
-              <Text color="#0D1321">유저목록</Text>
-            </Center>
-            <Center flex="1">
-              <Text color="#0D1321">추가</Text>
-            </Center>
-            <Center flex="1">
-              <Text color="#0D1321">채팅</Text>
-            </Center>
-            <Center flex="1">
-              <Avatar
+            <PrimaryLink color="#0D1321" router={ROUTES.MAIN}>
+              <AiFillHome />
+            </PrimaryLink>
+            <PrimaryLink color="#0D1321" router={ROUTES.USER_LIST}>
+              <FaPeopleGroup />
+            </PrimaryLink>
+            <PrimaryLink color="#0D1321" router={ROUTES.CREATE_POST}>
+              <IoIosAddCircle />
+            </PrimaryLink>
+            <PrimaryLink color="#0D1321" router={ROUTES.CHAT_LIST}>
+              <HiPaperAirplane />
+            </PrimaryLink>
+            <PrimaryLink
+              color="#0D1321"
+              router={ROUTES.USER_EDIT.replace(':id', `${isUser}`)}
+            >
+              <AvatarImage
                 size="sm"
-                name="Dan Abrahmov"
                 src="https://bit.ly/dan-abramov"
+                userId="1234"
+                isOnline={true}
               />
-            </Center>
+            </PrimaryLink>
           </>
         ) : (
-          <Link style={{ width: '100%', height: '100%' }} to={ROUTES.AUTH}>
+          <PrimaryLink color="#0D1321" router={ROUTES.AUTH}>
             로그인!
-          </Link>
+          </PrimaryLink>
         )}
       </Flex>
     </>
   );
-}
+};
 
 export default BottomNavBar;

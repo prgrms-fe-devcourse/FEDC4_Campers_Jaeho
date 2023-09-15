@@ -20,9 +20,9 @@ const NavigationBar = () => {
         w="100%"
         p="10px"
         textAlign="center"
-        bottom="0"
-        left="0"
-        right="0"
+        bottom={0}
+        left={0}
+        right={0}
         cursor="pointer"
         bgColor={userToken.length ? '#ECE9E9' : '#28B67E'}
         align="center"
