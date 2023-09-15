@@ -132,9 +132,9 @@ export const searchUserOnline = async () => {
 };
 
 // 유저이름 검색
-export const searchUser = async (username: string) => {
+export const searchUser = async (userId: string) => {
   try {
-    const { data } = await axiosInterface.get(`search/users/${username}`);
+    const { data } = await axiosInterface.get(`search/users/${userId}`);
 
     return data.map(
       ({ _id, fullName, isOnline, createdAt }: SearchUserParams) => {
