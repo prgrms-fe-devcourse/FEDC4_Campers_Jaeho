@@ -17,35 +17,34 @@ import {
   AvatarBadge,
 } from '@chakra-ui/react';
 
-type CommentData = {
+const Comment = ({
+  id,
+  comment,
+  image,
+  isOnline,
+}: {
   id: string;
   comment: string;
   image: string;
   isOnline: boolean;
-};
-
-type CommentProps = {
-  data: CommentData;
-};
-
-const Comment = ({ data }: CommentProps) => {
+}) => {
   const handleDelete = () => {
     alert('deldete');
   };
   return (
     <Flex bg="#ECE9E9" maxW="100%" p="4px">
       <WrapItem w="70px">
-        <Avatar name="Dan Abrahmov" src={`${data.image}`}>
+        <Avatar name="Dan Abrahmov" src={`${image}`}>
           <AvatarBadge
-            bg={data.isOnline ? 'green.500' : 'red.500'}
+            bg={isOnline ? 'green.500' : 'red.500'}
             boxSize="1em"
             borderColor="white"
           />
         </Avatar>
       </WrapItem>
       <Box>
-        <Text fontSize="10px">ID: {data.id}</Text>
-        <Text fontSize="20px">{data.comment}</Text>
+        <Text fontSize="10px">ID: {id}</Text>
+        <Text fontSize="20px">{comment}</Text>
       </Box>
       <Spacer />
       <Popover>
