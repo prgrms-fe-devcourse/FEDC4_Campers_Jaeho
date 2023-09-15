@@ -5,7 +5,7 @@ import { IoIosAddCircle } from 'react-icons/io';
 import { HiPaperAirplane } from 'react-icons/hi2';
 import { ROUTES } from '../constants/routes';
 import { getLocalStorage } from '../utils/storage';
-import AvatarImage from './common/AvatarImage';
+import PrimaryAvatar from './common/PrimaryAvatar';
 import PrimaryLink from './common/PrimaryLink';
 
 const NavigationBar = () => {
@@ -30,23 +30,24 @@ const NavigationBar = () => {
       >
         {userToken.length ? (
           <>
-            <PrimaryLink color="#0D1321" router={ROUTES.MAIN}>
-              <AiFillHome />
+            <PrimaryLink color="#0D1321" router={ROUTES.MAIN} flex="1">
+              <AiFillHome fontSize={22} />
             </PrimaryLink>
-            <PrimaryLink color="#0D1321" router={ROUTES.USER_LIST}>
-              <FaPeopleGroup />
+            <PrimaryLink color="#0D1321" router={ROUTES.USER_LIST} flex="1">
+              <FaPeopleGroup fontSize={22} />
             </PrimaryLink>
-            <PrimaryLink color="#0D1321" router={ROUTES.CREATE_POST}>
-              <IoIosAddCircle />
+            <PrimaryLink color="#0D1321" router={ROUTES.CREATE_POST} flex="1">
+              <IoIosAddCircle fontSize={22} />
             </PrimaryLink>
-            <PrimaryLink color="#0D1321" router={ROUTES.CHAT_LIST}>
-              <HiPaperAirplane />
+            <PrimaryLink color="#0D1321" router={ROUTES.CHAT_LIST} flex="1">
+              <HiPaperAirplane fontSize={22} />
             </PrimaryLink>
             <PrimaryLink
+              flex="1"
               color="#0D1321"
               router={`${ROUTES.MY_PROFILE}/${userToken}`}
             >
-              <AvatarImage
+              <PrimaryAvatar
                 size="sm"
                 src="https://bit.ly/dan-abramov"
                 userId="1234"
