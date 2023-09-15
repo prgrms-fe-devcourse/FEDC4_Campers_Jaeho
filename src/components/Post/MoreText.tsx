@@ -1,5 +1,4 @@
-import { Collapse, CollapseProps, Button } from '@chakra-ui/react';
-import { useState } from 'react';
+import { Collapse, CollapseProps, Button, useBoolean } from '@chakra-ui/react';
 
 type MoreTextProps = CollapseProps & {
   text: string;
@@ -7,7 +6,7 @@ type MoreTextProps = CollapseProps & {
 };
 
 const MoreText = ({ text, maxHeight, ...props }: MoreTextProps) => {
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useBoolean(false);
 
   const handleToggle = () => {
     setToggle((prev) => !prev);
@@ -18,7 +17,7 @@ const MoreText = ({ text, maxHeight, ...props }: MoreTextProps) => {
       <Collapse {...props} startingHeight={maxHeight} in={toggle}>
         {text}
       </Collapse>
-      <Button size="sm" onClick={handleToggle} mt="1rem">
+      <Button size="sm" onClick={handleToggle} mt={4}>
         더보기
       </Button>
     </>
