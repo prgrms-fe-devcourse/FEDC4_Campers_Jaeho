@@ -22,9 +22,9 @@ function MainPageContent() {
   const [isContentEmpty, setIsContentEmpty] = useBoolean();
   const contentCount = useRef<number>(0);
   const observeRef = useObserver(() => {
-    moreContent();
+    getMoreContent();
   });
-  const moreContent = useCallback(async (limit = 9) => {
+  const getMoreContent = useCallback(async (limit = 9) => {
     if (isContentEmpty) return;
     const { data } = await axiosMainData(contentCount.current * limit, limit);
     console.log(data);
