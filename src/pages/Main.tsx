@@ -1,4 +1,4 @@
-import MainPageContent from '../components/MainPageContent';
+import MainPageContent from '../components/Main/MainPageContent';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Flex, Text } from '@chakra-ui/react';
 

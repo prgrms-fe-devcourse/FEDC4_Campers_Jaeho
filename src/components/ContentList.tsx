@@ -1,20 +1,28 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
-import { Content } from './MainPageContent';
+import { Content } from './Main/MainPageContent';
 import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 
 type Props = {
   contents: Content[];
   spacing?: number;
   borderRadius?: string;
+  width?: string;
+  gridColumns?: { base?: number; md?: number };
 };
 
-const ContentList = ({ contents }: Props) => {
+const ContentList = ({
+  contents,
+  spacing = 2,
+  borderRadius = '10',
+  width = '100%',
+  gridColumns = { base: 2, md: 3 },
+}: Props) => {
   return (
-    <SimpleGrid w="100%" columns={{ base: 2, md: 3 }} spacing={2}>
-      {contents.map(({ title, _id }) => (
+    <SimpleGrid w={width} columns={gridColumns} spacing={spacing}>
+      {contents.map(({ title, _id, image }) => (
         <Box
-          bgImg={'https://bit.ly/dan-abramov'}
+          bgImg={image ? image : 'https://via.placeholder.com/150'}
           bgRepeat="no-repeat"
           bgSize="cover"
           bgPosition="center"
@@ -22,7 +30,7 @@ const ContentList = ({ contents }: Props) => {
           key={_id}
           pos="relative"
           overflow="hidden"
-          borderRadius="10"
+          borderRadius={borderRadius}
         >
           <Box
             pos="relative"
@@ -44,6 +52,10 @@ const ContentList = ({ contents }: Props) => {
               left="15"
               color="white"
               fontSize="xl"
+              overflow="hidden"
+              maxW="90%"
+              whiteSpace="nowrap"
+              textOverflow="ellipsis"
             >
               {title}
             </Text>
