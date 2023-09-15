@@ -22,7 +22,7 @@ const ContentList = ({
     <SimpleGrid w={width} columns={gridColumns} spacing={spacing}>
       {contents.map(({ title, _id, image }) => (
         <Box
-          bgImg={image ? image : 'https://via.placeholder.com/150'}
+          bgImg={image || 'https://via.placeholder.com/150'}
           bgRepeat="no-repeat"
           bgSize="cover"
           bgPosition="center"

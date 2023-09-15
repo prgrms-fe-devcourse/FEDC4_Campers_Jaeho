@@ -20,7 +20,7 @@ export type Content = {
 function MainPageContent() {
   const [contents, setContents] = useState<Content[]>([]);
   const [isContentEmpty, setIsContentEmpty] = useBoolean();
-  const contentCount = useRef<number>(0);
+  const contentCount = useRef(0);
   const observeRef = useObserver(() => {
     getMoreContent();
   });
