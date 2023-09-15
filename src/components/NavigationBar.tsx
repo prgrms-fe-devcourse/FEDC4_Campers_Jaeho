@@ -44,7 +44,6 @@ const NavigationBar = () => {
             </PrimaryLink>
             <PrimaryLink
               color="#0D1321"
-              // router={ROUTES.USER_EDIT.replace(':id', `${userToken}`)}
               router={`${ROUTES.MY_PROFILE}/${userToken}`}
             >
               <AvatarImage
