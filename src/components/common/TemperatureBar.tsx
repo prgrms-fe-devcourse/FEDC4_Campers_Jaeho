@@ -13,7 +13,7 @@ const TemperatureBar = ({
     <Flex align="center" maxWidth={value}>
       <Progress
         {...props}
-        colorScheme="green"
+        color="green.400"
         size={size}
         value={value}
         width="100%"

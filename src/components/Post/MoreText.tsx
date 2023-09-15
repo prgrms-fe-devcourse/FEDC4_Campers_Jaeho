@@ -6,15 +6,15 @@ type MoreTextProps = CollapseProps & {
 };
 
 const MoreText = ({ text, maxHeight, ...props }: MoreTextProps) => {
-  const [toggle, setToggle] = useBoolean(false);
+  const [isToggle, setIsToggled] = useBoolean();
 
   const handleToggle = () => {
-    setToggle((prev) => !prev);
+    setIsToggled.toggle();
   };
 
   return (
     <>
-      <Collapse {...props} startingHeight={maxHeight} in={toggle}>
+      <Collapse {...props} startingHeight={maxHeight} in={isToggle}>
         {text}
       </Collapse>
       <Button size="sm" onClick={handleToggle} mt={4}>
