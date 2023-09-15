@@ -14,7 +14,7 @@ function Main() {
         </Text>
         <Link to={ROUTES.SEARCH}>
           <SearchIcon
-            boxSize={8}
+            boxSize="8"
             cursor="pointer"
             p="5px"
             borderRadius="15px"
