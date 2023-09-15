@@ -3,7 +3,7 @@ import { ROUTES } from '../constants/routes';
 import { Content } from './Main/MainPageContent';
 import { SimpleGrid, Box, Text } from '@chakra-ui/react';
 
-type Props = {
+type ContentListProps = {
   contents: Content[];
   spacing?: number;
   borderRadius?: string;
@@ -17,7 +17,7 @@ const ContentList = ({
   borderRadius = '10',
   width = '100%',
   gridColumns = { base: 2, md: 3 },
-}: Props) => {
+}: ContentListProps) => {
   return (
     <SimpleGrid w={width} columns={gridColumns} spacing={spacing}>
       {contents.map(({ title, _id, image }) => (
