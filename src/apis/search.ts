@@ -142,8 +142,9 @@ export const searchUserOnline = async () => {
 // 유저이름 검색
 export const searchUser = async (userId: string) => {
   try {
-    const { data } = await axiosInterface.get(`${ROUTES.USER_INFO(userId)}`);
 
+    const { data } = await axiosInterface.get(`${ROUTES.USER_INFO(userId)}`);
+    
     const {
       _id,
       fullName,
