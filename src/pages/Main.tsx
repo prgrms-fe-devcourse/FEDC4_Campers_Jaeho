@@ -1,7 +1,7 @@
-import MainPageContent from '../components/Main/MainPageContent';
+import MainPageContent from '../components/MainPageContent';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Flex, Text } from '@chakra-ui/react';
-
+import NavigationBar from '../components/NavigationBar';
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 
@@ -21,8 +21,8 @@ function Main() {
           />
         </Link>
       </Flex>
-
       <MainPageContent />
+      <NavigationBar />
     </>
   );
 }

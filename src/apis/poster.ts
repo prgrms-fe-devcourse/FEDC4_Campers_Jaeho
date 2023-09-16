@@ -1,22 +1,11 @@
 import { axiosInterface } from './axios';
-import convertImagesToBase64 from '../utils/encode';
-export const SingupPoster = async ({
-  title,
-  images,
-  channelId,
-}: {
-  title: string;
-  images: File[] | null;
-  channelId: string;
-}) => {
+
+export const CreatePoster = async (formData: FormData) => {
   try {
-    const imageBase64 = await convertImagesToBase64(images);
-    const data = {
-      title,
-      image: imageBase64,
-      channelId,
-    };
-    await axiosInterface.post('posts/create', data);
+    const response = await axiosInterface.post('posts/create', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response;
   } catch (error) {
     console.error(error);
   }
