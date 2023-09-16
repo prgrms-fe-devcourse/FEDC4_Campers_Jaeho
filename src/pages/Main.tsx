@@ -2,6 +2,8 @@ import MainPageContent from '../components/MainPageContent';
 import { SearchIcon } from '@chakra-ui/icons';
 import { Flex, Text } from '@chakra-ui/react';
 import NavigationBar from '../components/NavigationBar';
+import { Link } from 'react-router-dom';
+import { ROUTES } from '../constants/routes';
 
 function Main() {
   return (
@@ -10,10 +12,15 @@ function Main() {
         <Text fontSize="24px" flexGrow="1">
           Campers
         </Text>
-        {/* 검색페이지로 라우트 */}
-        <SearchIcon boxSize={8} cursor="pointer" p="5px" borderRadius="15px" />
+        <Link to={ROUTES.SEARCH}>
+          <SearchIcon
+            boxSize={8}
+            cursor="pointer"
+            p="5px"
+            borderRadius="15px"
+          />
+        </Link>
       </Flex>
-
       <MainPageContent />
       <NavigationBar />
     </>
