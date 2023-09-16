@@ -2,7 +2,7 @@ import { Image, Grid, GridItem, Input, Stack, Flex } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import React, { useState, useEffect, useRef } from 'react';
 import { searchUser, FileImage } from '../apis/search';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import TemperatureBar from './common/TemperatureBar';
 import UserInfoItem from './common/UserInfoItem';
@@ -14,6 +14,7 @@ type ProfileImage = File | null;
 const UserInfo = () => {
   const [selectedImage, setSelectedImage] = useState<ProfileImage>(null);
   const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
+  const { userId } = useParams<{ userId: string }>();
   const [userInfo, setUserInfo] = useState({
     fullName: '',
     email: '',
@@ -23,9 +24,8 @@ const UserInfo = () => {
   const imageRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
   // 로딩중 처리 예정 isLoading? isFetching?
-  const { error, data } = useQuery(
-    ['user-info', '64f7f609b3b4d210bb7b4fa7'],
-    () => searchUser('64f7f609b3b4d210bb7b4fa7')
+  const { error, data } = useQuery(['user-info', userId], () =>
+    searchUser(userId!)
   );
 
   useEffect(() => {
