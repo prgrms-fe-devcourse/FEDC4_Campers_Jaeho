@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import TemperatureBar from './common/TemperatureBar';
 import UserInfoItem from './common/UserInfoItem';
 import PrimaryButton from './common/PrimaryButton';
+import { useQuery } from '@tanstack/react-query';
 
 type ProfileImage = File | null;
 
@@ -21,36 +22,33 @@ const UserInfo = () => {
   });
   const imageRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
+  // 로딩중 처리 예정 isLoading? isFetching?
+  const { error, data } = useQuery(
+    ['user-info', '64f7f609b3b4d210bb7b4fa7'],
+    () => searchUser('64f7f609b3b4d210bb7b4fa7')
+  );
 
   useEffect(() => {
-    const getUserData = async () => {
-      try {
-        const response = await searchUser('64f7f609b3b4d210bb7b4fa7');
+    if (data) {
+      const { email, fullName, followers, followings, posts } = data;
+      setUserInfo({
+        fullName,
+        email,
+        totalFollowers: followers ? followers.length : 0,
+        totalFollowings: followings ? followings.length : 0,
+      });
 
-        if (response) {
-          const { email, fullName, followers, followings, posts } = response;
-          setUserInfo({
-            fullName,
-            email,
-            totalFollowers: followers ? followers.length : 0,
-            totalFollowings: followings ? followings.length : 0,
-          });
-
-          if (Array.isArray(posts)) {
-            setUserPostsData(
-              posts.map((post) => ({
-                id: uuidv4(),
-                image: post.image,
-              }))
-            );
-          }
-        }
-      } catch (error) {
-        console.error(error);
+      if (Array.isArray(posts)) {
+        setUserPostsData(
+          posts.map((post) => ({
+            id: uuidv4(),
+            image: post.image,
+          }))
+        );
       }
-    };
-    getUserData();
-  }, []); // 아마 userId가 들어가야 함
+    }
+    error && console.error(error);
+  }, [data, error]);
 
   const handleFileSelect: React.ChangeEventHandler<HTMLInputElement> = (
     event
