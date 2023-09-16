@@ -1,33 +1,24 @@
-import {
-  Image,
-  Text,
-  Progress,
-  Flex,
-  Box,
-  Button,
-  Grid,
-  GridItem,
-  Input,
-  Stack,
-} from '@chakra-ui/react';
+import { Image, Grid, GridItem, Input, Stack, Flex } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import React, { useState, useEffect, useRef } from 'react';
-import { searchUser } from '../apis/search';
+import { searchUser, FileImage } from '../apis/search';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { FileImage } from '../apis/search';
+import TemperatureBar from './common/TemperatureBar';
+import UserInfoItem from './common/UserInfoItem';
+import PrimaryButton from './common/PrimaryButton';
 
 type ProfileImage = File | null;
 
-const Info = () => {
+const UserInfo = () => {
   const [selectedImage, setSelectedImage] = useState<ProfileImage>(null);
+  const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
   const [userInfo, setUserInfo] = useState({
     fullName: '',
     email: '',
     totalFollowers: 0,
     totalFollowings: 0,
   });
-  const [userPostImage, setUserPostImage] = useState<FileImage[]>([]);
   const imageRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
 
@@ -46,7 +37,7 @@ const Info = () => {
           });
 
           if (Array.isArray(posts)) {
-            setUserPostImage(
+            setUserPostsData(
               posts.map((post) => ({
                 id: uuidv4(),
                 image: post.image,
@@ -59,7 +50,7 @@ const Info = () => {
       }
     };
     getUserData();
-  }, []); // 아마 id가 들어가야 함
+  }, []); // 아마 userId가 들어가야 함
 
   const handleFileSelect: React.ChangeEventHandler<HTMLInputElement> = (
     event
@@ -103,51 +94,30 @@ const Info = () => {
           onChange={handleFileSelect}
           display="none"
         />
-        <Box textAlign="center">
-          <Text as="b" fontSize="2xl">
-            {userInfo.fullName}
-          </Text>
-          <Text fontSize="xs" color="blackAlpha.600">
-            {userInfo.email}
-          </Text>
-        </Box>
-        <Flex w="90%" alignItems="center" justifyContent="center" gap={4}>
-          <Progress w="80%" value={80} rounded="base" colorScheme="green" />
-          <Text color="green.400" fontSize="sm">
-            80%
-          </Text>
-        </Flex>
+        <UserInfoItem title={userInfo.fullName} subTitle={userInfo.email} />
+        <TemperatureBar value={80} />
         <Flex gap={10} textAlign="center">
-          <Box>
-            <Text as="b">{userPostImage.length}</Text>
-            <Text color="blackAlpha.600" fontSize="12px">
-              게시물
-            </Text>
-          </Box>
-          <Box>
-            <Text as="b">{userInfo.totalFollowers}</Text>
-            <Text color="blackAlpha.600" fontSize="12px">
-              팔로워 수
-            </Text>
-          </Box>
-          <Box>
-            <Text as="b">{userInfo.totalFollowings}</Text>
-            <Text color="blackAlpha.600" fontSize="12px">
-              팔로잉 수
-            </Text>
-          </Box>
+          <UserInfoItem title={`${userPostsData.length}`} subTitle="게시물" />
+          <UserInfoItem
+            title={`${userInfo.totalFollowers}`}
+            subTitle="팔로워"
+          />
+          <UserInfoItem
+            title={`${userInfo.totalFollowings}`}
+            subTitle="팔로잉"
+          />
         </Flex>
         <Flex gap={3}>
-          <Button w="150px">메시지</Button>
-          <Button w="150px">로그아웃</Button>
+          <PrimaryButton w="150px">메시지</PrimaryButton>
+          <PrimaryButton w="150px">로그아웃</PrimaryButton>
         </Flex>
         <Grid
           templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
         >
-          {userPostImage &&
-            userPostImage.map((file) => (
-              <GridItem key={file.id}>
-                <Image src={file.image} />
+          {userPostsData &&
+            userPostsData.map((post) => (
+              <GridItem key={post.id}>
+                <Image src={post.image} />
               </GridItem>
             ))}
         </Grid>
@@ -156,4 +126,4 @@ const Info = () => {
   );
 };
 
-export default Info;
+export default UserInfo;
