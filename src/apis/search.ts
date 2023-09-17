@@ -1,4 +1,5 @@
 import { axiosInterface } from './axios';
+import { ROUTES } from '../constants/routes';
 
 type ChannelInfo = { _id: string; image: number | null };
 
@@ -26,9 +27,16 @@ type UserParams = {
   isOnline: boolean;
 };
 
+export type FileImage = {
+  id: string;
+  image: string;
+};
+
 type SearchUserParams = UserParams & {
-  createdAt: string;
-  title?: string;
+  email: string;
+  posts: FileImage[];
+  followers: [];
+  followings: [];
 };
 
 type CommentInfo = {
@@ -134,13 +142,18 @@ export const searchUserOnline = async () => {
 // 유저이름 검색
 export const searchUser = async (userId: string) => {
   try {
-    const { data } = await axiosInterface.get(`search/users/${userId}`);
 
-    return data.map(
-      ({ _id, fullName, isOnline, createdAt }: SearchUserParams) => {
-        ({ _id, fullName, isOnline, createdAt });
-      }
-    );
+    const { data } = await axiosInterface.get(`${ROUTES.USER_INFO(userId)}`);
+    
+    const {
+      _id,
+      fullName,
+      email,
+      posts,
+      followers,
+      followings,
+    }: SearchUserParams = data;
+    return { _id, fullName, email, posts, followers, followings };
   } catch (error) {
     console.error(error as Error);
   }
@@ -151,11 +164,9 @@ export const searchAll = async (title: string) => {
   try {
     const { data } = await axiosInterface.get(`search/all/${title}`);
 
-    return data.map(
-      ({ _id, fullName, isOnline, createdAt, title }: SearchUserParams) => {
-        ({ _id, fullName, isOnline, createdAt, title });
-      }
-    );
+    return data.map(({ _id, fullName, isOnline }: SearchUserParams) => {
+      ({ _id, fullName, isOnline });
+    });
   } catch (error) {
     console.error(error as Error);
   }
