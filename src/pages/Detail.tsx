@@ -107,6 +107,7 @@ const Detail = () => {
                         borderColor="white"
                       />
                     </Avatar>
+
                     <Text fontSize="10px">{data.author.fullName}</Text>
                   </WrapItem>
                 </Stack>
