@@ -84,7 +84,7 @@ const Detail = () => {
       />
       {data ? (
         <>
-          <Box bg="#ECE9E9" maxW="100%" maxH="10%" p={4}>
+          <Box bg="#ECE9E9" maxW="100%" maxH="10%" p="4px">
             <Flex justifyContent="space-between">
               <Box>
                 <Stack spacing={2}>
@@ -102,7 +102,9 @@ const Detail = () => {
                       src="https://i.pravatar.cc/2"
                     >
                       <AvatarBadge
-                        bg={data.author.isOnline ? 'green.500' : 'red.500'}
+                        bg={
+                          data.author.isOnline ? 'green.400' : 'blackAlpha.400'
+                        }
                         boxSize="1em"
                         borderColor="white"
                       />
@@ -156,7 +158,7 @@ const Detail = () => {
             </Box>
             <Center>
               <Button
-                colorScheme="teal"
+                colorScheme="green"
                 width="82px"
                 height="35px"
                 borderRadius="5px"
@@ -191,17 +193,18 @@ const Detail = () => {
             </Center>
           </Box>
           <Box bg="#ECE9E9" maxW="100%">
-            <Center bg="#ECE9E9">
+            <Center bg="#green.400">
               <Input
-                colorScheme="teal"
+                focusBorderColor="green.400"
                 width="525px"
                 height="101px"
                 borderRadius="5px"
+                bg="gray.100"
               />
             </Center>
             <Box display="flex" justifyContent="flex-end" p="20px">
               <Button
-                colorScheme="teal"
+                colorScheme="green"
                 width="82px"
                 height="35px"
                 borderRadius="5px"
