@@ -1,35 +1,49 @@
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { ButtonGroup, Text } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
 import AuthInputField from './Auth/AuthInputField';
+import { signup } from '../apis/auth';
 import passwordValidation from '../utils/passwordValidation';
-
-type SignUpFormValues = {
-  signUpEmail: string;
-  signUpPassword: string;
-  signUpPasswordConfirm: string;
-  signUpNickname: string;
-};
+import { setLocalStorage } from '../utils/storage';
+import { SignUpValues as SignUpFormValues } from '../types/auth';
 
 const SignUp = () => {
   const {
-    handleSubmit,
     register,
+    handleSubmit,
+    setFocus,
     formState: { errors },
     reset,
   } = useForm<SignUpFormValues>();
+  const navigate = useNavigate();
 
-  const onSubmit = (data: SignUpFormValues) => {
-    console.log(data);
+  const onSubmit = async (data: SignUpFormValues) => {
+    const response = await signup(data);
 
-    reset();
+    if (typeof response === 'string') {
+      alert('이미 존재하는 이메일입니다');
+      setFocus('email');
+      reset({
+        email: '',
+      });
+
+      return;
+    }
+
+    if (typeof response === 'object') {
+      const { token } = response;
+
+      setLocalStorage('token', token);
+      navigate('/');
+    }
   };
 
   const registers = {
-    signUpEmail: register('signUpEmail', {
-      required: '이메일 입력을 필수입니다',
+    email: register('email', {
+      required: '이메일 입력은 필수입니다',
     }),
-    signUpPassword: register('signUpPassword', {
+    password: register('password', {
       required: '비밀번호는 8자 이상입니다',
       minLength: {
         value: 8,
@@ -37,16 +51,12 @@ const SignUp = () => {
       },
       validate: passwordValidation,
     }),
-    signUpPasswordConfirm: register('signUpPasswordConfirm', {
+    passwordConfirm: register('passwordConfirm', {
       required: '재확인 비밀번호를 입력해주세요',
-      validate: (
-        _: string,
-        { signUpPassword, signUpPasswordConfirm }: SignUpFormValues
-      ) =>
-        signUpPassword === signUpPasswordConfirm ||
-        '비밀번호가 일치하지 않습니다',
+      validate: (_: string, { password, passwordConfirm }: SignUpFormValues) =>
+        password === passwordConfirm || '비밀번호가 일치하지 않습니다',
     }),
-    signUpNickname: register('signUpNickname', {
+    fullName: register('fullName', {
       required: '',
       minLength: {
         value: 2,
@@ -58,41 +68,41 @@ const SignUp = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <AuthInputField
-        {...registers.signUpEmail}
-        error={errors.signUpEmail}
-        id={'signup-email'}
-        label={'이메일'}
-        placeholder={'이메일을 형식에 맞게 입력해주세요'}
+        {...registers.email}
+        error={errors.email}
+        id="signup-email"
+        label="이메일"
+        placeholder="이메일을 형식에 맞게 입력해주세요"
       />
       <AuthInputField
-        {...registers.signUpPassword}
-        error={errors.signUpPassword}
-        id={'signup-password'}
-        label={'비밀번호'}
-        placeholder={'비밀번호를 형식에 맞게 입력해주세요'}
+        {...registers.password}
+        error={errors.password}
+        id="signup-password"
+        label="비밀번호"
+        placeholder="비밀번호를 형식에 맞게 입력해주세요"
         isPassword
       >
-        <Text fontSize={'xs'} color={'blackAlpha.600'}>
+        <Text fontSize="xs" color="blackAlpha.600">
           비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어
           대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.
         </Text>
       </AuthInputField>
       <AuthInputField
-        {...registers.signUpPasswordConfirm}
-        error={errors.signUpPasswordConfirm}
-        id={'signup-password-confirm'}
-        label={'비밀번호 확인'}
-        placeholder={'비밀번호를 다시 입력해주세요'}
+        {...registers.passwordConfirm}
+        error={errors.passwordConfirm}
+        id="signup-password-confirm"
+        label="비밀번호 확인"
+        placeholder="비밀번호를 다시 입력해주세요"
         isPassword
       />
       <AuthInputField
-        {...registers.signUpNickname}
-        error={errors.signUpNickname}
-        id={'signup-nickname'}
-        label={'닉네임'}
-        placeholder={'닉네임을 2자 이상 입력해주세요'}
+        {...registers.fullName}
+        error={errors.fullName}
+        id="signup-nickname"
+        label="닉네임"
+        placeholder="닉네임을 2자 이상 입력해주세요"
       />
-      <ButtonGroup my={2} justifyContent={'center'} width="100%">
+      <ButtonGroup my={2} justifyContent="center" width="100%">
         <PrimaryButton type="submit">회원가입</PrimaryButton>
         <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
       </ButtonGroup>
