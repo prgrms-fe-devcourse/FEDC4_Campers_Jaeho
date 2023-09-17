@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getLocalStorage } from '../utils/storage';
 
-export const axiosInterface = axios.create({
+const instanse = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
   timeout: 3000,
   headers: {
@@ -9,7 +9,7 @@ export const axiosInterface = axios.create({
   },
 });
 
-axiosInterface.interceptors.request.use(
+instanse.interceptors.request.use(
   (config) => {
     const storagedValue = getLocalStorage('token', '');
     if (storagedValue.trim().length > 1) {
@@ -24,11 +24,4 @@ axiosInterface.interceptors.request.use(
   }
 );
 
-axiosInterface.interceptors.response.use(
-  (config) => config,
-  (error) => {
-    // 200번대가 아닐시 로직 정의
-    // 오류시 메인 페이지 이동 ? modal로 표시?
-    console.error(error);
-  }
-);
+export default instanse;
