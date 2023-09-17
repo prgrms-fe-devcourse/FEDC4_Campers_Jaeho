@@ -34,7 +34,7 @@ const Comment = ({
       <WrapItem w="70px">
         <Avatar name="Dan Abrahmov" src={`${image}`}>
           <AvatarBadge
-            bg={isOnline ? 'green.500' : 'red.500'}
+            bg={isOnline ? 'green.400' : 'blackAlpha.400'}
             boxSize="1em"
             borderColor="white"
           />
@@ -47,7 +47,7 @@ const Comment = ({
       <Spacer />
       <Popover>
         <PopoverTrigger>
-          <Button bg="#ECE9E9">
+          <Button bg="#green.400">
             <FaEllipsisV />
           </Button>
         </PopoverTrigger>
@@ -55,7 +55,11 @@ const Comment = ({
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
-            <Button colorScheme="red" onClick={handleDelete}>
+            <Button
+              colorScheme="blackAlpha.400"
+              onClick={handleDelete}
+              variant="outline"
+            >
               Delete
             </Button>
           </PopoverBody>
