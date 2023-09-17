@@ -1,68 +1,67 @@
-import { isAxiosError } from 'axios';
-
+import instance from './axios';
 import { ROUTES } from '../constants/routes';
-import { axiosInterface } from './axios';
-import { setLocalStorage, removeLocalStorage } from '../utils/storage';
+import { removeLocalStorage } from '../utils/storage';
+import { SignInValues, SignResponseData, SignUpValues } from '../types/auth';
+import { AxiosError } from 'axios';
+import { User, UserResponseData } from '../types/user';
 
-interface LoginParams {
-  email: string;
-  password: string;
-}
-
-interface SignupParams {
-  email: string;
-  fullName: string;
-  password: string;
-}
-
-// 회원가입
-export const signup = async ({ email, fullName, password }: SignupParams) => {
+export const signup = async ({
+  email,
+  fullName,
+  password,
+}: SignUpValues): Promise<SignResponseData | string | void> => {
   try {
-    await axiosInterface.post('signup', {
+    const { data } = await instance.post<SignResponseData>('signup', {
       email,
       fullName,
       password,
     });
+
+    return data;
   } catch (error) {
-    console.error(error.message);
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
   }
 };
 
-// 로그인
-export const login = async ({ email, password }: LoginParams) => {
+export const signin = async ({
+  email,
+  password,
+}: SignInValues): Promise<SignResponseData | string | void> => {
   try {
-    const {
-      data: { user, token },
-    } = await axiosInterface.post('login', {
+    const { data } = await instance.post<SignResponseData>('login', {
       email,
       password,
     });
-    token && setLocalStorage('token', token);
+
+    return data;
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      return error.response?.data;
+    }
+  }
+};
+
+export const logout = async () => {
+  const { status } = await instance.post('logout');
+
+  if (status === 200) {
+    removeLocalStorage('token');
+    location.href = ROUTES.MAIN;
+  }
+};
+
+export const checkAuth = async (): Promise<User | string | void> => {
+  try {
+    const {
+      data: { user },
+    } = await instance.get<UserResponseData>('auth-user');
+
     return user;
   } catch (error) {
-    console.error(error);
-    if (error && isAxiosError(error)) {
-      // 에러가 있으면 에러 메세지 표시 후 return으로 전달
-      console.error(error.message);
+    if (error instanceof AxiosError) {
+      return error.response?.data;
     }
   }
-};
-
-// 로그아웃
-export const logout = async () => {
-  try {
-    const { status } = await axiosInterface.post('logout');
-    if (status === 200) {
-      removeLocalStorage('token');
-      location.href = ROUTES.MAIN;
-    }
-  } catch (error) {
-    console.error(error);
-  }
-};
-
-// 인증된 사용자 확인
-export const checkAuth = async () => {
-  const { data: user } = await axiosInterface.get('auth-user');
-  return user;
 };
