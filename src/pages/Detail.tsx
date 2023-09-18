@@ -57,6 +57,7 @@ import {
 import Like from '../components/common/Like';
 import Comment from '../components/common/Comment';
 import { getDetail } from '../apis/detail';
+import TemperatureBar from '../components/common/TemperatureBar';
 const Detail = () => {
   const [data, setData] = useState<DetailData | null>(null);
   const [comments, setComments] = useState<Comment[] | null>(null);
@@ -109,8 +110,10 @@ const Detail = () => {
                         borderColor="white"
                       />
                     </Avatar>
-
-                    <Text fontSize="10px">{data.author.fullName}</Text>
+                    <Box p="4px">
+                      <Text fontSize="20px">{data.author.fullName}</Text>
+                      <TemperatureBar value={0} />
+                    </Box>
                   </WrapItem>
                 </Stack>
               </Box>
@@ -127,7 +130,7 @@ const Detail = () => {
             </Flex>
           </Box>
           <Box bg="#ECE9E9" maxW="100%" maxH="10%" p={6}>
-            <Text w="516px" h="238px">
+            <Text w="516px" h="238px" fontSize="20px">
               {data.channel.description}
             </Text>
           </Box>
