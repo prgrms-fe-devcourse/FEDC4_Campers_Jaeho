@@ -53,6 +53,8 @@ import {
   DrawerCloseButton,
   DrawerHeader,
   DrawerBody,
+  Container,
+  AspectRatio,
 } from '@chakra-ui/react';
 import Like from '../components/common/Like';
 import Comment from '../components/common/Comment';
@@ -76,16 +78,11 @@ const Detail = () => {
   }, []);
 
   return (
-    <Box w="568px" h="auto" mx="auto">
-      <Image
-        src="https://cataas.com/cat?type=png"
-        alt="Cat Image"
-        w="992px"
-        h="408px"
-      />
+    <Container w="568px" h="auto">
+      <Image src="src/images/more.png" alt="Cat Image" maxW="100%" maxH="5%" />
       {data ? (
         <>
-          <Box bg="#ECE9E9" maxW="100%" maxH="10%" p="4px">
+          <Box bg="#ECE9E9" maxW="100%" maxH="10%" p="10px">
             <Flex justifyContent="space-between">
               <Box>
                 <Stack spacing={2}>
@@ -107,17 +104,17 @@ const Detail = () => {
                           data.author.isOnline ? 'green.400' : 'blackAlpha.400'
                         }
                         boxSize="1em"
-                        borderColor="white"
+                        borderColor="blackAlpha.400"
                       />
                     </Avatar>
-                    <Box p="4px">
-                      <Text fontSize="20px">{data.author.fullName}</Text>
-                      <TemperatureBar value={0} />
+                    <Box p="5px">
+                      <Text fontSize="15px">{data.author.fullName}</Text>
+                      <TemperatureBar value={80} />
                     </Box>
                   </WrapItem>
                 </Stack>
               </Box>
-              <Box style={{ position: 'relative' }}>
+              <Box>
                 <Like
                   likeCount={data.likes}
                   bg="#D3DCDE"
@@ -129,23 +126,22 @@ const Detail = () => {
               </Box>
             </Flex>
           </Box>
-          <Box bg="#ECE9E9" maxW="100%" maxH="10%" p={6}>
-            <Text w="516px" h="238px" fontSize="20px">
+          <Box bg="#ECE9E9" maxW="100%" maxH="5%" p="10px">
+            <Text maxW="80%" h="238px" fontSize="20px">
               {data.channel.description}
             </Text>
           </Box>
-          <Box bg="#ECE9E9" maxW="100%" maxH="10%" p={6}>
-            <iframe
-              src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=1%20Grafton%20Street,%20Dublin,%20Ireland+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
-              width="516px"
-              height="450px"
-              title="My Map"
-              allowFullScreen
-              loading="lazy"
-            ></iframe>
-          </Box>
-          <Divider bg="#D3DCDE" />
-          <Box bg="#ECE9E9" maxW="100%" maxH="5%" p="4">
+          <AspectRatio ratio={1}>
+            <Box bg="#ECE9E9" maxW="100%">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.375295414770757!3d6.5276316452784755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos!5e0!3m2!1sen!2sng!4v1567723392506!5m2!1sen!2sng"
+                width="95%"
+                height="90%"
+              />
+            </Box>
+          </AspectRatio>
+          <Divider bg="gray.100" />
+          <Box bg="#ECE9E9" maxW="100%" maxH="5%" p="4px">
             <Box>
               {comments
                 ?.slice(0, 3)
@@ -199,7 +195,7 @@ const Detail = () => {
             <Center bg="#green.400">
               <Input
                 focusBorderColor="green.400"
-                width="525px"
+                maxW="94%"
                 height="101px"
                 borderRadius="5px"
                 bg="gray.100"
@@ -220,7 +216,7 @@ const Detail = () => {
       ) : (
         <div>Loading...</div>
       )}
-    </Box>
+    </Container>
   );
 };
 
