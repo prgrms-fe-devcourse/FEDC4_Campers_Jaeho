@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ButtonGroup, Text } from '@chakra-ui/react';
+import { ButtonGroup } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
-import AuthInputField from './Auth/AuthInputField';
+import AuthInputFieldWithForm from './Auth/AuthInputFieldWithForm';
 import { useNavigate } from 'react-router-dom';
 import { signin } from '../apis/auth';
 import { setLocalStorage } from '../utils/storage';
@@ -59,26 +59,25 @@ const SignIn = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <AuthInputField
+      <AuthInputFieldWithForm
         {...registers.email}
-        error={errors.email}
+        message={errors.email?.message}
+        type="email"
         id="signin-email"
         label="이메일"
         placeholder="이메일을 입력해주세요"
       />
-      <AuthInputField
+      <AuthInputFieldWithForm
         {...registers.password}
-        error={errors.password}
+        message={errors.password?.message}
+        type="password"
         id="signin-password"
         label="비밀번호"
         placeholder="비밀번호를 입력해주세요"
-        isPassword
-      >
-        <Text fontSize="xs" color="blackAlpha.600">
-          비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어
-          대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.
-        </Text>
-      </AuthInputField>
+        helperTexts={[
+          '비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어 대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.',
+        ]}
+      />
       <ButtonGroup my={2} justifyContent="center" width="100%">
         <PrimaryButton type="submit">로그인</PrimaryButton>
         <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
