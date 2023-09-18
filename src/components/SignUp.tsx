@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { ButtonGroup, Text } from '@chakra-ui/react';
+import { ButtonGroup } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
-import AuthInputField from './Auth/AuthInputField';
+import AuthInputFieldWithForm from './Auth/AuthInputFieldWithForm';
 import { signup } from '../apis/auth';
 import passwordValidation from '../utils/passwordValidation';
 import { setLocalStorage } from '../utils/storage';
@@ -68,37 +68,37 @@ const SignUp = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <AuthInputField
+      <AuthInputFieldWithForm
         {...registers.email}
-        error={errors.email}
+        message={errors.email?.message}
+        type="email"
         id="signup-email"
         label="이메일"
         placeholder="이메일을 형식에 맞게 입력해주세요"
       />
-      <AuthInputField
+      <AuthInputFieldWithForm
         {...registers.password}
-        error={errors.password}
+        message={errors.password?.message}
+        type="password"
         id="signup-password"
         label="비밀번호"
         placeholder="비밀번호를 형식에 맞게 입력해주세요"
-        isPassword
-      >
-        <Text fontSize="xs" color="blackAlpha.600">
-          비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어
-          대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.
-        </Text>
-      </AuthInputField>
-      <AuthInputField
+        helperTexts={[
+          '비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어 대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.',
+        ]}
+      />
+      <AuthInputFieldWithForm
         {...registers.passwordConfirm}
-        error={errors.passwordConfirm}
+        message={errors.passwordConfirm?.message}
+        type="password"
         id="signup-password-confirm"
         label="비밀번호 확인"
         placeholder="비밀번호를 다시 입력해주세요"
-        isPassword
       />
-      <AuthInputField
+      <AuthInputFieldWithForm
         {...registers.fullName}
-        error={errors.fullName}
+        message={errors.fullName?.message}
+        type="text"
         id="signup-nickname"
         label="닉네임"
         placeholder="닉네임을 2자 이상 입력해주세요"
