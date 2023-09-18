@@ -1,4 +1,4 @@
-import { axiosInterface } from './axios';
+import instance from './axios';
 import { ROUTES } from '../constants/routes';
 
 type ChannelInfo = { _id: string; image: number | null };
@@ -57,7 +57,7 @@ export const searchPoster = async (id: string) => {
         likes,
         channel: { description },
       },
-    } = await axiosInterface.get(`posts/${id}`);
+    } = await instance.get(`posts/${id}`);
 
     const commentInfo = comments.map(
       ({ _id, comment, author: { fullName, isOnline } }: CommentInfo) => {
@@ -90,7 +90,7 @@ export const searchPoster = async (id: string) => {
 // 채널 전체 데이터 표시
 export const searchPosterAll = async (id: string) => {
   try {
-    const { data } = await axiosInterface.get(`posts/channel/${id}`);
+    const { data } = await instance.get(`posts/channel/${id}`);
 
     return data.map(
       ({
@@ -114,7 +114,7 @@ export const searchPosterAll = async (id: string) => {
 // 전체 유저 검색
 export const searchUserAll = async () => {
   try {
-    const { data } = await axiosInterface.get('users/get-users');
+    const { data } = await instance.get('users/get-users');
 
     return data.map(({ _id, fullName, isOnline }: UserParams) => ({
       _id,
@@ -129,7 +129,7 @@ export const searchUserAll = async () => {
 // 접속중인 유저 검색
 export const searchUserOnline = async () => {
   try {
-    const { data } = await axiosInterface.get('users/online-users');
+    const { data } = await instance.get('users/online-users');
 
     return data.map(({ _id, fullName, isOnline }: UserParams) => {
       ({ _id, fullName, isOnline });
@@ -142,9 +142,8 @@ export const searchUserOnline = async () => {
 // 유저이름 검색
 export const searchUser = async (userId: string) => {
   try {
+    const { data } = await instance.get(`${ROUTES.USER_INFO(userId)}`);
 
-    const { data } = await axiosInterface.get(`${ROUTES.USER_INFO(userId)}`);
-    
     const {
       _id,
       fullName,
@@ -162,7 +161,7 @@ export const searchUser = async (userId: string) => {
 // 모든 검색
 export const searchAll = async (title: string) => {
   try {
-    const { data } = await axiosInterface.get(`search/all/${title}`);
+    const { data } = await instance.get(`search/all/${title}`);
 
     return data.map(({ _id, fullName, isOnline }: SearchUserParams) => {
       ({ _id, fullName, isOnline });
