@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { ROUTES } from './constants/routes';
 import Auth from './pages/Auth';
-
+import Detail from './pages/Detail';
 const App = () => {
   return (
     <Routes>
@@ -16,6 +16,7 @@ const App = () => {
       <Route path={ROUTES.USER_LIST} element={<></>} />
       <Route path={ROUTES.CHAT_LIST} element={<></>} />
       <Route path={ROUTES.CHAT} element={<></>} />
+      <Route path={ROUTES.DETAIL} element={<Detail />} />
     </Routes>
   );
 };
