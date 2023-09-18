@@ -1,18 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { useEffect } from 'react';
-import {
-  Input,
-  ButtonGroup,
-  Text,
-  FormControl,
-  FormLabel,
-  FormErrorMessage,
-  InputRightElement,
-  InputGroup,
-  useBoolean,
-} from '@chakra-ui/react';
-import { ViewOffIcon, ViewIcon } from '@chakra-ui/icons';
+import { ButtonGroup, Text } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
+import AuthInputField from './Auth/AuthInputField';
 import passwordValidation from '../utils/passwordValidation';
 
 type SignInFormValues = {
@@ -21,7 +11,6 @@ type SignInFormValues = {
 };
 
 const SignIn = () => {
-  const [isShow, setIsShow] = useBoolean();
   const {
     register,
     handleSubmit,
@@ -34,10 +23,6 @@ const SignIn = () => {
     console.log(data);
 
     reset();
-  };
-
-  const handlePasswordShow = () => {
-    setIsShow.toggle();
   };
 
   const registers = {
@@ -60,43 +45,26 @@ const SignIn = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <FormControl isRequired isInvalid={errors.signInEmail && true}>
-        <FormLabel htmlFor="signin-email">이메일</FormLabel>
-        <InputGroup>
-          <Input
-            id="signin-email"
-            type="email"
-            placeholder="이메일을 입력하세요"
-            {...registers.signInEmail}
-          />
-        </InputGroup>
-        <FormErrorMessage>
-          {errors.signInEmail && errors.signInEmail.message}
-        </FormErrorMessage>
-      </FormControl>
-      <FormControl isRequired isInvalid={errors.signInPassword && true}>
-        <FormLabel my={2} htmlFor="signin-password">
-          비밀번호
-        </FormLabel>
-        <InputGroup>
-          <Input
-            id="signin-password"
-            type={isShow ? 'text' : 'password'}
-            placeholder="비밀번호를 입력하세요"
-            {...registers.signInPassword}
-          />
-          <InputRightElement onClick={handlePasswordShow}>
-            {isShow ? <ViewOffIcon /> : <ViewIcon />}
-          </InputRightElement>
-        </InputGroup>
+      <AuthInputField
+        {...registers.signInEmail}
+        error={errors.signInEmail}
+        id={'signin-email'}
+        label={'이메일'}
+        placeholder={'이메일을 입력해주세요'}
+      />
+      <AuthInputField
+        {...registers.signInPassword}
+        error={errors.signInPassword}
+        id={'signin-password'}
+        label={'비밀번호'}
+        placeholder={'비밀번호를 입력해주세요'}
+        isPassword
+      >
         <Text fontSize={'xs'} color={'blackAlpha.600'}>
           비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어
           대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.
         </Text>
-        <FormErrorMessage>
-          {errors.signInPassword && errors.signInPassword.message}
-        </FormErrorMessage>
-      </FormControl>
+      </AuthInputField>
       <ButtonGroup my={2} justifyContent={'center'} width="100%">
         <PrimaryButton type="submit">로그인</PrimaryButton>
         <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
