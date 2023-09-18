@@ -35,6 +35,7 @@ const SignUp = () => {
       const { token } = response;
 
       setLocalStorage('token', token);
+      history.replaceState(null, '', '/');
       navigate('/');
     }
   };
