@@ -1,25 +1,4 @@
-type PosterInfo = {
-  title: string;
-  updatedAt: string;
-  fullName: string;
-  description: string;
-  _id: string;
-  isOnline: boolean;
-};
-
-type CommentInfo = {
-  _id: string;
-  comment: string;
-  fullName: string;
-  isOnline: boolean;
-};
-
-type SearchPosterResponse = {
-  posterInfo: PosterInfo;
-  commentInfo: CommentInfo[];
-  likeCount: number;
-};
-
+import { SearchPosterResponse, CommentInfo } from '../types/detail';
 import { useEffect, useState } from 'react';
 import {
   Box,
