@@ -1,8 +1,6 @@
-import { Text, TextProps, Box, BoxProps } from '@chakra-ui/react';
+import { Text, TextProps, Box } from '@chakra-ui/react';
 
-type PrimaryTextProps = TextProps & BoxProps;
-
-const PrimaryText = ({ width, children, ...props }: PrimaryTextProps) => {
+const PrimaryText = ({ width, children, ...props }: TextProps) => {
   return (
     <Box width={width}>
       <Text {...props} isTruncated>
