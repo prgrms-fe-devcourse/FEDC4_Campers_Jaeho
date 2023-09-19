@@ -53,6 +53,7 @@ const Detail = () => {
   const [data, setData] = useState<SearchPosterResponse | null>(null);
   const [comments, setComments] = useState<CommentInfo[] | null>(null);
   const { postId } = useParams<{ postId: string }>();
+
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
 
   useEffect(() => {
