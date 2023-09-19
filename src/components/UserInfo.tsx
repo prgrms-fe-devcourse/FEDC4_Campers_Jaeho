@@ -1,13 +1,23 @@
-import { Image, Grid, GridItem, Input, Stack, Flex } from '@chakra-ui/react';
+import {
+  Image,
+  Grid,
+  GridItem,
+  Input,
+  Stack,
+  Flex,
+  Text,
+} from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import React, { useState, useEffect, useRef } from 'react';
 import { searchUser, FileImage } from '../apis/search';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import TemperatureBar from './common/TemperatureBar';
 import UserInfoItem from './common/UserInfoItem';
 import PrimaryButton from './common/PrimaryButton';
 import { useQuery } from '@tanstack/react-query';
+import PrimaryHeader from './common/PrimaryHeader';
+import PrimaryLink from './common/PrimaryLink';
 
 type ProfileImage = File | null;
 
@@ -22,7 +32,7 @@ const UserInfo = () => {
     totalFollowings: 0,
   });
   const imageRef = useRef<HTMLInputElement | null>(null);
-  const navigate = useNavigate();
+
   // 로딩중 처리 예정 isLoading? isFetching?
   const { error, data } = useQuery(['user-info', userId], () =>
     searchUser(userId!)
@@ -59,19 +69,18 @@ const UserInfo = () => {
     }
   };
 
-  const handlePrev = () => {
-    navigate(-1);
-  };
-
   const handleAddFile = () => {
     imageRef.current?.click();
   };
 
   return (
     <>
-      <Flex>
-        <ChevronLeftIcon onClick={handlePrev} boxSize={8} />
-      </Flex>
+      <PrimaryHeader>
+        <PrimaryLink router={-1}>
+          <ChevronLeftIcon boxSize={8} />
+          <Text>{userInfo.fullName}</Text>
+        </PrimaryLink>
+      </PrimaryHeader>
       <Stack spacing={4} alignItems="center">
         <Image
           borderRadius="full"
