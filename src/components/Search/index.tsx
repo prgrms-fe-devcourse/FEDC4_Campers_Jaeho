@@ -3,7 +3,7 @@ import searchImage from '../../assets/images/search.png';
 import UserInfoItem from '../common/UserInfoItem';
 import SearchBar from './SearchBar';
 
-const SearchA = () => {
+const SearchForm = () => {
   return (
     <>
       <SearchBar />
@@ -17,4 +17,4 @@ const SearchA = () => {
   );
 };
 
-export default SearchA;
+export default SearchForm;

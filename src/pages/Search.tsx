@@ -1,10 +1,10 @@
 import { Container } from '@chakra-ui/react';
-import SearchA from '../components/Search';
+import SearchForm from '../components/Search';
 
 const Search = () => {
   return (
     <Container mt={5}>
-      <SearchA />
+      <SearchForm />
     </Container>
   );
 };

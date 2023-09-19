@@ -9,7 +9,7 @@ import { PostResponse, UserResponse } from '../../../apis/types';
 import SearchBar from '../SearchBar';
 import NoResult from './NoResult';
 
-const SearchUser = () => {
+const SearchAll = () => {
   const navigate = useNavigate();
   const { keyword } = useParams<{ keyword: string }>();
   const { data, isError, isLoading } = useQuery(['search-user', keyword], () =>
@@ -61,4 +61,4 @@ const SearchUser = () => {
   );
 };
 
-export default SearchUser;
+export default SearchAll;

@@ -6,7 +6,7 @@ import NotFound from './pages/NotFound';
 import Create from './pages/Create';
 import UserProfile from './pages/UserProfile';
 import Search from './pages/Search';
-import SearchUser from './components/Search/SearchResponse';
+import SearchAll from './components/Search/SearchResponse';
 
 const App = () => {
   return (
@@ -15,7 +15,7 @@ const App = () => {
         <Route path={ROUTES.MAIN} element={<Main />} />
         <Route path={ROUTES.AUTH} element={<Auth />} />
         <Route path={ROUTES.SEARCH} element={<Search />} />
-        <Route path={ROUTES.SEARCH_USER} element={<SearchUser />} />
+        <Route path={ROUTES.SEARCH_All} element={<SearchAll />} />
         <Route path={ROUTES.CREATE_POST} element={<Create />} />
         <Route path={ROUTES.USER_EDIT} element={<></>} />
         <Route path={ROUTES.USER_PROFILE} element={<UserProfile />} />
