@@ -55,6 +55,15 @@ const SearchAll = () => {
           ) : (
             <NoResult />
           )}
+          {!userResult?.length && !postResult?.length && (
+            <Text
+              color="green.400"
+              as="b"
+              onClick={() => navigate('/createpost')}
+            >
+              이 곳에 대한 첫 글 써보기
+            </Text>
+          )}
         </>
       )}
     </Container>
