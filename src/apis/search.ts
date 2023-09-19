@@ -1,5 +1,6 @@
-import instance from './axios';
 import { ROUTES } from '../constants/routes';
+import { AxiosError } from 'axios';
+import instance from './axios';
 
 type ChannelInfo = { _id: string; image: number | null };
 
@@ -154,7 +155,9 @@ export const searchUser = async (userId: string) => {
     }: SearchUserParams = data;
     return { _id, fullName, email, posts, followers, followings };
   } catch (error) {
-    console.error(error as Error);
+    if (error instanceof AxiosError) {
+      console.error(error.message);
+    }
   }
 };
 
