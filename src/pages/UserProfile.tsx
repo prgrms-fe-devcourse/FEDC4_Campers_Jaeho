@@ -1,11 +1,4 @@
-import {
-  Container,
-  Flex,
-  Grid,
-  GridItem,
-  Stack,
-  Image,
-} from '@chakra-ui/react';
+import { Container, Flex, GridItem, Stack, Image } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { searchUser } from '../apis/search';
 import { useQuery } from '@tanstack/react-query';
@@ -17,6 +10,7 @@ import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
 import UserInfoItem from '../components/common/UserInfoItem';
 import PrimaryButton from '../components/common/PrimaryButton';
+import GridList from '../components/common/GridList';
 
 const UserProfile = () => {
   const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
@@ -78,16 +72,14 @@ const UserProfile = () => {
           <PrimaryButton w="150px">메시지</PrimaryButton>
           <PrimaryButton w="150px">로그아웃</PrimaryButton>
         </Flex>
-        <Grid
-          templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
-        >
+        <GridList>
           {userPostsData &&
             userPostsData.map((post) => (
               <GridItem key={post.id}>
                 <Image src={post.image} />
               </GridItem>
             ))}
-        </Grid>
+        </GridList>
       </Stack>
     </Container>
   );
