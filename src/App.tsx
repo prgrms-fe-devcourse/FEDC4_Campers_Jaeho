@@ -7,6 +7,7 @@ import Create from './pages/Create';
 import UserProfile from './pages/UserProfile';
 import Search from './pages/Search';
 import SearchAll from './components/Search/SearchResponse';
+import User from './pages/User';
 
 const App = () => {
   return (
@@ -19,7 +20,7 @@ const App = () => {
         <Route path={ROUTES.CREATE_POST} element={<Create />} />
         <Route path={ROUTES.USER_EDIT} element={<></>} />
         <Route path={ROUTES.USER_PROFILE} element={<UserProfile />} />
-        <Route path={ROUTES.USER_LIST} element={<></>} />
+        <Route path={ROUTES.USER_LIST} element={<User />} />
         <Route path={ROUTES.CHAT_LIST} element={<></>} />
         <Route path={ROUTES.CHAT} element={<></>} />
         <Route path="*" element={<NotFound />} />
