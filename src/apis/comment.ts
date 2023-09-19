@@ -4,7 +4,7 @@ type CommentData = {
   comment: string;
   postId: string;
 };
-export const sendComment = async ({ comment, postId }: CommentData) => {
+export const createComment = async ({ comment, postId }: CommentData) => {
   try {
     await axiosInterface.post('/comments/create', {
       comment,
