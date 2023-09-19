@@ -46,7 +46,7 @@ import TemperatureBar from '../components/common/TemperatureBar';
 import PrimaryAvatar from '../components/common/PrimaryAvatar';
 import PrimaryButton from '../components/common/PrimaryButton';
 import RecommendButton from '../components/common/RecommendButton';
-import { formatDate } from '../utils/Date';
+import { formatDate } from '../utils/formateData';
 import { useParams } from 'react-router-dom';
 import { searchPoster } from '../apis/search';
 const Detail = () => {
@@ -54,8 +54,10 @@ const Detail = () => {
   const [comments, setComments] = useState<CommentInfo[] | null>(null);
   const { postId } = useParams<{ postId: string }>();
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
+
   useEffect(() => {
     if (postId === undefined) return;
+
     const fetchData = async () => {
       const fetchedData = await searchPoster(postId);
       if (fetchedData) {
@@ -69,18 +71,18 @@ const Detail = () => {
   }, [postId]);
 
   return (
-    <Container w="568px" h="auto">
+    <Container maxW="100%" h="auto">
       <Image src="src/images/more.png" maxW="100%" maxH="5%" />
       {data ? (
         <>
-          <Box bg="#ECE9E9" maxW="100%" maxH="10%" p="10px">
+          <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={5}>
             <Flex justifyContent="space-between">
               <Box>
                 <Stack spacing={2}>
-                  <Text fontSize="10px">
+                  <Text fontSize={10}>
                     {formatDate(data.posterInfo.updatedAt)}
                   </Text>
-                  <Text fontSize="30px">{data.posterInfo.title}</Text>
+                  <Text fontSize={50}>{data.posterInfo.title}</Text>
                   <WrapItem>
                     <PrimaryAvatar
                       userId={data.posterInfo._id}
@@ -89,8 +91,8 @@ const Detail = () => {
                       src="https://i.pravatar.cc/2"
                       isOnline={data.posterInfo.isOnline}
                     />
-                    <Box p="5px">
-                      <Text fontSize="15px">{data.posterInfo.fullName}</Text>
+                    <Box>
+                      <Text fontSize={15}>{data.posterInfo.fullName}</Text>
                       <TemperatureBar value={80} />
                     </Box>
                   </WrapItem>
@@ -101,16 +103,16 @@ const Detail = () => {
                   recommendCount={data.likeCount}
                   isRecommended={false}
                   bg="#D3DCDE"
-                  width="40px"
-                  height="40px"
-                  marginBottom="40px"
-                  style={{ top: '20px' }}
+                  width={20}
+                  height={30}
+                  top={10}
+                  size={'lg'}
                 />
               </Box>
             </Flex>
           </Box>
-          <Box bg="#ECE9E9" maxW="100%" maxH="5%" p="10px">
-            <Text maxW="80%" h="238px" fontSize="20px">
+          <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={5}>
+            <Text maxW="80%" h={238} fontSize={20}>
               {data.posterInfo.description}
             </Text>
           </Box>
@@ -124,7 +126,7 @@ const Detail = () => {
             </Box>
           </AspectRatio>
           <Divider bg="gray.100" />
-          <Box bg="#ECE9E9" maxW="100%" maxH="5%" p="4px">
+          <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={4}>
             <Box>
               {comments
                 ?.slice(0, 3)
@@ -142,10 +144,10 @@ const Detail = () => {
             <Center>
               <PrimaryButton
                 alignSelf="center"
-                width="82px"
-                height="35px"
-                borderRadius="5px"
-                onClick={() => setIsDrawerOpen.on}
+                width={82}
+                height={35}
+                borderRadius={5}
+                onClick={setIsDrawerOpen.on}
                 disabled={isDrawerOpen}
               >
                 더 보기
@@ -153,7 +155,7 @@ const Detail = () => {
               <Drawer
                 placement="bottom"
                 isOpen={isDrawerOpen}
-                onClose={() => setIsDrawerOpen.off}
+                onClose={setIsDrawerOpen.off}
                 size="xs"
               >
                 <DrawerOverlay />
@@ -176,22 +178,17 @@ const Detail = () => {
             </Center>
           </Box>
           <Box bg="#ECE9E9" maxW="100%">
-            <Center bg="#green.400">
+            <Center>
               <Input
                 focusBorderColor="green.400"
                 maxW="94%"
-                height="101px"
-                borderRadius="5px"
+                height={101}
+                borderRadius={5}
                 bg="gray.100"
               />
             </Center>
             <Box display="flex" justifyContent="flex-end" p="20px">
-              <PrimaryButton
-                colorScheme="green"
-                width="82px"
-                height="35px"
-                borderRadius="5px"
-              >
+              <PrimaryButton width={82} height={35} borderRadius={5}>
                 댓글달기!
               </PrimaryButton>
             </Box>
