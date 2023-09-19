@@ -27,15 +27,15 @@ const User = () => {
   };
 
   return (
-    <Container padding="0">
+    <Container padding={0}>
       <VStack spacing={3} align="stretch">
-        <Flex backgroundColor="#D3DCDE" height="14" borderRadius={3}>
+        <Flex backgroundColor="#D3DCDE" height={14} borderRadius={3}>
           <PrimaryLink
             router={ROUTES.MAIN}
             color="#0D1321"
             width="5%"
             as="button"
-            mr="1"
+            mr={1}
           >
             <IoArrowBackOutline fontSize={22} />
           </PrimaryLink>
@@ -54,8 +54,8 @@ const User = () => {
           </PrimaryLink>
         </Flex>
         <Tabs index={tabIndex} onChange={handleTabsChange}>
-          <TabList borderBottom={'none'} justifyContent={'center'}>
-            <Tab color={'green.400'}>
+          <TabList borderBottom="none" justifyContent="center">
+            <Tab color="green.400">
               <Text color={tabIndex === 0 ? 'green.400' : 'blackAlpha.600'}>
                 total
               </Text>
