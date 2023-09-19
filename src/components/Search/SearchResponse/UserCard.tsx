@@ -8,7 +8,7 @@ const UserCard = ({ userData }: { userData: UserResponse }) => {
     <Card>
       <CardHeader>
         <Flex>
-          <Flex flex="1" gap="4" alignItems="center" flexWrap="wrap">
+          <Flex flex={1} gap={4} align="center" flexWrap="wrap">
             <PrimaryAvatar src={image} userId={_id} isOnline={isOnline} />
             <UserInfoItem title={fullName} subTitle={email} />
           </Flex>

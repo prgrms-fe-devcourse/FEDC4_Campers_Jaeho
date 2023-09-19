@@ -18,20 +18,12 @@ const SearchAll = () => {
 
   isError && navigate('/not-found');
 
-  const isUserResponse = (
-    data: UserResponse | PostResponse
-  ): data is UserResponse => {
-    return 'fullName' in data;
-  };
-
-  const isPostResponse = (
-    data: UserResponse | PostResponse
-  ): data is PostResponse => {
-    return 'title' in data;
-  };
-
-  const userResult = data?.filter(isUserResponse);
-  const postResult = data?.filter(isPostResponse);
+  const userResult = data?.filter(
+    (item): item is UserResponse => 'fullName' in item
+  );
+  const postResult = data?.filter(
+    (item): item is PostResponse => 'title' in item
+  );
 
   return (
     <Container textAlign="center" my={5}>

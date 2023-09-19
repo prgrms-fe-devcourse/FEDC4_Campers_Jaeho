@@ -1,15 +1,15 @@
-import { useState, ChangeEventHandler, FormEventHandler } from 'react';
+import { useState, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const useSearch = () => {
-  const [keyword, setKeyword] = useState<string>('');
+  const [keyword, setKeyword] = useState('');
   const navigate = useNavigate();
 
-  const handleChange: ChangeEventHandler<HTMLInputElement> = (event) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setKeyword(event.target.value);
   };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setKeyword('');
     navigate(`/search/${keyword}`);
