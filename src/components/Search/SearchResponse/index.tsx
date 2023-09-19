@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import PostCard from './PostCard';
 import UserCard from './UserCard';
 import { Container, Text } from '@chakra-ui/react';
-import { PostResponse, UserResponse } from '../../../apis/types';
+import { PostResponse } from '../../../types/post';
+import { User } from '../../../types/user';
 import SearchBar from '../SearchBar';
 import NoResult from './NoResult';
 
@@ -18,9 +19,7 @@ const SearchAll = () => {
 
   isError && navigate('/not-found');
 
-  const userResult = data?.filter(
-    (item): item is UserResponse => 'fullName' in item
-  );
+  const userResult = data?.filter((item): item is User => 'fullName' in item);
   const postResult = data?.filter(
     (item): item is PostResponse => 'title' in item
   );
