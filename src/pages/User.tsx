@@ -60,12 +60,12 @@ const User = () => {
                 total
               </Text>
             </Tab>
-            <Tab color={'green.400'}>
+            <Tab color="green.400">
               <Text color={tabIndex === 1 ? 'green.400' : 'blackAlpha.600'}>
                 follwer
               </Text>
             </Tab>
-            <Tab color={'green.400'}>
+            <Tab color="green.400">
               <Text color={tabIndex === 2 ? 'green.400' : 'blackAlpha.600'}>
                 follwing
               </Text>
