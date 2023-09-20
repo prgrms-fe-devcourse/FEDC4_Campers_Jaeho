@@ -29,3 +29,35 @@ export type User = {
 export type UserResponseData = {
   user: User;
 };
+
+export type NotificationResponse = {
+  seen: boolean;
+  _id: string;
+  author: User;
+  user: User | string;
+  post?: string; // 포스트 id
+  follow?: string; // 사용자 id
+  comment?: Comment;
+  message?: string; // 메시지 id
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type MessageResponseData = {
+  _id: string;
+  message: string;
+  sender: User;
+  receiver: User;
+  seen: boolean;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type ConversationResponseData = {
+  _id: string[];
+  message: string;
+  sender: User;
+  receiver: User;
+  seen: boolean;
+  createdAt: string;
+};
