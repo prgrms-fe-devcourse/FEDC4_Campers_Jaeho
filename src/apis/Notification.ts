@@ -1,14 +1,14 @@
 import instance from './axios';
+import { AxiosError } from 'axios';
 
-export const getNotification = async (token: string) => {
+export const getNotification = async () => {
   try {
-    const { data } = await instance.get('/notifications', {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    console.log(data);
+    const { data } = await instance.get('/notifications');
 
     return data;
   } catch (error) {
-    console.error(error);
+    if (error instanceof AxiosError) {
+      console.error(error.message);
+    }
   }
 };
