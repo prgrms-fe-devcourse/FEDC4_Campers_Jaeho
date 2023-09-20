@@ -1,5 +1,6 @@
 import { Flex } from '@chakra-ui/react';
 import UserInfoItem from '../../common/UserInfoItem';
+
 const NoResult = () => {
   return (
     <Flex align="center" justify="center">

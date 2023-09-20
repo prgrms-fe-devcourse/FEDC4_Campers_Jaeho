@@ -6,6 +6,7 @@ import {
 } from '@chakra-ui/react';
 import { Search2Icon } from '@chakra-ui/icons';
 import { useSearch } from '../../hooks/useSearch';
+
 const SearchBar = () => {
   const { keyword, handleChange, handleSubmit } = useSearch();
   return (
