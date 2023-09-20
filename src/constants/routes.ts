@@ -3,6 +3,7 @@ export const ROUTES = {
   NOT_FOUND: '/not-found',
   AUTH: '/auth',
   SEARCH: '/search',
+  SEARCH_All: '/search/:keyword',
   CREATE_POST: '/createpost',
   USER_EDIT: '/my/:id',
   USER_PROFILE: '/users/:userId',
