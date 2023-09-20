@@ -78,7 +78,7 @@ const UserProfile = () => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} blockScrollOnMount={false}>
         <ModalOverlay />
         <ModalContent margin="20px" overflow="hidden">
           <Box>
