@@ -2,14 +2,14 @@ import { Center, CenterProps } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 
 type PrimaryLinkProps = CenterProps & {
-  router: string;
+  router: string | number;
 };
 
 const PrimaryLink = ({ router, children, ...props }: PrimaryLinkProps) => {
   const navigate = useNavigate();
 
   const handleLink = () => {
-    navigate(router);
+    navigate(router as string);
   };
 
   return (
