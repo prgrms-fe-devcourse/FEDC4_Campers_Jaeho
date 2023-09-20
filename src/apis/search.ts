@@ -1,7 +1,8 @@
 import { UserResponse, PostResponse } from './types';
-import instance from './axios';
 import { ROUTES } from '../constants/routes';
+import { User } from '../types/user';
 import { AxiosError } from 'axios';
+import instance from './axios';
 
 type ChannelInfo = { _id: string; image: number | null };
 
@@ -23,7 +24,7 @@ type PosterParams = {
   likes: Likes[];
 };
 
-type UserParams = {
+export type UserParams = {
   fullName: string;
   _id: string;
   isOnline: boolean;
@@ -32,13 +33,6 @@ type UserParams = {
 export type FileImage = {
   id: string;
   image: string;
-};
-
-type SearchUserParams = UserParams & {
-  email: string;
-  posts: FileImage[];
-  followers: [];
-  followings: [];
 };
 
 type CommentInfo = {
@@ -144,17 +138,11 @@ export const searchUserOnline = async () => {
 // 유저 info 페이지로 이동
 export const searchUser = async (userId: string) => {
   try {
-    const { data } = await instance.get(`${ROUTES.USER_INFO(userId)}`);
-
     const {
-      _id,
-      fullName,
-      email,
-      posts,
-      followers,
-      followings,
-    }: SearchUserParams = data;
-    return { _id, fullName, email, posts, followers, followings };
+      data: { _id, fullName, email, posts, followers, following },
+    }: { data: User } = await instance.get(`${ROUTES.USER_INFO(userId)}`);
+
+    return { _id, fullName, email, posts, followers, following };
   } catch (error) {
     console.error(error as Error);
   }
