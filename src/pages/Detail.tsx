@@ -28,12 +28,29 @@ import RecommendButton from '../components/common/RecommendButton';
 import { formatDate } from '../utils/formateData';
 import { useParams } from 'react-router-dom';
 import { searchPoster } from '../apis/search';
+import { useCallback } from 'react';
+import _ from 'lodash';
+
 const Detail = () => {
   const [data, setData] = useState<SearchPosterResponse | null>(null);
   const [comments, setComments] = useState<CommentInfo[] | null>(null);
   const { postId } = useParams<{ postId: string }>();
 
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
+
+  const handleKeyDown = useCallback(
+    _.debounce(
+      (e) => {
+        if (e.key === 'Enter') {
+          console.log('Enter key pressed');
+          console.log(postId);
+        }
+      },
+      1000,
+      { leading: true, trailing: false }
+    ),
+    []
+  );
 
   useEffect(() => {
     if (postId === undefined) return;
@@ -165,6 +182,7 @@ const Detail = () => {
                 height={101}
                 borderRadius={5}
                 bg="gray.100"
+                onKeyDown={handleKeyDown}
               />
             </Center>
             <Box display="flex" justifyContent="flex-end" p="20px">
