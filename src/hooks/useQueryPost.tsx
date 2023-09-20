@@ -15,12 +15,15 @@ export const useQueryPost = (keyword = '') => {
     }
   );
 
-  const createPoster = useMutation((formData) => CreatePoster(formData!), {
-    onSuccess() {
-      navigate('/');
-      queryClient.invalidateQueries();
-    },
-  });
+  const createPoster = useMutation(
+    (formData: FormData) => CreatePoster(formData!),
+    {
+      onSuccess() {
+        navigate('/');
+        queryClient.invalidateQueries();
+      },
+    }
+  );
 
   return { getAllBoth, createPoster };
 };
