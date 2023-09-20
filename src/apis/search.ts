@@ -21,7 +21,7 @@ type PosterParams = {
   likes: Likes[];
 };
 
-type UserParams = {
+export type UserParams = {
   fullName: string;
   _id: string;
   isOnline: boolean;
@@ -32,7 +32,11 @@ export type FileImage = {
   image: string;
 };
 
-type SearchUserParams = UserParams & {
+export type SearchUserParams = {
+  data: SearchAllParams;
+};
+
+type SearchAllParams = UserParams & {
   email: string;
   posts: FileImage[];
   followers: [];
@@ -142,16 +146,10 @@ export const searchUserOnline = async () => {
 // 유저이름 검색
 export const searchUser = async (userId: string) => {
   try {
-    const { data } = await instance.get(`${ROUTES.USER_INFO(userId)}`);
-
     const {
-      _id,
-      fullName,
-      email,
-      posts,
-      followers,
-      followings,
-    }: SearchUserParams = data;
+      data: { _id, fullName, email, posts, followers, followings },
+    }: SearchUserParams = await instance.get(`${ROUTES.USER_INFO(userId)}`);
+
     return { _id, fullName, email, posts, followers, followings };
   } catch (error) {
     console.error(error as Error);
@@ -163,7 +161,7 @@ export const searchAll = async (title: string) => {
   try {
     const { data } = await instance.get(`search/all/${title}`);
 
-    return data.map(({ _id, fullName, isOnline }: SearchUserParams) => {
+    return data.map(({ _id, fullName, isOnline }: SearchAllParams) => {
       ({ _id, fullName, isOnline });
     });
   } catch (error) {
