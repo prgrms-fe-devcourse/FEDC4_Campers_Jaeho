@@ -4,11 +4,6 @@ import { User } from '../types/user';
 import { AxiosError } from 'axios';
 import instance from './axios';
 
-export type FileImage = {
-  _id: string;
-  image: string;
-};
-
 // 메인 데이터 표시
 export const searchPosterAll = async (id: string, offset = 0, limit = 0) => {
   try {
