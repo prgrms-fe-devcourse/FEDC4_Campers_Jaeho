@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
-  Text,
   Image,
   Input,
   Stack,
@@ -29,13 +28,14 @@ import { formatDate } from '../utils/formateData';
 import { useParams } from 'react-router-dom';
 import { searchPoster } from '../apis/search';
 import { useCallback } from 'react';
+import PrimaryText from '../components/common/PrimaryText';
+
 import _ from 'lodash';
 
 const Detail = () => {
   const [data, setData] = useState<SearchPosterResponse | null>(null);
   const [comments, setComments] = useState<CommentInfo[] | null>(null);
   const { postId } = useParams<{ postId: string }>();
-
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
 
   const handleKeyDown = useCallback(
@@ -52,19 +52,19 @@ const Detail = () => {
     []
   );
 
+  const fetchData = async (postId: string) => {
+    const fetchedData = await searchPoster(postId);
+    if (fetchedData) {
+      setData(fetchedData);
+      setComments(fetchedData.commentInfo);
+    } else {
+      console.error('Data is undefined.');
+    }
+  };
+
   useEffect(() => {
     if (postId === undefined) return;
-
-    const fetchData = async () => {
-      const fetchedData = await searchPoster(postId);
-      if (fetchedData) {
-        setData(fetchedData);
-        setComments(fetchedData.commentInfo);
-      } else {
-        console.error('Data is undefined.');
-      }
-    };
-    fetchData();
+    fetchData(postId);
   }, [postId]);
 
   return (
@@ -76,10 +76,10 @@ const Detail = () => {
             <Flex justifyContent="space-between">
               <Box>
                 <Stack spacing={2}>
-                  <Text fontSize={10}>
-                    {formatDate(data.posterInfo.updatedAt)}
-                  </Text>
-                  <Text fontSize={50}>{data.posterInfo.title}</Text>
+                  <PrimaryText
+                    fontSize={10}
+                    children={formatDate(data.posterInfo.updatedAt)}
+                  />
                   <WrapItem>
                     <PrimaryAvatar
                       userId={data.posterInfo._id}
@@ -89,7 +89,10 @@ const Detail = () => {
                       isOnline={data.posterInfo.isOnline}
                     />
                     <Box>
-                      <Text fontSize={15}>{data.posterInfo.fullName}</Text>
+                      <PrimaryText
+                        fontSize={15}
+                        children={data.posterInfo.fullName}
+                      />
                       <TemperatureBar value={80} />
                     </Box>
                   </WrapItem>
@@ -109,9 +112,12 @@ const Detail = () => {
             </Flex>
           </Box>
           <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={5}>
-            <Text maxW="80%" h={238} fontSize={20}>
-              {data.posterInfo.description}
-            </Text>
+            <PrimaryText
+              maxW="80%"
+              h={238}
+              fontSize={20}
+              children={data.posterInfo.description}
+            />
           </Box>
           <AspectRatio ratio={1}>
             <Box bg="#ECE9E9" maxW="100%">
