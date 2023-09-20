@@ -3,7 +3,7 @@ import UserInfo from '../components/UserInfo';
 
 const UserProfile = () => {
   return (
-    <Container maxW="sm" my={5}>
+    <Container>
       <UserInfo />
     </Container>
   );

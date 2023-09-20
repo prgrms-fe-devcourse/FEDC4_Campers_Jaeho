@@ -1,5 +1,16 @@
-import { Image, Grid, GridItem, Input, Stack, Flex } from '@chakra-ui/react';
-import { ChevronLeftIcon } from '@chakra-ui/icons';
+import {
+  Image,
+  Grid,
+  GridItem,
+  Input,
+  Stack,
+  Flex,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  Box,
+  Center,
+} from '@chakra-ui/react';
 import React, { useState, useEffect, useRef } from 'react';
 import { searchUser, FileImage } from '../apis/search';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -8,10 +19,39 @@ import TemperatureBar from './common/TemperatureBar';
 import UserInfoItem from './common/UserInfoItem';
 import PrimaryButton from './common/PrimaryButton';
 import { useQuery } from '@tanstack/react-query';
+import { useDisclosure } from '@chakra-ui/react';
+import { MdNotifications } from 'react-icons/md';
+import { GrFormPrevious } from 'react-icons/gr';
+import { AiFillEdit } from 'react-icons/ai';
+import { BiMessageDetail } from 'react-icons/bi';
+import axios from 'axios';
+import { getLocalStorage } from '../utils/storage';
+
+BiMessageDetail;
 
 type ProfileImage = File | null;
 
+const axiosNotifications = async (token: string) => {
+  if (token) {
+    try {
+      const response = await axios.get(
+        'https://kdt.frontend.4th.programmers.co.kr:5009/notifications',
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+};
+
 const UserInfo = () => {
+  const token = getLocalStorage('token');
   const [selectedImage, setSelectedImage] = useState<ProfileImage>(null);
   const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
   const { userId } = useParams<{ userId: string }>();
@@ -27,6 +67,16 @@ const UserInfo = () => {
   const { error, data } = useQuery(['user-info', userId], () =>
     searchUser(userId!)
   );
+  const newNotification = useQuery(['noti', token], () =>
+    axiosNotifications(token)
+  ).data;
+  console.log(newNotification);
+
+  const [notifications, setNotifications] = useState([
+    { message: '리사님이 댓글을 달았습니다', _id: '1' },
+    { message: '제니님이 댓글을 달았습니다', _id: '2' },
+    { message: '로제님이 댓글을 달았습니다', _id: '3' },
+  ]);
 
   useEffect(() => {
     if (data) {
@@ -45,6 +95,9 @@ const UserInfo = () => {
             image: post.image,
           }))
         );
+      }
+      if (token) {
+        setNotifications(newNotification);
       }
     }
     error && console.error(error);
@@ -67,11 +120,45 @@ const UserInfo = () => {
     imageRef.current?.click();
   };
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
-      <Flex>
-        <ChevronLeftIcon onClick={handlePrev} boxSize={8} />
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent margin="20px" overflow="hidden">
+          <Box>
+            {notifications.length !== 0 ? (
+              notifications.map(({ message, _id }) => (
+                <Flex
+                  align="center"
+                  p="10px"
+                  transition="all 0.3s"
+                  _hover={{ bgColor: '#D9D9D9' }}
+                >
+                  <BiMessageDetail />
+                  <Box key={_id} m="0 0 0 10px">
+                    {message}
+                  </Box>
+                </Flex>
+              ))
+            ) : (
+              <Center p="20px 0">아직 뭐가 없네요..</Center>
+            )}
+          </Box>
+        </ModalContent>
+      </Modal>
+
+      <Flex fontSize="30px" p="20px 0">
+        <Box flexGrow="1">
+          <GrFormPrevious onClick={handlePrev} />
+        </Box>
+        <Flex gap="10px">
+          <MdNotifications onClick={onOpen} />
+          <AiFillEdit />
+        </Flex>
       </Flex>
+
       <Stack spacing={4} alignItems="center">
         <Image
           borderRadius="full"
@@ -81,7 +168,6 @@ const UserInfo = () => {
               : 'https://via.placeholder.com/150'
           }
           alt="userInfo"
-          boxSize="150px"
           objectFit="cover"
           onClick={handleAddFile}
         />
