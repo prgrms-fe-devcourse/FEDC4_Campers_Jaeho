@@ -10,6 +10,7 @@ import {
   Spacer,
   Textarea,
   Center,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import PrimaryHeader from './common/PrimaryHeader';
@@ -18,13 +19,17 @@ import { ROUTES } from '../constants/routes';
 import { useQueryPost } from '../hooks/useQueryPost';
 import UploadImage from '../components/common/UploadImage';
 
-type PostForm = {
+type PostData = {
   title: string;
   // 후기 json 추가 시 타입 지정 예정
 };
 
 const CreatePost = () => {
-  const { register, handleSubmit } = useForm<PostForm>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<PostData>();
   const [selectImage, setSelectImage] = useState<File | null>(null);
   const { createPoster } = useQueryPost();
 
@@ -32,14 +37,14 @@ const CreatePost = () => {
     setSelectImage(file);
   };
 
-  const onSubmit = (data: PostForm) => {
+  const onSubmit = (data: PostData) => {
     const formData = new FormData();
-    formData.append('title', data.title);
-    formData.append('channelId', import.meta.env.VITE_MAIN_CHANNELID);
-    if (selectImage) {
-      formData.append('image', selectImage);
+    if (data) {
+      formData.append('title', data.title);
+      formData.append('channelId', import.meta.env.VITE_MAIN_CHANNELID);
+      selectImage && formData.append('image', selectImage);
+      createPoster.mutate(formData);
     }
-    createPoster.mutate(formData);
   };
 
   return (
@@ -55,13 +60,17 @@ const CreatePost = () => {
         <Spacer />
       </PrimaryHeader>
       <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
-        <FormControl mt={5}>
+        <FormControl mt={5} isInvalid={!!errors.title}>
           <FormLabel>제목</FormLabel>
           <Input
-            type="text"
             placeholder="제목을 입력하세요."
-            {...register('title')}
+            {...register('title', {
+              required: 'title을 적어주세요.',
+            })}
           />
+          {errors.title && (
+            <FormErrorMessage>{errors.title.message}</FormErrorMessage>
+          )}
         </FormControl>
         <FormControl>
           <FormLabel>여행지</FormLabel>
