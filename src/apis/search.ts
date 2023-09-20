@@ -10,7 +10,7 @@ export const searchPosterAll = async (id: string, offset = 0, limit = 0) => {
     const { data } = await instance.get<PostResponse[]>(`posts/channel/${id}`, {
       params: { offset, limit },
     });
-
+    
     return data.map(({ title, updatedAt, _id, likes, image }) => ({
       title,
       updatedAt,
@@ -20,11 +20,11 @@ export const searchPosterAll = async (id: string, offset = 0, limit = 0) => {
     }));
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.error(error as Error);
+      console.error(error.message);
     }
   }
 };
-
+    
 // 전체 유저 검색
 export const searchUserAll = async () => {
   try {
