@@ -1,5 +1,6 @@
-import instance from './axios';
 import { ROUTES } from '../constants/routes';
+import { User } from '../types/user';
+import instance from './axios';
 
 type ChannelInfo = { _id: string; image: number | null };
 
@@ -30,10 +31,6 @@ export type UserParams = {
 export type FileImage = {
   id: string;
   image: string;
-};
-
-export type SearchUserParams = {
-  data: SearchAllParams;
 };
 
 type SearchAllParams = UserParams & {
@@ -147,10 +144,10 @@ export const searchUserOnline = async () => {
 export const searchUser = async (userId: string) => {
   try {
     const {
-      data: { _id, fullName, email, posts, followers, followings },
-    }: SearchUserParams = await instance.get(`${ROUTES.USER_INFO(userId)}`);
+      data: { _id, fullName, email, posts, followers, following },
+    }: { data: User } = await instance.get(`${ROUTES.USER_INFO(userId)}`);
 
-    return { _id, fullName, email, posts, followers, followings };
+    return { _id, fullName, email, posts, followers, following };
   } catch (error) {
     console.error(error as Error);
   }

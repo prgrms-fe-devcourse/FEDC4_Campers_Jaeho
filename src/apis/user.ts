@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { SearchUserParams } from './search';
+import { User } from '../types/user';
 import instance from './axios';
 
 type UserInfo = {
@@ -30,13 +30,13 @@ export const ChangeUserInfo = async ({
 }: UserInfo) => {
   try {
     const {
-      data: { _id, fullName, email, posts, followers, followings },
-    }: SearchUserParams = await instance.put('/settings/update-user', {
+      data: { _id, fullName, email, posts, followers, following },
+    }: { data: User } = await instance.put('/settings/update-user', {
       fullName: name,
       username,
     });
 
-    return { _id, fullName, email, posts, followers, followings };
+    return { _id, fullName, email, posts, followers, following };
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
