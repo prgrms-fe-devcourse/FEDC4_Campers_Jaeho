@@ -1,8 +1,5 @@
 import {
   Box,
-  Text,
-  WrapItem,
-  Avatar,
   Flex,
   Spacer,
   Popover,
@@ -12,37 +9,38 @@ import {
   PopoverArrow,
   PopoverCloseButton,
   PopoverBody,
-  AvatarBadge,
 } from '@chakra-ui/react';
 import { FaEllipsisV } from 'react-icons/fa';
+import PrimaryAvatar from './PrimaryAvatar';
+import PrimaryText from './PrimaryText';
+import PrimaryButton from './PrimaryButton';
 const Comment = ({
   comment,
   image,
   isOnline,
   name,
+  userId,
 }: {
   name: string;
   comment: string;
   image: string;
   isOnline: boolean;
+  userId: string;
 }) => {
   const handleDelete = () => {
     alert('deldete');
   };
   return (
-    <Flex bg="#ECE9E9" maxW="100%" p="4px">
-      <WrapItem w="70px">
-        <Avatar name="Dan Abrahmov" src={`${image}`}>
-          <AvatarBadge
-            bg={isOnline ? 'green.400' : 'blackAlpha.400'}
-            boxSize="1em"
-            borderColor="white"
-          />
-        </Avatar>
-      </WrapItem>
+    <Flex bg="#ECE9E9" maxW="100%" p={2}>
+      <PrimaryAvatar
+        src={`${image}`}
+        isOnline={isOnline}
+        size={'sm'}
+        userId={userId}
+      />
       <Box>
-        <Text fontSize="10px">ID: {name}</Text>
-        <Text fontSize="20px">{comment}</Text>
+        <PrimaryText children={`ID:${name}`} />
+        <PrimaryText children={comment} />
       </Box>
       <Spacer />
       <Popover>
@@ -55,13 +53,7 @@ const Comment = ({
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
-            <Button
-              colorScheme="blackAlpha.400"
-              onClick={handleDelete}
-              variant="outline"
-            >
-              Delete
-            </Button>
+            <PrimaryButton onClick={handleDelete}>Delete</PrimaryButton>
           </PopoverBody>
         </PopoverContent>
       </Popover>
