@@ -1,5 +1,6 @@
 import { ROUTES } from '../constants/routes';
 import { User } from '../types/user';
+import { AxiosError } from 'axios';
 import instance from './axios';
 
 type ChannelInfo = { _id: string; image: number | null };
@@ -31,13 +32,6 @@ export type UserParams = {
 export type FileImage = {
   id: string;
   image: string;
-};
-
-type SearchAllParams = UserParams & {
-  email: string;
-  posts: FileImage[];
-  followers: [];
-  followings: [];
 };
 
 type CommentInfo = {
@@ -154,14 +148,19 @@ export const searchUser = async (userId: string) => {
 };
 
 // 모든 검색
-export const searchAll = async (title: string) => {
+export const getSearchResult = async (keyword: string) => {
   try {
-    const { data } = await instance.get(`search/all/${title}`);
-
-    return data.map(({ _id, fullName, isOnline }: SearchAllParams) => {
-      ({ _id, fullName, isOnline });
-    });
+    const { data } = await instance.get<(UserResponse | PostResponse)[]>(
+      `/search/all/${keyword}`
+    );
+    return data;
   } catch (error) {
-    console.error(error as Error);
+    if (error instanceof AxiosError) {
+      console.error(error.message);
+    } else if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error(error);
+    }
   }
 };
