@@ -3,7 +3,15 @@ import { ChangeEvent, useRef, useState } from 'react';
 
 type SelectImage = File | null;
 
-const UploadImage = ({ borderRadius }: ImageProps) => {
+type Props = {
+  handleOnChange: (file: File) => void;
+};
+
+const UploadImage = ({
+  borderRadius,
+  handleOnChange,
+  ...props
+}: Props & ImageProps) => {
   const [selectImageFile, setSelectImageFile] = useState<SelectImage>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -15,12 +23,14 @@ const UploadImage = ({ borderRadius }: ImageProps) => {
     if (event.target.files) {
       const newFile = event.target.files[0];
       setSelectImageFile(newFile);
+      handleOnChange(newFile);
     }
   };
 
   return (
     <>
       <Image
+        {...props}
         src={
           selectImageFile
             ? URL.createObjectURL(selectImageFile)
