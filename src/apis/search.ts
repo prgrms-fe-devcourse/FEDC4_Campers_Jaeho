@@ -29,7 +29,7 @@ type UserParams = {
 };
 
 export type FileImage = {
-  id: string;
+  _id: string;
   image: string;
 };
 
