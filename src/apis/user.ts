@@ -10,15 +10,14 @@ type UserInfo = {
 // 프로필 이미지 변경
 export const ChangeProfileImage = async (formData: FormData) => {
   try {
-    const { data } = await instance.post('/users/upload-photo', formData);
+    const { data } = await instance.post('users/upload-photo', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
     return data.image;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
-    } else if (error instanceof Error) {
-      console.error(error.message);
-    } else {
-      console.error(error);
     }
   }
 };
