@@ -31,7 +31,7 @@ export type UserParams = {
 };
 
 export type FileImage = {
-  id: string;
+  _id: string;
   image: string;
 };
 
@@ -144,7 +144,9 @@ export const searchUser = async (userId: string) => {
 
     return { _id, fullName, email, posts, followers, following };
   } catch (error) {
-    console.error(error as Error);
+    if (error instanceof AxiosError) {
+      console.error(error.message);
+    }
   }
 };
 
