@@ -67,6 +67,7 @@ export const searchPoster = async (id: string) => {
         isOnline,
       })
     );
+
     return {
       posterInfo: {
         title,
