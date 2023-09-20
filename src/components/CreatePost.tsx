@@ -21,6 +21,9 @@ import {
   PlusSquareIcon,
   SmallCloseIcon,
 } from '@chakra-ui/icons';
+import PrimaryHeader from './common/PrimaryHeader';
+import PrimaryLink from './common/PrimaryLink';
+import { ROUTES } from '../constants/routes';
 
 type FileImage = {
   id: string;
@@ -37,10 +40,6 @@ const CreatePost = () => {
   const [selectedImages, setSelectedImages] = useState<FileImage[]>([]);
   const imageFileRef = useRef<HTMLInputElement | null>(null);
   const navigate = useNavigate();
-
-  const handlePrev = () => {
-    navigate('/');
-  };
 
   const onSubmit = async (data: PostForm) => {
     const formData = new FormData();
@@ -84,14 +83,16 @@ const CreatePost = () => {
 
   return (
     <>
-      <Flex>
-        <ChevronLeftIcon boxSize={10} onClick={handlePrev} />
+      <PrimaryHeader>
+        <PrimaryLink router={ROUTES.MAIN} width={5}>
+          <ChevronLeftIcon boxSize={10} />
+        </PrimaryLink>
         <Spacer />
         <Text as="b" fontSize="2xl">
           후기작성
         </Text>
         <Spacer />
-      </Flex>
+      </PrimaryHeader>
       <Stack as="form" onSubmit={handleSubmit(onSubmit)} spacing={4}>
         <FormControl mt={5}>
           <FormLabel>제목</FormLabel>
