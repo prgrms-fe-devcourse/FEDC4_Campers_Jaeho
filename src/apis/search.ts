@@ -1,4 +1,6 @@
+import { UserResponse, PostResponse } from './types';
 import { ROUTES } from '../constants/routes';
+import { User } from '../types/user';
 import { AxiosError } from 'axios';
 import instance from './axios';
 
@@ -22,7 +24,7 @@ type PosterParams = {
   likes: Likes[];
 };
 
-type UserParams = {
+export type UserParams = {
   fullName: string;
   _id: string;
   isOnline: boolean;
@@ -31,13 +33,6 @@ type UserParams = {
 export type FileImage = {
   _id: string;
   image: string;
-};
-
-type SearchUserParams = UserParams & {
-  email: string;
-  posts: FileImage[];
-  followers: [];
-  followings: [];
 };
 
 type CommentInfo = {
@@ -140,20 +135,14 @@ export const searchUserOnline = async () => {
   }
 };
 
-// 유저이름 검색
+// 유저 info 페이지로 이동
 export const searchUser = async (userId: string) => {
   try {
-    const { data } = await instance.get(`${ROUTES.USER_INFO(userId)}`);
-
     const {
-      _id,
-      fullName,
-      email,
-      posts,
-      followers,
-      followings,
-    }: SearchUserParams = data;
-    return { _id, fullName, email, posts, followers, followings };
+      data: { _id, fullName, email, posts, followers, following },
+    }: { data: User } = await instance.get(`${ROUTES.USER_INFO(userId)}`);
+
+    return { _id, fullName, email, posts, followers, following };
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
@@ -161,15 +150,20 @@ export const searchUser = async (userId: string) => {
   }
 };
 
-// 모든 검색
-export const searchAll = async (title: string) => {
+// 모든 유저, 포스트 검색
+export const getSearchResult = async (keyword: string) => {
   try {
-    const { data } = await instance.get(`search/all/${title}`);
-
-    return data.map(({ _id, fullName, isOnline }: SearchUserParams) => {
-      ({ _id, fullName, isOnline });
-    });
+    const { data } = await instance.get<(UserResponse | PostResponse)[]>(
+      `/search/all/${keyword}`
+    );
+    return data;
   } catch (error) {
-    console.error(error as Error);
+    if (error instanceof AxiosError) {
+      console.error(error.message);
+    } else if (error instanceof Error) {
+      console.error(error.message);
+    } else {
+      console.error(error);
+    }
   }
 };

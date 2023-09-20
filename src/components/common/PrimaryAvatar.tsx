@@ -19,7 +19,7 @@ const PrimaryAvatar = ({
   return (
     <Avatar
       {...props}
-      onClick={() => navigate(`/user/${userId}`)}
+      onClick={() => navigate(`/users/${userId}`)}
       size={size}
       src={src || 'https://bit.ly/broken-link'}
       name={name}

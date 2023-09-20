@@ -5,6 +5,8 @@ import Auth from './pages/Auth';
 import NotFound from './pages/NotFound';
 import Create from './pages/Create';
 import UserProfile from './pages/UserProfile';
+import Search from './pages/Search';
+import SearchAll from './components/Search/SearchResponse';
 import User from './pages/User';
 
 const App = () => {
@@ -13,7 +15,8 @@ const App = () => {
       <Routes>
         <Route path={ROUTES.MAIN} element={<Main />} />
         <Route path={ROUTES.AUTH} element={<Auth />} />
-        <Route path={ROUTES.SEARCH} element={<></>} />
+        <Route path={ROUTES.SEARCH} element={<Search />} />
+        <Route path={ROUTES.SEARCH_All} element={<SearchAll />} />
         <Route path={ROUTES.CREATE_POST} element={<Create />} />
         <Route path={ROUTES.USER_EDIT} element={<></>} />
         <Route path={ROUTES.USER_PROFILE} element={<UserProfile />} />
