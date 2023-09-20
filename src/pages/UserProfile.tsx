@@ -3,7 +3,6 @@ import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { searchUser } from '../apis/search';
 import { useQuery } from '@tanstack/react-query';
 import { FileImage } from '../apis/search';
-import { v4 as uuidv4 } from 'uuid';
 import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PrimaryHeader from '../components/common/PrimaryHeader';
@@ -11,6 +10,7 @@ import UploadImage from '../components/common/UploadImage';
 import UserInfoItem from '../components/common/UserInfoItem';
 import PrimaryButton from '../components/common/PrimaryButton';
 import GridList from '../components/common/GridList';
+import PrimaryLink from '../components/common/PrimaryLink';
 
 const UserProfile = () => {
   const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
@@ -39,7 +39,7 @@ const UserProfile = () => {
       Array.isArray(posts) &&
         setUserPostsData(
           posts.map((post) => ({
-            id: uuidv4(),
+            _id: post._id,
             image: post.image,
           }))
         );
@@ -47,12 +47,12 @@ const UserProfile = () => {
     error && navigate('/not-found');
   }, [data, error]);
 
-  console.log(userPostsData);
-
   return (
     <Container my={5}>
       <PrimaryHeader>
-        <ChevronLeftIcon boxSize={8} onClick={() => navigate(-1)} />
+        <PrimaryLink router={-1}>
+          <ChevronLeftIcon boxSize={8} />
+        </PrimaryLink>
       </PrimaryHeader>
       <Stack spacing={4} align="center">
         <UploadImage borderRadius="full" />
@@ -75,7 +75,7 @@ const UserProfile = () => {
         <GridList>
           {userPostsData &&
             userPostsData.map((post) => (
-              <GridItem key={post.id}>
+              <GridItem key={post._id}>
                 <Image src={post.image} />
               </GridItem>
             ))}
