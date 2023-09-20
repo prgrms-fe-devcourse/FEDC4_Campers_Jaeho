@@ -67,16 +67,10 @@ const UserInfo = () => {
   const { error, data } = useQuery(['user-info', userId], () =>
     searchUser(userId!)
   );
+  const [notifications, setNotifications] = useState([]);
   const newNotification = useQuery(['noti', token], () =>
     axiosNotifications(token)
   ).data;
-  console.log(newNotification);
-
-  const [notifications, setNotifications] = useState([
-    { message: '리사님이 댓글을 달았습니다', _id: '1' },
-    { message: '제니님이 댓글을 달았습니다', _id: '2' },
-    { message: '로제님이 댓글을 달았습니다', _id: '3' },
-  ]);
 
   useEffect(() => {
     if (data) {
