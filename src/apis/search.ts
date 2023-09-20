@@ -1,3 +1,4 @@
+import { UserResponse, PostResponse } from './types';
 import { ROUTES } from '../constants/routes';
 import { User } from '../types/user';
 import { AxiosError } from 'axios';
@@ -134,7 +135,7 @@ export const searchUserOnline = async () => {
   }
 };
 
-// 유저이름 검색
+// 유저 info 페이지로 이동
 export const searchUser = async (userId: string) => {
   try {
     const {
@@ -147,7 +148,7 @@ export const searchUser = async (userId: string) => {
   }
 };
 
-// 모든 검색
+// 모든 유저, 포스트 검색
 export const getSearchResult = async (keyword: string) => {
   try {
     const { data } = await instance.get<(UserResponse | PostResponse)[]>(
