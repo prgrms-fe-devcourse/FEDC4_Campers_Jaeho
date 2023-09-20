@@ -2,12 +2,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { searchUser, searchUserAll } from '../apis/search';
 import { ChangeProfileImage, ChangeUserInfo, UserInfo } from '../apis/user';
 import { signup, signin, logout } from '../apis/auth';
-import { ROUTES } from '../constants/routes';
-import { useNavigate } from 'react-router-dom';
 
 export const useQueryUser = (params = '') => {
   const queryClient = useQueryClient();
-  const navigator = useNavigate();
 
   const getSearchAllUser = useQuery(['user', 'all'], () => searchUserAll());
 
@@ -17,7 +14,7 @@ export const useQueryUser = (params = '') => {
 
   const getFollower = useQuery(
     ['user', 'followInfo'],
-    () => searchUser('6507fddf2d1e001bf75a78d0'),
+    () => searchUser(params),
     { staleTime: 1000 * 60 * 2 }
   );
 
@@ -25,7 +22,6 @@ export const useQueryUser = (params = '') => {
     (formData) => ChangeProfileImage(formData!),
     {
       onSuccess() {
-        navigator(`${ROUTES.USER_EDIT}`);
         queryClient.invalidateQueries(['search', 'user']);
       },
     }
@@ -35,23 +31,14 @@ export const useQueryUser = (params = '') => {
     (params: UserInfo) => ChangeUserInfo(params),
     {
       onSuccess() {
-        navigator(`${ROUTES.USER_EDIT}`);
         queryClient.invalidateQueries(['search', 'user']);
       },
     }
   );
 
-  const postSignup = useMutation((formData) => signup(formData!), {
-    onSuccess() {
-      navigator(`${ROUTES.MAIN}`);
-    },
-  });
+  const postSignup = useMutation((formData) => signup(formData!));
 
-  const postSignin = useMutation((formData) => signin(formData!), {
-    onSuccess() {
-      navigator(`${ROUTES.MAIN}`);
-    },
-  });
+  const postSignin = useMutation((formData) => signin(formData!));
 
   const postLogout = useQuery(['logout'], logout);
 
