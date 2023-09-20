@@ -60,16 +60,13 @@ export const searchPoster = async (id: string) => {
     } = await instance.get(`posts/${id}`);
 
     const commentInfo = comments.map(
-      ({ _id, comment, author: { fullName, isOnline } }: CommentInfo) => {
-        ({
-          _id,
-          comment,
-          fullName,
-          isOnline,
-        });
-      }
+      ({ _id, comment, author: { fullName, isOnline } }: CommentInfo) => ({
+        _id,
+        comment,
+        fullName,
+        isOnline,
+      })
     );
-
     return {
       posterInfo: {
         title,
