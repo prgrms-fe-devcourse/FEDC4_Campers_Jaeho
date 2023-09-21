@@ -3,12 +3,12 @@ import { Stack, Text } from '@chakra-ui/react';
 const PrimaryInfo = ({
   title = '',
   subTitle = '',
-  spacing = 2,
   titleSize = 'lg',
   subTitleSize = 'xs',
+  ...props
 }) => {
   return (
-    <Stack textAlign="center" spacing={spacing}>
+    <Stack textAlign="center" spacing={2} {...props}>
       <Text as="b" fontSize={titleSize}>
         {title}
       </Text>
