@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import useObserver from '../../hooks/useObserver';
-import { getMainPosts } from '../../apis/main';
+import { getChannelPost } from '../../apis/channelPosts';
 import PostGridList from '../PostGridList';
 import { PostResponse } from '../../types/post';
 import { Spinner, Text, useBoolean, Stack, Center } from '@chakra-ui/react';
@@ -14,7 +14,10 @@ function MainPagePosts() {
   });
   const getMorePosts = useCallback(async (limit = 9) => {
     if (isPostsEmpty) return;
-    const nextPosts = await getMainPosts(postsGetCount.current * limit, limit);
+    const nextPosts = await getChannelPost(
+      postsGetCount.current * limit,
+      limit
+    );
     setPosts((prevPosts) => [...prevPosts, ...nextPosts]);
     postsGetCount.current++;
     if (nextPosts.length !== limit) setIsPostsEmpty.on();
