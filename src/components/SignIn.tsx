@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { ButtonGroup } from '@chakra-ui/react';
-import PrimaryButton from './common/PrimaryButton';
-import AuthInputFieldWithForm from './Auth/AuthInputFieldWithForm';
 import { useNavigate } from 'react-router-dom';
+import { ButtonGroup, useDisclosure } from '@chakra-ui/react';
+import PrimaryButton from './common/PrimaryButton';
+import PrimaryAlertDialogSet from './common/PrimaryAlertDialogSet';
+import AuthInputFieldWithForm from './Auth/AuthInputFieldWithForm';
 import { signin } from '../apis/auth';
 import { setLocalStorage } from '../utils/storage';
 import passwordValidation from '../utils/passwordValidation';
@@ -18,12 +19,13 @@ const SignIn = () => {
     reset,
   } = useForm<SignInFormValues>();
   const navigate = useNavigate();
+  const { isOpen, onClose, onOpen } = useDisclosure();
 
   const onSubmit = async (data: SignInFormValues) => {
     const response = await signin(data);
 
     if (typeof response === 'string') {
-      alert('이메일 혹은 비밀번호가 잘못되었습니다');
+      onOpen();
       setFocus('email');
       reset();
 
@@ -58,31 +60,38 @@ const SignIn = () => {
   }, [setFocus]);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <AuthInputFieldWithForm
-        {...registers.email}
-        message={errors.email?.message}
-        type="email"
-        id="signin-email"
-        label="이메일"
-        placeholder="이메일을 입력해주세요"
+    <>
+      <PrimaryAlertDialogSet
+        bodyContent="이메일 혹은 비밀번호가 잘못되었습니다"
+        isOpen={isOpen}
+        onClose={onClose}
       />
-      <AuthInputFieldWithForm
-        {...registers.password}
-        message={errors.password?.message}
-        type="password"
-        id="signin-password"
-        label="비밀번호"
-        placeholder="비밀번호를 입력해주세요"
-        helperTexts={[
-          '비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어 대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.',
-        ]}
-      />
-      <ButtonGroup my={2} justifyContent="center" width="100%">
-        <PrimaryButton type="submit">로그인</PrimaryButton>
-        <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
-      </ButtonGroup>
-    </form>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <AuthInputFieldWithForm
+          {...registers.email}
+          message={errors.email?.message}
+          type="email"
+          id="signin-email"
+          label="이메일"
+          placeholder="이메일을 입력해주세요"
+        />
+        <AuthInputFieldWithForm
+          {...registers.password}
+          message={errors.password?.message}
+          type="password"
+          id="signin-password"
+          label="비밀번호"
+          placeholder="비밀번호를 입력해주세요"
+          helperTexts={[
+            '비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어 대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.',
+          ]}
+        />
+        <ButtonGroup my={2} justifyContent="center" width="100%">
+          <PrimaryButton type="submit">로그인</PrimaryButton>
+          <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
+        </ButtonGroup>
+      </form>
+    </>
   );
 };
 
