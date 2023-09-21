@@ -3,7 +3,7 @@ import { ROUTES } from './constants/routes';
 import Main from './pages/Main';
 import Auth from './pages/Auth';
 import NotFound from './pages/NotFound';
-import Create from './pages/Create';
+import CreatePost from './pages/CreatePost';
 import UserProfile from './pages/UserProfile';
 import Detail from './pages/Detail';
 import Search from './pages/Search';
@@ -18,7 +18,7 @@ const App = () => {
         <Route path={ROUTES.SEARCH} element={<Search />}>
           <Route path=":keyword" element={<Search />} />
         </Route>
-        <Route path={ROUTES.CREATE_POST} element={<Create />} />
+        <Route path={ROUTES.CREATE_POST} element={<CreatePost />} />
         <Route path={ROUTES.USER_EDIT} element={<></>} />
         <Route path={ROUTES.USER_PROFILE} element={<UserProfile />} />
         <Route path={ROUTES.USER_LIST} element={<User />} />
