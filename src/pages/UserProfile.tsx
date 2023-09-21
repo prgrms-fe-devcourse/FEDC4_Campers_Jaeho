@@ -23,13 +23,10 @@ import {
   GridItem,
   Stack,
   Flex,
-  Modal,
-  ModalOverlay,
-  ModalContent,
   Box,
   Center,
 } from '@chakra-ui/react';
-
+import PrimaryModal from '../components/common/PrimaryModal';
 const UserProfile = () => {
   const token = getLocalStorage('token');
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -78,35 +75,32 @@ const UserProfile = () => {
 
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} blockScrollOnMount={false}>
-        <ModalOverlay />
-        <ModalContent margin="20px" overflow="hidden">
-          <Box>
-            {notifications && notifications.length !== 0 ? (
-              notifications.map(({ message, _id }) => (
-                <Flex
-                  key={_id}
-                  align="center"
-                  p="10px"
-                  transition="all 0.3s"
-                  _hover={{ bgColor: '#D9D9D9' }}
-                >
-                  <BiMessageDetail />
-                  <Box m="0 0 0 10px">{message}</Box>
-                </Flex>
-              ))
-            ) : (
-              <Center p="20px 0">아직 뭐가 없네요..</Center>
-            )}
-          </Box>
-        </ModalContent>
-      </Modal>
+      <PrimaryModal isOpen={isOpen} onClose={onClose}>
+        <Box>
+          {notifications && notifications.length !== 0 ? (
+            notifications.map(({ message, _id }) => (
+              <Flex
+                key={_id}
+                align="center"
+                p="10px"
+                transition="all 0.3s"
+                _hover={{ bgColor: '#D9D9D9' }}
+              >
+                <BiMessageDetail />
+                <Box m="0 0 0 10px">{message}</Box>
+              </Flex>
+            ))
+          ) : (
+            <Center p="20px 0">아직 뭐가 없네요..</Center>
+          )}
+        </Box>
+      </PrimaryModal>
       <Container my={5}>
         <PrimaryHeader>
           <PrimaryLink router={-1}>
             <GrFormPrevious fontSize="25px" />
           </PrimaryLink>
-          <Box flex="1"></Box>
+          <Box flex={1}></Box>
           <Flex gap="10px" fontSize="25px">
             <MdNotifications onClick={onOpen} />
             <AiFillEdit />
