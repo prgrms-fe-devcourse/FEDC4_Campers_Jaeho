@@ -26,7 +26,7 @@ import PrimaryButton from '../components/common/PrimaryButton';
 import RecommendButton from '../components/common/RecommendButton';
 import { formatDate } from '../utils/formateData';
 import { useParams } from 'react-router-dom';
-import { searchPoster } from '../apis/search';
+import { searchPoster } from '../apis/poster';
 import { useCallback } from 'react';
 import PrimaryText from '../components/common/PrimaryText';
 
