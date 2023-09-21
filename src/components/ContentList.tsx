@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import { Content } from './Main/MainPageContent';
-import { SimpleGrid, Box, Text } from '@chakra-ui/react';
+import { SimpleGrid, Box, Text, AspectRatio } from '@chakra-ui/react';
 
 type ContentListProps = {
   contents: Content[];
   spacing?: number;
   borderRadius?: string;
   width?: string;
-  gridColumns?: { base?: number; md?: number };
+  minH?: string;
 };
 
 const ContentList = ({
@@ -16,21 +16,28 @@ const ContentList = ({
   spacing = 2,
   borderRadius = '10',
   width = '100%',
-  gridColumns = { base: 2, md: 3 },
+  minH = '34vh',
+  ...props
 }: ContentListProps) => {
   return (
-    <SimpleGrid w={width} columns={gridColumns} spacing={spacing}>
+    <SimpleGrid
+      w={width}
+      columns={{ base: 2, md: 3 }}
+      spacing={spacing}
+      {...props}
+    >
       {contents.map(({ title, _id, image }) => (
-        <Box
-          bgImg={image || 'https://via.placeholder.com/150'}
+        <AspectRatio
+          bgImg={image || '../src/assets/images/no_image.png'}
           bgRepeat="no-repeat"
           bgSize="cover"
           bgPosition="center"
-          minH="34vh"
+          minH={minH}
           key={_id}
           pos="relative"
           overflow="hidden"
           borderRadius={borderRadius}
+          ratio={1 / 1}
         >
           <Box
             pos="relative"
@@ -39,11 +46,11 @@ const ContentList = ({
             bg="linear-gradient(
               180deg,
               rgba(2, 0, 36, 0) 0%,
-              rgba(33, 33, 116, 0) 20%,
+              rgba(33, 33, 116, 0) 40%,
               rgba(0, 0, 0, 1) 100%
             )"
           >
-            <Text pos="absolute" bottom="50" left="15" color="grey">
+            <Text pos="absolute" bottom="50" left="15" color="#D3DCDE">
               북한
             </Text>
             <Text
@@ -64,7 +71,7 @@ const ContentList = ({
               style={{ position: 'absolute', width: '100%', height: '100%' }}
             />
           </Box>
-        </Box>
+        </AspectRatio>
       ))}
     </SimpleGrid>
   );
