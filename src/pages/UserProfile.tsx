@@ -1,9 +1,15 @@
-import { Container, Flex, GridItem, Stack, Image } from '@chakra-ui/react';
+import {
+  Container,
+  Flex,
+  GridItem,
+  Stack,
+  Image,
+  Button,
+} from '@chakra-ui/react';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { searchUser } from '../apis/search';
 import { useQuery } from '@tanstack/react-query';
-import { FileImage } from '../apis/search';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, MouseEventHandler } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
@@ -12,8 +18,14 @@ import PrimaryButton from '../components/common/PrimaryButton';
 import GridList from '../components/common/GridList';
 import PrimaryLink from '../components/common/PrimaryLink';
 
+type FileImage = {
+  _id: string;
+  image: string;
+};
+
 const UserProfile = () => {
   const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
+  const [userImage, setUserImage] = useState<File | null>(null);
   const [userInfo, setUserInfo] = useState({
     email: '',
     fullName: '',
@@ -21,28 +33,44 @@ const UserProfile = () => {
     totalFollowings: 0,
   });
   const { userId } = useParams();
+
   const navigate = useNavigate();
+  // 머지되면 react query 훅을 사용해 리팩토링 예정
   const { data, error } = useQuery(['user', 'info', userId], () =>
     searchUser(userId!)
   );
 
+  const handleSubmit: MouseEventHandler<HTMLButtonElement | null> = () => {
+    // 훅 폼 받아 upload post 쏠 예정
+    const newForm = new FormData();
+    newForm.append('isCover', 'false');
+    if (userImage) {
+      newForm.append('image', userImage);
+    }
+  };
+
+  const handleChange = (file: File) => {
+    setUserImage(file);
+  };
+
   useEffect(() => {
     if (data) {
-      const { email, fullName, followers, followings, posts } = data;
+      const { email, fullName, followers, following, posts } = data;
       setUserInfo({
         email,
         fullName,
         totalFollowers: followers ? followers.length : 0,
-        totalFollowings: followings ? followings.length : 0,
+        totalFollowings: following ? following.length : 0,
       });
 
-      Array.isArray(posts) &&
+      if (Array.isArray(posts)) {
         setUserPostsData(
           posts.map((post) => ({
             _id: post._id,
-            image: post.image,
+            image: post.image ? post.image : 'https://via.placeholder.com/150',
           }))
         );
+      }
     }
     error && navigate('/not-found');
   }, [data, error]);
@@ -55,7 +83,7 @@ const UserProfile = () => {
         </PrimaryLink>
       </PrimaryHeader>
       <Stack spacing={4} align="center">
-        <UploadImage borderRadius="full" />
+        <UploadImage borderRadius="full" handleOnChange={handleChange} />
         <UserInfoItem title={userInfo.fullName} subTitle={userInfo.email} />
         <Flex gap={10} textAlign="center">
           <UserInfoItem title={`${userPostsData.length}`} subTitle="게시물" />
@@ -81,6 +109,7 @@ const UserProfile = () => {
             ))}
         </GridList>
       </Stack>
+      <Button onClick={handleSubmit}>변경 UI</Button>
     </Container>
   );
 };

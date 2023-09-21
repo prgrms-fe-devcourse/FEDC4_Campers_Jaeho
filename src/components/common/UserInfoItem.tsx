@@ -1,12 +1,18 @@
 import { Stack, Text } from '@chakra-ui/react';
 
-const UserInfoItem = ({ title = '', subTitle = '', spacing = 0 }) => {
+const UserInfoItem = ({
+  title = '',
+  subTitle = '',
+  spacing = 0,
+  titleSize = 'lg',
+  subTitleSize = 'xs',
+}) => {
   return (
     <Stack textAlign="center" spacing={spacing}>
-      <Text as="b" fontSize="lg">
+      <Text as="b" fontSize={titleSize}>
         {title}
       </Text>
-      <Text color="blackAlpha.600" fontSize="12px">
+      <Text color="blackAlpha.600" fontSize={subTitleSize}>
         {subTitle}
       </Text>
     </Stack>
