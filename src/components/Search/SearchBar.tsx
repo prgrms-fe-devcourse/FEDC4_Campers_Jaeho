@@ -9,6 +9,7 @@ import { useSearch } from '../../hooks/useSearch';
 
 const SearchBar = () => {
   const { keyword, handleChange, handleSubmit } = useSearch();
+
   return (
     <form onSubmit={handleSubmit}>
       <InputGroup>

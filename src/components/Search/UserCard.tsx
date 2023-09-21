@@ -1,17 +1,18 @@
-import { User } from '../../../types/user';
-import PrimaryAvatar from '../../common/PrimaryAvatar';
+import { User } from '../../types/user';
+import PrimaryAvatar from '../common/PrimaryAvatar';
 import { Card, CardHeader, Flex } from '@chakra-ui/react';
-import UserInfoItem from '../../common/UserInfoItem';
+import PrimaryInfo from '../common/PrimaryInfo';
 
 const UserCard = ({ userData }: { userData: User }) => {
   const { image, _id, isOnline, fullName, email } = userData;
+
   return (
     <Card>
       <CardHeader>
         <Flex>
           <Flex flex={1} gap={4} align="center" flexWrap="wrap">
             <PrimaryAvatar src={image} userId={_id} isOnline={isOnline!} />
-            <UserInfoItem title={fullName} subTitle={email} />
+            <PrimaryInfo title={fullName} subTitle={email} />
           </Flex>
         </Flex>
       </CardHeader>

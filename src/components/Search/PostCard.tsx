@@ -1,4 +1,4 @@
-import { PostResponse } from '../../../apis/types';
+import { PostResponse } from '../../types/post';
 import { Grid, GridItem, Image } from '@chakra-ui/react';
 
 const PostCard = ({ postData }: { postData: PostResponse }) => {
