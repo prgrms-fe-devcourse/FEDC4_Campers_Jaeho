@@ -1,11 +1,11 @@
 import { Grid, GridProps } from '@chakra-ui/react';
 
-const GridList = ({ children, gap = 0, ...props }: GridProps) => {
+const GridList = ({ children, ...props }: GridProps) => {
   return (
     <Grid
-      {...props}
-      gap={gap}
+      gap={0}
       templateColumns={{ base: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' }}
+      {...props}
     >
       {children}
     </Grid>
