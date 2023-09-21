@@ -7,6 +7,7 @@ import { useQueryPost } from '../hooks/useQueryPost';
 import { PostResponse } from '../types/post';
 import { User } from '../types/user';
 import { useParams } from 'react-router-dom';
+import PrimaryLink from '../components/common/PrimaryLink';
 import UserCard from '../components/Search/UserCard';
 import PostCard from '../components/Search/PostCard';
 import NoResult from '../components/common/NoResult';
@@ -54,14 +55,11 @@ const Search = () => {
               <NoResult />
             )}
             {!userResult?.length && !postResult?.length && (
-              <Text
-                textAlign="center"
-                color="green.400"
-                as="b"
-                onClick={() => navigate('/createpost')}
-              >
-                이 곳에 대한 첫 글 써보기
-              </Text>
+              <PrimaryLink router="/createpost">
+                <Text color="green.400" as="b">
+                  이 곳에 대한 첫 글 써보기
+                </Text>
+              </PrimaryLink>
             )}
           </>
         )
