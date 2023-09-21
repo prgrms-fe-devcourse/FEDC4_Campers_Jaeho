@@ -3,7 +3,7 @@ import { Stack, Text } from '@chakra-ui/react';
 const PrimaryInfo = ({
   title = '',
   subTitle = '',
-  spacing = 0,
+  spacing = 2,
   titleSize = 'lg',
   subTitleSize = 'xs',
 }) => {
