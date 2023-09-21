@@ -56,7 +56,7 @@ const Search = () => {
             )}
             {!userResult?.length && !postResult?.length && (
               <PrimaryLink router="/createpost">
-                <Text color="green.400" as="b">
+                <Text colorScheme="green.400" as="b" cursor="pointer">
                   이 곳에 대한 첫 글 써보기
                 </Text>
               </PrimaryLink>
