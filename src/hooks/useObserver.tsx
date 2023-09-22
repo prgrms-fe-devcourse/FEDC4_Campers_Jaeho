@@ -11,6 +11,7 @@ const useObserver = (showEvent: () => void): RefObject<HTMLElement | null> => {
       if (e[0].isIntersecting) showEvent();
     });
     observer.observe(el);
+
     return () => observer.disconnect();
   }, [ref]);
 

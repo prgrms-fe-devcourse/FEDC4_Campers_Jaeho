@@ -4,7 +4,7 @@ import NavigationBar from '../components/NavigationBar';
 import { ROUTES } from '../constants/routes';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import PrimaryLink from '../components/common/PrimaryLink';
-import MainPageContent from '../components/Main/MainPageContent';
+import MainPagePosts from '../components/Main/MainPagePosts';
 
 function Main() {
   return (
@@ -22,7 +22,7 @@ function Main() {
           />
         </PrimaryLink>
       </PrimaryHeader>
-      <MainPageContent />
+      <MainPagePosts />
       <NavigationBar />
     </>
   );
