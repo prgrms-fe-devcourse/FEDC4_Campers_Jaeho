@@ -18,11 +18,11 @@ import PrimaryButton from '../components/common/PrimaryButton';
 
 const CreatePost = () => {
   const [postTitle, setPostTitle] = useState('');
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [postImage, setPostImage] = useState<File | null>(null);
   const { createPoster } = useQueryPost();
 
   const handleChange = (file: File) => {
-    setSelectedImage(file);
+    setPostImage(file);
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -31,7 +31,7 @@ const CreatePost = () => {
     if (postTitle) {
       formData.append('title', postTitle);
       formData.append('channelId', import.meta.env.VITE_MAIN_CHANNELID);
-      selectedImage && formData.append('image', selectedImage);
+      postImage && formData.append('image', postImage);
       createPoster.mutate(formData);
     } else {
       alert('타이틀을 입력해주세요');
