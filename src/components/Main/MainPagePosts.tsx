@@ -15,7 +15,6 @@ function MainPagePosts() {
   const [AllPosts, setAllPosts] = useState<MainPost[][] | []>([]);
   const [isPostsEmpty, setIsPostsEmpty] = useBoolean();
   const postsGetCount = useRef(0);
-  const { VITE_CHANNEL_ID } = import.meta.env;
   const observeRef = useObserver(() => {
     getMorePosts();
   });
@@ -23,7 +22,7 @@ function MainPagePosts() {
   const getMorePosts = useCallback(async (limit = 12) => {
     if (isPostsEmpty) return;
     const nextPosts = await searchPosterAll(
-      VITE_CHANNEL_ID,
+      import.meta.env.VITE_MAIN_CHANNELID,
       postsGetCount.current * limit,
       limit
     );
