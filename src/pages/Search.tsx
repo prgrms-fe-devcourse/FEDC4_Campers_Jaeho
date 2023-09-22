@@ -8,7 +8,7 @@ import UserCard from '../components/Search/UserCard';
 import NoResult from '../components/common/NoResult';
 import Loading from '../components/common/Loading';
 import AbsoluteCenterBox from '../components/common/AbsoluteCenterBox';
-import ContentList from '../components/ContentList';
+import PostGridList from '../components/PostGridList';
 import searchImage from '../assets/images/search.png';
 import { User } from '../types/user';
 import {
@@ -30,9 +30,15 @@ const Search = () => {
   } = useQueryPost(keyword);
 
   const userResult = data?.filter((item): item is User => 'fullName' in item);
-  const postResult = data?.filter(
-    (item): item is PostResponse => 'title' in item
-  );
+  const postResult = data
+    ?.filter((item): item is PostResponse => 'title' in item)
+    .map(({ title, updatedAt, _id, likes, image }) => ({
+      title,
+      updatedAt,
+      _id,
+      likes: likes.length,
+      image,
+    }));
 
   isError && navigate('/search');
 
@@ -63,8 +69,8 @@ const Search = () => {
                 </Stack>
               </TabPanel>
               <TabPanel p={0}>
-                {postResult?.length !== 0 ? (
-                  <ContentList contents={postResult} minH="none" />
+                {postResult && postResult.length !== 0 ? (
+                  <PostGridList posts={postResult} minH="none" />
                 ) : (
                   <NoResult />
                 )}
