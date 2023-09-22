@@ -1,5 +1,3 @@
-import { SearchPosterResponse, CommentInfo } from '../types/detail';
-import { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
@@ -26,18 +24,15 @@ import PrimaryButton from '../components/common/PrimaryButton';
 import RecommendButton from '../components/common/RecommendButton';
 import { formatDate } from '../utils/formateData';
 import { useParams } from 'react-router-dom';
-import { searchPoster } from '../apis/poster';
 import { useCallback } from 'react';
 import PrimaryText from '../components/common/PrimaryText';
 
 import _ from 'lodash';
+import { useDetailPost } from '../hooks/apis/Query/useDetaiPost';
 
 const Detail = () => {
-  const [data, setData] = useState<SearchPosterResponse | null>(null);
-  const [comments, setComments] = useState<CommentInfo[] | null>(null);
   const { postId } = useParams<{ postId: string }>();
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
-
   const handleKeyDown = useCallback(
     _.debounce(
       (e) => {
@@ -52,47 +47,36 @@ const Detail = () => {
     []
   );
 
-  const fetchData = async (postId: string) => {
-    const fetchedData = await searchPoster(postId);
-    if (fetchedData) {
-      setData(fetchedData);
-      setComments(fetchedData.commentInfo);
-    } else {
-      console.error('Data is undefined.');
-    }
-  };
+  const { data: { postInfo, commentInfo, likeCount } = {}, isLoading } =
+    useDetailPost(postId);
 
-  useEffect(() => {
-    if (postId === undefined) return;
-    fetchData(postId);
-  }, [postId]);
+  console.log(postInfo, commentInfo, likeCount);
 
   return (
     <Container maxW="100%" h="auto">
-      <Image src="src/images/more.png" maxW="100%" maxH="5%" />
-      {data ? (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
         <>
           <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={5}>
+            <Image src={postInfo?.postimage} maxW="100%" maxH="5%" />
             <Flex justifyContent="space-between">
               <Box>
                 <Stack spacing={2}>
                   <PrimaryText
                     fontSize={10}
-                    children={formatDate(data.posterInfo.updatedAt)}
+                    children={formatDate(postInfo.updatedAt)}
                   />
                   <WrapItem>
                     <PrimaryAvatar
-                      userId={data.posterInfo._id}
+                      userId={postInfo._id}
                       size={'sm'}
-                      name={data.posterInfo.fullName}
-                      src="https://i.pravatar.cc/2"
-                      isOnline={data.posterInfo.isOnline}
+                      name={postInfo.fullName}
+                      src={postInfo?.image}
+                      isOnline={postInfo.isOnline}
                     />
                     <Box>
-                      <PrimaryText
-                        fontSize={15}
-                        children={data.posterInfo.fullName}
-                      />
+                      <PrimaryText fontSize={15} children={postInfo.fullName} />
                       <TemperatureBar value={80} />
                     </Box>
                   </WrapItem>
@@ -100,7 +84,7 @@ const Detail = () => {
               </Box>
               <Box>
                 <RecommendButton
-                  recommendCount={data.likeCount}
+                  recommendCount={likeCount}
                   isRecommended={false}
                   bg="#D3DCDE"
                   width={20}
@@ -116,7 +100,7 @@ const Detail = () => {
               maxW="80%"
               h={238}
               fontSize={20}
-              children={data.posterInfo.description}
+              children={postInfo.description}
             />
           </Box>
           <AspectRatio ratio={1}>
@@ -131,15 +115,16 @@ const Detail = () => {
           <Divider bg="gray.100" />
           <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={4}>
             <Box>
-              {comments
+              {commentInfo
                 ?.slice(0, 3)
                 .map((comment) => (
                   <Comment
                     key={comment._id}
                     comment={comment.comment}
-                    image={'https://i.pravatar.cc/2'}
+                    image={comment.image}
                     isOnline={comment.isOnline}
                     name={comment.fullName}
+                    userId={comment._id}
                   />
                 ))}
             </Box>
@@ -166,13 +151,14 @@ const Detail = () => {
                   <DrawerCloseButton />
                   <DrawerHeader>댓글</DrawerHeader>
                   <DrawerBody>
-                    {comments?.map((comment) => (
+                    {commentInfo?.map((comment) => (
                       <Comment
                         key={comment._id}
                         comment={comment.comment}
                         image={'https://i.pravatar.cc/2'}
                         isOnline={comment.isOnline}
                         name={comment.fullName}
+                        userId={comment._id}
                       />
                     ))}
                   </DrawerBody>
@@ -198,8 +184,6 @@ const Detail = () => {
             </Box>
           </Box>
         </>
-      ) : (
-        <div>Loading...</div>
       )}
     </Container>
   );
