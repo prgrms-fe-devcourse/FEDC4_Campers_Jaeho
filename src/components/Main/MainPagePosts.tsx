@@ -12,7 +12,7 @@ export type MainPost = {
 };
 
 function MainPagePosts() {
-  const [posts, setPosts] = useState<MainPost[] | []>([]);
+  const [AllPosts, setAllPosts] = useState<MainPost[][] | []>([]);
   const [isPostsEmpty, setIsPostsEmpty] = useBoolean();
   const postsGetCount = useRef(0);
   const { VITE_CHANNEL_ID } = import.meta.env;
@@ -28,7 +28,7 @@ function MainPagePosts() {
       limit
     );
     if (nextPosts) {
-      setPosts((prevPosts) => [...prevPosts, ...nextPosts]);
+      setAllPosts((prevPosts) => [...prevPosts, nextPosts]);
       postsGetCount.current++;
       if (nextPosts.length !== limit) setIsPostsEmpty.on();
     }
@@ -37,7 +37,9 @@ function MainPagePosts() {
   return (
     <>
       <Stack p="15px">
-        <PostGridList posts={posts} minH="34vh" />
+        {AllPosts.map((posts, index) => (
+          <PostGridList posts={posts} minH="34vh" key={index} />
+        ))}
         <Stack ref={observeRef as React.MutableRefObject<HTMLDivElement>} />
         <Center w="100%" paddingBottom="60px">
           {isPostsEmpty ? (
