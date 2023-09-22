@@ -1,35 +1,42 @@
 import { ROUTES } from '../constants/routes';
-import { SimpleGrid, Box, Text, AspectRatio } from '@chakra-ui/react';
+import {
+  SimpleGrid,
+  Box,
+  Text,
+  AspectRatio,
+  AspectRatioProps,
+} from '@chakra-ui/react';
 import PrimaryLink from './common/PrimaryLink';
 import { MainPost } from './Main/MainPagePosts';
 
 type ContentListProps = {
   posts: MainPost[];
-  borderRadius?: string;
   isShowText?: boolean;
-  minH?: string;
+  spacing?: number;
 };
 
 const PostGridList = ({
   posts,
-  borderRadius = '10',
   isShowText = true,
-  minH,
+  spacing = 2,
   ...props
-}: ContentListProps) => {
+}: ContentListProps & AspectRatioProps) => {
   return (
-    <SimpleGrid w="100%" columns={{ base: 2, md: 3 }} spacing={2} {...props}>
+    <SimpleGrid w="100%" columns={{ base: 2, md: 3 }} spacing={spacing}>
       {posts.map(({ title, _id, image }) => (
-        <AspectRatio ratio={1} minH={minH} key={_id}>
-          <Box
-            bgImg={image || 'https://via.placeholder.com/150'}
-            bgRepeat="no-repeat"
-            bgSize="cover"
-            bgPosition="center"
-            pos="relative"
-            overflow="hidden"
-            borderRadius={borderRadius}
-          >
+        <AspectRatio
+          ratio={1}
+          key={_id}
+          overflow="hidden"
+          borderRadius="10"
+          bgImg={image || '../src/assets/images/no_image.png'}
+          bgRepeat="no-repeat"
+          bgSize="cover"
+          bgPosition="center"
+          pos="relative"
+          {...props}
+        >
+          <>
             {isShowText && (
               <Box
                 pos="relative"
@@ -42,7 +49,7 @@ const PostGridList = ({
               rgba(0, 0, 0, 1) 100%
             )"
               >
-                <Text pos="absolute" bottom="50" left="15" color="grey">
+                <Text pos="absolute" bottom="50" left="15" color="#919392">
                   북한
                 </Text>
                 <Text
@@ -67,7 +74,7 @@ const PostGridList = ({
               top={0}
               router={`${ROUTES.DETAIL.replace(':postId', _id)}`}
             ></PrimaryLink>
-          </Box>
+          </>
         </AspectRatio>
       ))}
     </SimpleGrid>
