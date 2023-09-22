@@ -20,13 +20,12 @@ const PostGridList = ({
   return (
     <SimpleGrid w="100%" columns={{ base: 2, md: 3 }} spacing={2} {...props}>
       {posts.map(({ title, _id, image }) => (
-        <AspectRatio ratio={1}>
+        <AspectRatio ratio={1} minH={minH}>
           <Box
             bgImg={image || 'https://via.placeholder.com/150'}
             bgRepeat="no-repeat"
             bgSize="cover"
             bgPosition="center"
-            minH={minH}
             key={_id}
             pos="relative"
             overflow="hidden"

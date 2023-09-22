@@ -37,7 +37,7 @@ function MainPagePosts() {
   return (
     <>
       <Stack p="15px">
-        <PostGridList posts={posts} />
+        <PostGridList posts={posts} minH="34vh" />
         <Stack ref={observeRef as React.MutableRefObject<HTMLDivElement>} />
         <Center w="100%" paddingBottom="60px">
           {isPostsEmpty ? (
