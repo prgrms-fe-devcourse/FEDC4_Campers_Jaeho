@@ -4,10 +4,10 @@ import PostGridList from '../PostGridList';
 import { Spinner, Text, useBoolean, Stack, Center } from '@chakra-ui/react';
 import { searchPosterAll } from '../../apis/search';
 export type MainPost = {
-  title: string;
-  updatedAt: string;
+  title?: string;
+  updatedAt?: string;
   _id: string;
-  likes: number;
+  likes?: number;
   image?: string;
 };
 
@@ -15,6 +15,7 @@ function MainPagePosts() {
   const [AllPosts, setAllPosts] = useState<MainPost[][] | []>([]);
   const [isPostsEmpty, setIsPostsEmpty] = useBoolean();
   const postsGetCount = useRef(0);
+  const { VITE_CHANNEL_ID } = import.meta.env;
   const observeRef = useObserver(() => {
     getMorePosts();
   });
@@ -22,7 +23,7 @@ function MainPagePosts() {
   const getMorePosts = useCallback(async (limit = 12) => {
     if (isPostsEmpty) return;
     const nextPosts = await searchPosterAll(
-      import.meta.env.VITE_MAIN_CHANNELID,
+      VITE_CHANNEL_ID,
       postsGetCount.current * limit,
       limit
     );
