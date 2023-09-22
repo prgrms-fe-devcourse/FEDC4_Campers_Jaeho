@@ -10,7 +10,7 @@ import PrimaryInfo from '../components/common/PrimaryInfo';
 import PrimaryButton from '../components/common/PrimaryButton';
 import PrimaryLink from '../components/common/PrimaryLink';
 import PostGridList from '../components/PostGridList';
-
+import TemperatureBar from '../components/common/TemperatureBar';
 type FileImage = {
   _id: string;
   image?: string;
@@ -78,6 +78,7 @@ const UserProfile = () => {
       <Stack spacing={4} align="center">
         <UploadImage borderRadius="full" handleOnChange={handleChange} />
         <PrimaryInfo title={userInfo.fullName} subTitle={userInfo.email} />
+        <TemperatureBar value={80} maxW="70%" />
         <Flex gap={10} textAlign="center">
           <PrimaryInfo title={`${userPostsData.length}`} subTitle="게시물" />
           <PrimaryInfo title={`${userInfo.totalFollowers}`} subTitle="팔로워" />
