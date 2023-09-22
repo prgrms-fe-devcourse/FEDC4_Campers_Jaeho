@@ -69,11 +69,13 @@ const Search = () => {
                 </Stack>
               </TabPanel>
               <TabPanel p={0}>
-                {postResult && postResult.length !== 0 ? (
-                  <PostGridList posts={postResult} minH="none" />
-                ) : (
-                  <NoResult />
-                )}
+                <Stack>
+                  {postResult && postResult.length !== 0 ? (
+                    <PostGridList posts={postResult} />
+                  ) : (
+                    <NoResult />
+                  )}
+                </Stack>
               </TabPanel>
             </TabPanels>
           </Tabs>
