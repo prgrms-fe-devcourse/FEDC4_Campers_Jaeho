@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { searchUser, searchUserAll } from '../apis/search';
 import { ChangeProfileImage, ChangeUserInfo, UserInfo } from '../apis/user';
-import { signup, signin, logout } from '../apis/auth';
+import { signup, signin } from '../apis/auth';
 
 export const useQueryUser = (params = '') => {
   const queryClient = useQueryClient();
@@ -40,7 +40,7 @@ export const useQueryUser = (params = '') => {
 
   const postSignin = useMutation((formData) => signin(formData!));
 
-  const postLogout = useQuery(['logout'], logout);
+  // const postLogout = useQuery(['logout'], logout);
 
   return {
     getSearchAllUser,
@@ -49,7 +49,7 @@ export const useQueryUser = (params = '') => {
     postProfileImage,
     postSignup,
     postSignin,
-    postLogout,
+    // postLogout,
     putUserInfo,
   };
 };
