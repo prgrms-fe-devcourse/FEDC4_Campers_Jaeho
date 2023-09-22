@@ -51,7 +51,7 @@ const Search = () => {
               <Tab flex={1}>Posts ({postResult && postResult.length})</Tab>
             </TabList>
             <TabPanels p="10px 0">
-              <TabPanel>
+              <TabPanel p={0}>
                 <Stack>
                   {userResult?.length !== 0 ? (
                     userResult?.map((res) => (
@@ -62,7 +62,7 @@ const Search = () => {
                   )}
                 </Stack>
               </TabPanel>
-              <TabPanel>
+              <TabPanel p={0}>
                 {postResult?.length !== 0 ? (
                   <ContentList contents={postResult} minH="none" />
                 ) : (
