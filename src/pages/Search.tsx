@@ -41,15 +41,17 @@ const Search = () => {
       <SearchBar />
       {keyword ? (
         isLoading ? (
-          <Loading />
+          <AbsoluteCenterBox>
+            <Loading />
+          </AbsoluteCenterBox>
         ) : (
           <Tabs colorScheme="green">
             <TabList>
               <Tab flex={1}>Users ({userResult && userResult.length})</Tab>
               <Tab flex={1}>Posts ({postResult && postResult.length})</Tab>
             </TabList>
-            <TabPanels>
-              <TabPanel p={0}>
+            <TabPanels p="10px 0">
+              <TabPanel>
                 <Stack>
                   {userResult?.length !== 0 ? (
                     userResult?.map((res) => (
@@ -60,7 +62,7 @@ const Search = () => {
                   )}
                 </Stack>
               </TabPanel>
-              <TabPanel p={0}>
+              <TabPanel>
                 {postResult?.length !== 0 ? (
                   <ContentList contents={postResult} minH="none" />
                 ) : (
