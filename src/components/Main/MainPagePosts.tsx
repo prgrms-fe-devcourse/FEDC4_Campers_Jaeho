@@ -20,7 +20,7 @@ function MainPagePosts() {
     getMorePosts();
   });
 
-  const getMorePosts = useCallback(async (limit = 9) => {
+  const getMorePosts = useCallback(async (limit = 12) => {
     if (isPostsEmpty) return;
     const nextPosts = await searchPosterAll(
       VITE_CHANNEL_ID,
