@@ -4,21 +4,17 @@ type TemperatureBarProps = ProgressProps & {
   size?: string;
 };
 
-const TemperatureBar = ({
-  value,
-  size = 'xs',
-  ...props
-}: TemperatureBarProps) => {
+const TemperatureBar = ({ value, ...props }: TemperatureBarProps) => {
   return (
-    <Flex align="center" maxWidth={value}>
+    <Flex align="center" maxW={value}>
       <Progress
-        {...props}
         color="green.400"
-        size={size}
+        size="xs"
         value={value}
-        width="100%"
+        w="100%"
         borderRadius={4}
-        marginRight={1}
+        mr={1}
+        {...props}
       />
       <Text color="green.400" fontSize={3}>
         {value}%
