@@ -44,7 +44,7 @@ const CreatePost = () => {
 
   return (
     <Container mt={5}>
-      <PrimaryHeader w="100%" mb={5}>
+      <PrimaryHeader mb={5}>
         <PrimaryLink router={'/'}>
           <ChevronLeftIcon boxSize={10} />
         </PrimaryLink>
