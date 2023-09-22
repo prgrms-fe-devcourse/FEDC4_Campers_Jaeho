@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import { User } from '../types/user';
 import instance from './axios';
 
-type UserInfo = {
+export type UserInfo = {
   fullName: string;
   username: string;
 };
