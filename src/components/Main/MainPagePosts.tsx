@@ -1,26 +1,37 @@
 import { useState, useRef, useCallback } from 'react';
 import useObserver from '../../hooks/useObserver';
-import { getChannelPost } from '../../apis/channelPosts';
 import PostGridList from '../PostGridList';
-import { PostResponse } from '../../types/post';
 import { Spinner, Text, useBoolean, Stack, Center } from '@chakra-ui/react';
+import { searchPosterAll } from '../../apis/search';
+export type MainPost = {
+  title: string;
+  updatedAt: string;
+  _id: string;
+  likes: number;
+  image?: string;
+};
 
 function MainPagePosts() {
-  const [posts, setPosts] = useState<PostResponse[]>([]);
+  const [posts, setPosts] = useState<MainPost[] | []>([]);
   const [isPostsEmpty, setIsPostsEmpty] = useBoolean();
   const postsGetCount = useRef(0);
+  const { VITE_CHANNEL_ID } = import.meta.env;
   const observeRef = useObserver(() => {
     getMorePosts();
   });
+
   const getMorePosts = useCallback(async (limit = 9) => {
     if (isPostsEmpty) return;
-    const nextPosts = await getChannelPost(
+    const nextPosts = await searchPosterAll(
+      VITE_CHANNEL_ID,
       postsGetCount.current * limit,
       limit
     );
-    setPosts((prevPosts) => [...prevPosts, ...nextPosts]);
-    postsGetCount.current++;
-    if (nextPosts.length !== limit) setIsPostsEmpty.on();
+    if (nextPosts) {
+      setPosts((prevPosts) => [...prevPosts, ...nextPosts]);
+      postsGetCount.current++;
+      if (nextPosts.length !== limit) setIsPostsEmpty.on();
+    }
   }, []);
 
   return (
