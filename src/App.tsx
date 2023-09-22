@@ -16,8 +16,9 @@ const App = () => {
       <Routes>
         <Route path={ROUTES.MAIN} element={<Main />} />
         <Route path={ROUTES.AUTH} element={<Auth />} />
-        <Route path={ROUTES.SEARCH} element={<Search />} />
-        <Route path={ROUTES.SEARCH_All} element={<SearchAll />} />
+        <Route path={ROUTES.SEARCH} element={<Search />}>
+          <Route path=":keyword" element={<Search />} />
+        </Route>
         <Route path={ROUTES.CREATE_POST} element={<Create />} />
         <Route path={ROUTES.USER_EDIT} element={<></>} />
         <Route path={ROUTES.USER_PROFILE} element={<UserProfile />} />

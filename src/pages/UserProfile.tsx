@@ -13,7 +13,7 @@ import { useState, useEffect, MouseEventHandler } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
-import UserInfoItem from '../components/common/UserInfoItem';
+import PrimaryInfo from '../components/common/PrimaryInfo';
 import PrimaryButton from '../components/common/PrimaryButton';
 import GridList from '../components/common/GridList';
 import PrimaryLink from '../components/common/PrimaryLink';
@@ -84,14 +84,11 @@ const UserProfile = () => {
       </PrimaryHeader>
       <Stack spacing={4} align="center">
         <UploadImage borderRadius="full" handleOnChange={handleChange} />
-        <UserInfoItem title={userInfo.fullName} subTitle={userInfo.email} />
+        <PrimaryInfo title={userInfo.fullName} subTitle={userInfo.email} />
         <Flex gap={10} textAlign="center">
-          <UserInfoItem title={`${userPostsData.length}`} subTitle="게시물" />
-          <UserInfoItem
-            title={`${userInfo.totalFollowers}`}
-            subTitle="팔로워"
-          />
-          <UserInfoItem
+          <PrimaryInfo title={`${userPostsData.length}`} subTitle="게시물" />
+          <PrimaryInfo title={`${userInfo.totalFollowers}`} subTitle="팔로워" />
+          <PrimaryInfo
             title={`${userInfo.totalFollowings}`}
             subTitle="팔로잉"
           />

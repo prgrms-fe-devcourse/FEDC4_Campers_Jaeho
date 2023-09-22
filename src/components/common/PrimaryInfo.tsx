@@ -1,6 +1,6 @@
 import { Stack, Text } from '@chakra-ui/react';
 
-const UserInfoItem = ({
+const PrimaryInfo = ({
   title = '',
   subTitle = '',
   spacing = 0,
@@ -19,4 +19,4 @@ const UserInfoItem = ({
   );
 };
 
-export default UserInfoItem;
+export default PrimaryInfo;
