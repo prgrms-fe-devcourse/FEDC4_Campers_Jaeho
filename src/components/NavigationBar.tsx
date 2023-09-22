@@ -50,7 +50,6 @@ const NavigationBar = () => {
               <PrimaryAvatar
                 size="sm"
                 src="https://bit.ly/dan-abramov"
-                userId="1234"
                 isOnline={true}
               />
             </PrimaryLink>
