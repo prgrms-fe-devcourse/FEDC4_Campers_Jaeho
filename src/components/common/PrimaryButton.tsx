@@ -15,7 +15,7 @@ const PrimaryButton = ({
     <Button
       {...props}
       my={2}
-      px={4}
+      px={[4, 8]}
       bgColor={bgColor}
       color="white"
       _hover={{
