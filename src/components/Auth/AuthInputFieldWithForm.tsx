@@ -34,6 +34,7 @@ const AuthInputFieldWithForm = forwardRef<
           id={id}
           ref={ref}
           type={type === 'password' ? (isShow ? 'text' : 'password') : type}
+          bgColor="gray.200"
         />
         {type === 'password' && (
           <InputRightElement onClick={() => setIsShow.toggle()}>

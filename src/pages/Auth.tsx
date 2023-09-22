@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import {
   Text,
   Tabs,
@@ -11,24 +10,16 @@ import {
 } from '@chakra-ui/react';
 import SignIn from '../components/SignIn';
 import SignUp from '../components/SignUp';
-import { getLocalStorage } from '../utils/storage';
+import useAuthCheck from '../hooks/useAuthCheck';
 
 const Auth = () => {
   const [tabIndex, setTabIndex] = useState(0);
-  const navigate = useNavigate();
 
   const handleTabsChange = (index: number) => {
     setTabIndex(index);
   };
 
-  useEffect(() => {
-    const token = getLocalStorage('token');
-
-    if (token.length) {
-      history.replaceState(null, '', '/');
-      navigate('/');
-    }
-  }, []);
+  useAuthCheck();
 
   return (
     <Container
@@ -37,15 +28,23 @@ const Auth = () => {
       maxW="container.sm"
       justifyContent="center"
     >
-      <Tabs minH={500} index={tabIndex} onChange={handleTabsChange}>
+      <Tabs minH={550} index={tabIndex} onChange={handleTabsChange}>
         <TabList borderBottom="none" justifyContent="center">
           <Tab color="green.400">
-            <Text color={tabIndex === 0 ? 'green.400' : 'blackAlpha.600'}>
+            <Text
+              fontSize="lg"
+              fontWeight={550}
+              color={tabIndex === 0 ? 'green.400' : 'blackAlpha.600'}
+            >
               로그인
             </Text>
           </Tab>
-          <Tab color={'green.400'}>
-            <Text color={tabIndex === 1 ? 'green.400' : 'blackAlpha.600'}>
+          <Tab color="green.400">
+            <Text
+              fontSize="lg"
+              fontWeight={600}
+              color={tabIndex === 1 ? 'green.400' : 'blackAlpha.600'}
+            >
               회원가입
             </Text>
           </Tab>

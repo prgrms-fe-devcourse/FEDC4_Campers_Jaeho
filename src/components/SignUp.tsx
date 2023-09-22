@@ -115,7 +115,7 @@ const SignUp = () => {
           label="닉네임"
           placeholder="닉네임을 2자 이상 입력해주세요"
         />
-        <ButtonGroup my={2} justifyContent="center" width="100%">
+        <ButtonGroup marginTop={10} justifyContent="center" width="100%">
           <PrimaryButton type="submit">회원가입</PrimaryButton>
           <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
         </ButtonGroup>

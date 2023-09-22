@@ -86,7 +86,7 @@ const SignIn = () => {
             '비밀번호는 8자 이상이면서 특수문자(!, @, #, $, %, ^, &, *, (, )), 영어 대소문자, 숫자는 각각 최소 1개 이상 있어야합니다.',
           ]}
         />
-        <ButtonGroup my={2} justifyContent="center" width="100%">
+        <ButtonGroup marginTop={10} justifyContent="center" width="100%">
           <PrimaryButton type="submit">로그인</PrimaryButton>
           <PrimaryButton onClick={() => reset()}>초기화</PrimaryButton>
         </ButtonGroup>
