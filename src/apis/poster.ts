@@ -4,9 +4,11 @@ import { PostResponse, CommentResponse } from '../types/post';
 
 export const CreatePoster = async (formData: FormData) => {
   try {
+    console.log(formData.getAll('title'));
     const response = await instance.post('posts/create', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
+    console.log(response);
 
     return response;
   } catch (error) {
@@ -32,8 +34,10 @@ export const searchPoster = async (postId: string) => {
       }
     );
 
+    const { title, description } = JSON.parse(data.title);
+
     return {
-      posterInfo: data,
+      posterInfo: { ...data, title, description },
       commentInfo,
       likeCount: data.likes.length,
     };

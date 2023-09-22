@@ -10,14 +10,15 @@ import {
 } from '@chakra-ui/react';
 import { FormEvent, useState } from 'react';
 import { useQueryPost } from '../hooks/useQueryPost';
-import PrimaryHeader from '../components/common/PrimaryHeader';
-import PrimaryLink from '../components/common/PrimaryLink';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import UploadImage from '../components/common/UploadImage';
 import PrimaryButton from '../components/common/PrimaryButton';
+import PrimaryHeader from '../components/common/PrimaryHeader';
+import PrimaryLink from '../components/common/PrimaryLink';
 
 const CreatePost = () => {
   const [postTitle, setPostTitle] = useState('');
+  const [description, setDescription] = useState('');
   const [postImage, setPostImage] = useState<File | null>(null);
   const { createPoster } = useQueryPost();
 
@@ -29,7 +30,10 @@ const CreatePost = () => {
     event.preventDefault();
     const formData = new FormData();
     if (postTitle) {
-      formData.append('title', postTitle);
+      formData.append(
+        'title',
+        JSON.stringify({ title: postTitle, description })
+      );
       formData.append('channelId', import.meta.env.VITE_MAIN_CHANNELID);
       postImage && formData.append('image', postImage);
       createPoster.mutate(formData);
@@ -62,7 +66,10 @@ const CreatePost = () => {
           </FormControl>
           <FormControl>
             <FormLabel>후기</FormLabel>
-            <Textarea />
+            <Textarea
+              value={description}
+              onChange={(event) => setDescription(event.target.value)}
+            />
           </FormControl>
           <UploadImage handleOnChange={handleChange} />
           <PrimaryButton type="submit" w="200px">
