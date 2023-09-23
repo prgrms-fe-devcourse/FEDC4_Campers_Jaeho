@@ -39,3 +39,11 @@ export type ChannelResponse = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type UpdatePost = {
+  postId: string;
+  title: string;
+  image?: File | null;
+  imageToDeletePublicId?: string;
+  channelId: string;
+};
