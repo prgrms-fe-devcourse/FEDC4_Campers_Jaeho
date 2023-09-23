@@ -11,7 +11,7 @@ export const ROUTES = {
   CHAT_LIST: '/chat',
   CHAT: '/chat/:chatId',
   DETAIL: '/post/:postId',
-  USER_INFO: (userId: string) => `users/${userId}`,
+  USER_INFO: (userId: string) => `/users/${userId}`,
   FOLLOW_BY_USER_ID: (userId: string) => `/follow/${userId}`,
   FOLLOWER_BY_USER_ID: (userId: string) => `/follower/${userId}`,
 };

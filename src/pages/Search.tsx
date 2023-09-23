@@ -1,17 +1,26 @@
-import { Container, Image, Text } from '@chakra-ui/react';
-import searchImage from '../assets/images/search.png';
-import PrimaryInfo from '../components/common/PrimaryInfo';
-import SearchBar from '../components/Search/SearchBar';
 import { useNavigate } from 'react-router-dom';
 import { useQueryPost } from '../hooks/useQueryPost';
 import { PostResponse } from '../types/post';
-import { User } from '../types/user';
 import { useParams } from 'react-router-dom';
-import PrimaryLink from '../components/common/PrimaryLink';
+import PrimaryInfo from '../components/common/PrimaryInfo';
+import SearchBar from '../components/Search/SearchBar';
 import UserCard from '../components/Search/UserCard';
-import PostCard from '../components/Search/PostCard';
 import NoResult from '../components/common/NoResult';
 import Loading from '../components/common/Loading';
+import AbsoluteCenterBox from '../components/common/AbsoluteCenterBox';
+import PostGridList from '../components/PostGridList';
+import searchImage from '../assets/images/search.png';
+import { User } from '../types/user';
+import {
+  Container,
+  Image,
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  Stack,
+} from '@chakra-ui/react';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -21,56 +30,62 @@ const Search = () => {
   } = useQueryPost(keyword);
 
   const userResult = data?.filter((item): item is User => 'fullName' in item);
-  const postResult = data?.filter(
-    (item): item is PostResponse => 'title' in item
-  );
+  const postResult = data
+    ?.filter((item): item is PostResponse => 'title' in item)
+    .map(({ title, updatedAt, _id, likes, image }) => ({
+      title,
+      updatedAt,
+      _id,
+      likes: likes.length,
+      image,
+    }));
 
   isError && navigate('/search');
 
   return (
-    <Container mt={5} textAlign="center">
+    <Container p={5} minH="100vh" pos="relative">
       <SearchBar />
       {keyword ? (
         isLoading ? (
-          <Loading />
+          <AbsoluteCenterBox>
+            <Loading />
+          </AbsoluteCenterBox>
         ) : (
-          <>
-            <Text fontSize="3xl" as="b">
-              "{keyword}" 검색 결과 {data?.length}개
-            </Text>
-            <Text fontSize="2xl">Users</Text>
-            {userResult?.length !== 0 ? (
-              userResult?.map((res) => (
-                <UserCard key={res._id} userData={res} />
-              ))
-            ) : (
-              <NoResult />
-            )}
-            <Text fontSize="2xl">Posts</Text>
-            {postResult?.length !== 0 ? (
-              postResult?.map((res) => (
-                <PostCard key={res._id} postData={res} />
-              ))
-            ) : (
-              <NoResult />
-            )}
-            {!userResult?.length && !postResult?.length && (
-              <PrimaryLink router="/createpost">
-                <Text color="green.400" as="b" cursor="pointer">
-                  이 곳에 대한 첫 글 써보기
-                </Text>
-              </PrimaryLink>
-            )}
-          </>
+          <Tabs colorScheme="green">
+            <TabList>
+              <Tab flex={1}>Users ({userResult && userResult.length})</Tab>
+              <Tab flex={1}>Posts ({postResult && postResult.length})</Tab>
+            </TabList>
+            <TabPanels p="10px 0">
+              <TabPanel p={0}>
+                <Stack>
+                  {userResult?.length !== 0 ? (
+                    userResult?.map((res) => (
+                      <UserCard key={res._id} userData={res} />
+                    ))
+                  ) : (
+                    <NoResult />
+                  )}
+                </Stack>
+              </TabPanel>
+              <TabPanel p={0}>
+                {postResult && postResult.length !== 0 ? (
+                  <PostGridList posts={postResult} minH="none" />
+                ) : (
+                  <NoResult />
+                )}
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         )
       ) : (
-        <>
-          <Image src={searchImage} />
+        <AbsoluteCenterBox>
+          <Image src={searchImage} w="70%" />
           <PrimaryInfo
             title="찾는 게 있으신가요?"
             subTitle="키워드를 검색해보세요"
           />
-        </>
+        </AbsoluteCenterBox>
       )}
     </Container>
   );
