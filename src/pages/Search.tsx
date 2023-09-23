@@ -8,7 +8,8 @@ import UserCard from '../components/Search/UserCard';
 import NoResult from '../components/common/NoResult';
 import Loading from '../components/common/Loading';
 import AbsoluteCenterBox from '../components/common/AbsoluteCenterBox';
-import PostGridList from '../components/PostGridList';
+import PrimaryGrid from '../components/common/PrimaryGrid';
+import PostCard from '../components/PostCard';
 import searchImage from '../assets/images/search.png';
 import { User } from '../types/user';
 import {
@@ -71,7 +72,11 @@ const Search = () => {
               <TabPanel p={0}>
                 <Stack>
                   {postResult && postResult.length !== 0 ? (
-                    <PostGridList posts={postResult} />
+                    <PrimaryGrid>
+                      {postResult.map((post) => (
+                        <PostCard post={post} key={post._id} />
+                      ))}
+                    </PrimaryGrid>
                   ) : (
                     <NoResult />
                   )}

@@ -1,8 +1,9 @@
 import { useState, useRef, useCallback } from 'react';
 import useObserver from '../../hooks/useObserver';
-import PostGridList from '../PostGridList';
+import PrimaryGrid from '../common/PrimaryGrid';
 import { Spinner, Text, useBoolean, Stack, Center } from '@chakra-ui/react';
 import { searchPosterAll } from '../../apis/search';
+import PostCard from '../PostCard';
 export type MainPost = {
   title?: string;
   updatedAt?: string;
@@ -33,12 +34,17 @@ function MainPagePosts() {
       if (nextPosts.length !== limit) setIsPostsEmpty.on();
     }
   }, []);
+  console.log(AllPosts);
 
   return (
     <>
       <Stack p="15px">
         {AllPosts.map((posts, index) => (
-          <PostGridList posts={posts} minH="34vh" key={index} />
+          <PrimaryGrid key={index}>
+            {posts.map((post) => (
+              <PostCard post={post} key={post._id} />
+            ))}
+          </PrimaryGrid>
         ))}
         <Stack ref={observeRef as React.MutableRefObject<HTMLDivElement>} />
         <Center w="100%" paddingBottom="60px">

@@ -9,8 +9,9 @@ import UploadImage from '../components/common/UploadImage';
 import PrimaryInfo from '../components/common/PrimaryInfo';
 import PrimaryButton from '../components/common/PrimaryButton';
 import PrimaryLink from '../components/common/PrimaryLink';
-import PostGridList from '../components/PostGridList';
+import PrimaryGrid from '../components/common/PrimaryGrid';
 import TemperatureBar from '../components/common/TemperatureBar';
+import PostCard from '../components/PostCard';
 type FileImage = {
   _id: string;
   image?: string;
@@ -67,6 +68,7 @@ const UserProfile = () => {
     }
     error && navigate('/not-found');
   }, [data, error]);
+  console.log(userPostsData);
 
   return (
     <Container my={5}>
@@ -78,7 +80,7 @@ const UserProfile = () => {
       <Stack spacing={4} align="center">
         <UploadImage borderRadius="full" handleOnChange={handleChange} />
         <PrimaryInfo title={userInfo.fullName} subTitle={userInfo.email} />
-        <TemperatureBar value={80} maxW="70%" />
+        <TemperatureBar value={60} maxW="70%" />
         <Flex gap={10} textAlign="center">
           <PrimaryInfo title={`${userPostsData.length}`} subTitle="게시물" />
           <PrimaryInfo title={`${userInfo.totalFollowers}`} subTitle="팔로워" />
@@ -91,12 +93,16 @@ const UserProfile = () => {
           <PrimaryButton w="150px">메시지</PrimaryButton>
           <PrimaryButton w="150px">로그아웃</PrimaryButton>
         </Flex>
-        <PostGridList
-          posts={userPostsData}
-          borderRadius="0"
-          isShowText={false}
-          spacing={0}
-        />
+        <PrimaryGrid spacing={0}>
+          {userPostsData.map((post) => (
+            <PostCard
+              post={post}
+              key={post._id}
+              isShowText={false}
+              borderRadius="none"
+            />
+          ))}
+        </PrimaryGrid>
       </Stack>
       <Button onClick={handleSubmit}>변경 UI</Button>
     </Container>
