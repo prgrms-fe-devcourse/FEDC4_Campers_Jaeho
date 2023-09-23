@@ -1,25 +1,15 @@
-import {
-  Container,
-  List,
-  Spacer,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import { ROUTES } from '../constants/routes';
-import { IoArrowBackOutline } from 'react-icons/io5';
 import { useState } from 'react';
-import { useFilter } from '../hooks/useFilter';
-import { User } from '../types/user';
+import { Container, List, Spacer, Text, VStack } from '@chakra-ui/react';
 import NavigationBar from '../components/NavigationBar';
 import PrimaryLink from '../components/common/PrimaryLink';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import PrimaryList from '../components/common/PrimaryList';
 import PrimaryText from '../components/common/PrimaryText';
+import PrimaryTabsSet from '../components/common/PrimaryTabsSet';
+import { IoArrowBackOutline } from 'react-icons/io5';
+import { ROUTES } from '../constants/routes';
+import { useFilter } from '../hooks/useFilter';
+import { User } from '../types/user';
 
 const UserList = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -50,81 +40,61 @@ const UserList = () => {
           <Text fontSize={20}>Chat</Text>
           <Spacer />
         </PrimaryHeader>
-        <Tabs index={tabIndex} onChange={handleTabsChange}>
-          <TabList borderBottom="none" justifyContent="center">
-            <Tab color="green.400">
-              <Text color={tabIndex === 0 ? 'green.400' : 'blackAlpha.600'}>
-                total
-              </Text>
-            </Tab>
-            <Tab color="green.400">
-              <Text color={tabIndex === 1 ? 'green.400' : 'blackAlpha.600'}>
-                follwer
-              </Text>
-            </Tab>
-            <Tab color="green.400">
-              <Text color={tabIndex === 2 ? 'green.400' : 'blackAlpha.600'}>
-                follwing
-              </Text>
-            </Tab>
-          </TabList>
-          <TabPanels>
-            <TabPanel>
-              {Array.isArray(filteredData) && (
-                <List spacing={3}>
-                  {filteredData.map(
-                    ({ _id, fullName, isOnline, image }: Partial<User>) => (
-                      <PrimaryList
-                        src={image}
-                        userId={_id!}
-                        isOnline={isOnline!}
-                        key={_id}
-                      >
-                        <PrimaryText>{fullName}</PrimaryText>
-                      </PrimaryList>
-                    )
-                  )}
-                </List>
-              )}
-            </TabPanel>
-            <TabPanel>
-              {Array.isArray(filteredData) && (
-                <List spacing={3}>
-                  {filteredData.map(
-                    ({ _id, fullName, isOnline, image }: Partial<User>) => (
-                      <PrimaryList
-                        src={image}
-                        userId={_id!}
-                        isOnline={isOnline!}
-                        key={_id}
-                      >
-                        <PrimaryText>{fullName}</PrimaryText>
-                      </PrimaryList>
-                    )
-                  )}
-                </List>
-              )}
-            </TabPanel>
-            <TabPanel>
-              {Array.isArray(filteredData) && (
-                <List spacing={3}>
-                  {filteredData.map(
-                    ({ _id, fullName, isOnline, image }: Partial<User>) => (
-                      <PrimaryList
-                        src={image}
-                        userId={_id!}
-                        isOnline={isOnline!}
-                        key={_id}
-                      >
-                        <PrimaryText>{fullName}</PrimaryText>
-                      </PrimaryList>
-                    )
-                  )}
-                </List>
-              )}
-            </TabPanel>
-          </TabPanels>
-        </Tabs>
+        <PrimaryTabsSet
+          tabIndex={tabIndex}
+          handleTabsChange={handleTabsChange}
+          tabTexts={['total', 'follwer', 'following']}
+          tabPanelChildrens={[
+            Array.isArray(filteredData) && (
+              <List spacing={3}>
+                {filteredData.map(
+                  ({ _id, fullName, isOnline, image }: Partial<User>) => (
+                    <PrimaryList
+                      src={image}
+                      userId={_id!}
+                      isOnline={isOnline!}
+                      key={_id}
+                    >
+                      <PrimaryText>{fullName}</PrimaryText>
+                    </PrimaryList>
+                  )
+                )}
+              </List>
+            ),
+            Array.isArray(filteredData) && (
+              <List spacing={3}>
+                {filteredData.map(
+                  ({ _id, fullName, isOnline, image }: Partial<User>) => (
+                    <PrimaryList
+                      src={image}
+                      userId={_id!}
+                      isOnline={isOnline!}
+                      key={_id}
+                    >
+                      <PrimaryText>{fullName}</PrimaryText>
+                    </PrimaryList>
+                  )
+                )}
+              </List>
+            ),
+            Array.isArray(filteredData) && (
+              <List spacing={3}>
+                {filteredData.map(
+                  ({ _id, fullName, isOnline, image }: Partial<User>) => (
+                    <PrimaryList
+                      src={image}
+                      userId={_id!}
+                      isOnline={isOnline!}
+                      key={_id}
+                    >
+                      <PrimaryText>{fullName}</PrimaryText>
+                    </PrimaryList>
+                  )
+                )}
+              </List>
+            ),
+          ]}
+        />
         <NavigationBar />
       </VStack>
     </Container>
