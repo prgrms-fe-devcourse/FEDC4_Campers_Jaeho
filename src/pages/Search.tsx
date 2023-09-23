@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { useQueryPost } from '../hooks/useQueryPost';
+import { useSearchAll } from '../hooks/query/useSearchAll';
 import { PostResponse } from '../types/post';
 import { useParams } from 'react-router-dom';
 import PrimaryInfo from '../components/common/PrimaryInfo';
@@ -27,7 +27,7 @@ const Search = () => {
   const { keyword } = useParams<{ keyword: string }>();
   const {
     getAllBoth: { data, isLoading, isError },
-  } = useQueryPost(keyword);
+  } = useSearchAll(keyword);
 
   const userResult = data?.filter((item): item is User => 'fullName' in item);
   const postResult = data
