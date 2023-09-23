@@ -4,9 +4,9 @@ type AvatarImageProps = AvatarProps & {
   isOnline: boolean;
 };
 
-const PrimaryAvatar = ({ isOnline, src, name, ...props }: AvatarImageProps) => {
+const PrimaryAvatar = ({ isOnline, ...props }: AvatarImageProps) => {
   return (
-    <Avatar src={src || 'https://bit.ly/broken-link'} name={name} {...props}>
+    <Avatar src={'https://bit.ly/broken-link'} {...props}>
       {isOnline && <AvatarBadge boxSize={4} bg="green.500" />}
     </Avatar>
   );
