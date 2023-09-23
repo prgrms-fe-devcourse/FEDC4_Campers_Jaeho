@@ -24,7 +24,7 @@ import PrimaryText from '../components/common/PrimaryText';
 const UserList = () => {
   const [tabIndex, setTabIndex] = useState(0);
 
-  const [data, switchData] = useFilter([]);
+  const [filteredData, switchData] = useFilter([]);
 
   const handleTabsChange = (index: number) => {
     setTabIndex(index);
@@ -70,9 +70,9 @@ const UserList = () => {
           </TabList>
           <TabPanels>
             <TabPanel>
-              {Array.isArray(data) && (
+              {Array.isArray(filteredData) && (
                 <List spacing={3}>
-                  {data.map(
+                  {filteredData.map(
                     ({ _id, fullName, isOnline, image }: Partial<User>) => (
                       <PrimaryList
                         src={image}
@@ -88,9 +88,9 @@ const UserList = () => {
               )}
             </TabPanel>
             <TabPanel>
-              {Array.isArray(data) && (
+              {Array.isArray(filteredData) && (
                 <List spacing={3}>
-                  {data.map(
+                  {filteredData.map(
                     ({ _id, fullName, isOnline, image }: Partial<User>) => (
                       <PrimaryList
                         src={image}
@@ -106,9 +106,9 @@ const UserList = () => {
               )}
             </TabPanel>
             <TabPanel>
-              {Array.isArray(data) && (
+              {Array.isArray(filteredData) && (
                 <List spacing={3}>
-                  {data.map(
+                  {filteredData.map(
                     ({ _id, fullName, isOnline, image }: Partial<User>) => (
                       <PrimaryList
                         src={image}
