@@ -1,4 +1,4 @@
-import { axiosInterface } from './axios';
+import instance from './axios';
 import { AxiosError } from 'axios';
 
 type CommentData = {
@@ -8,7 +8,7 @@ type CommentData = {
 
 export const createComment = async ({ comment, postId }: CommentData) => {
   try {
-    await axiosInterface.post('/comments/create', {
+    await instance.post('/comments/create', {
       comment,
       postId,
     });
@@ -23,11 +23,17 @@ export const createComment = async ({ comment, postId }: CommentData) => {
   }
 };
 
-export const deleteComment = async (Id: string) => {
+export const deleteComment = async (id: string) => {
   try {
-    await axiosInterface.delete(`/comments/delete/${Id}`);
-    alert('success');
+    const res = await instance.delete('comments/delete', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: { id: id },
+    });
+    console.log(res);
   } catch (error) {
+    console.log(error);
     console.error(error);
   }
 };
