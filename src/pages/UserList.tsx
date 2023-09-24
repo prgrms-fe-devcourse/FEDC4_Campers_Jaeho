@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Container, List, Spacer, Text, VStack } from '@chakra-ui/react';
 import NavigationBar from '../components/NavigationBar';
 import PrimaryLink from '../components/common/PrimaryLink';
@@ -12,16 +11,7 @@ import { useFilter } from '../hooks/useFilter';
 import { User } from '../types/user';
 
 const UserList = () => {
-  const [tabIndex, setTabIndex] = useState(0);
-
   const [filteredData, switchData] = useFilter([]);
-
-  const handleTabsChange = (index: number) => {
-    setTabIndex(index);
-    if (typeof switchData === 'function') {
-      switchData(index);
-    }
-  };
 
   return (
     <Container padding={0}>
@@ -41,8 +31,11 @@ const UserList = () => {
           <Spacer />
         </PrimaryHeader>
         <PrimaryTabsSet
-          tabIndex={tabIndex}
-          handleTabsChange={handleTabsChange}
+          handleTabsChangeAdditionalFn={(index: number) => {
+            if (typeof switchData === 'function') {
+              switchData(index);
+            }
+          }}
           tabTexts={['total', 'follwer', 'following']}
           tabPanelChildrens={[
             Array.isArray(filteredData) && (
