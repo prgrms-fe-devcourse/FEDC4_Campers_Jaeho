@@ -9,7 +9,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { FormEvent, useState } from 'react';
-import { useQueryPost } from '../hooks/useQueryPost';
+import { useCreatePost } from '../hooks/mutation/useCreatePost';
 import { ChevronLeftIcon } from '@chakra-ui/icons';
 import UploadImage from '../components/common/UploadImage';
 import PrimaryButton from '../components/common/PrimaryButton';
@@ -20,7 +20,7 @@ const CreatePost = () => {
   const [postTitle, setPostTitle] = useState('');
   const [description, setDescription] = useState('');
   const [postImage, setPostImage] = useState<File | null>(null);
-  const { createPoster } = useQueryPost();
+  const createPost = useCreatePost();
 
   const handleChange = (file: File) => {
     setPostImage(file);
@@ -36,7 +36,7 @@ const CreatePost = () => {
       );
       formData.append('channelId', import.meta.env.VITE_MAIN_CHANNELID);
       postImage && formData.append('image', postImage);
-      createPoster.mutate(formData);
+      createPost.mutate(formData);
     } else {
       alert('타이틀을 입력해주세요');
     }

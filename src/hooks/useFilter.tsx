@@ -1,42 +1,36 @@
+import { useSearchUser } from './query/useSearchUser';
 import { useEffect, useState } from 'react';
-import { useQueryUser } from './useQueryUser';
 import { Follow, User } from '../types/user';
 
 export const useFilter = (initalState = []) => {
-  const [data, setData] = useState<User[] | Follow[]>(initalState);
+  const [filteredData, setFilteredData] = useState<User[] | Follow[]>(
+    initalState
+  );
 
   const {
-    getSearchAllUser: { data: AllUser, isLoading },
-    getFollower: { data: Follower },
-  } = useQueryUser();
-
-  useEffect(() => {
-    if (typeof switchData === 'function') {
-      switchData(0);
-    }
-  }, [isLoading]);
+    getSearchAllUser: { data: allUser, isLoading },
+    getSearchUser: { data: followerData, isLoading: isLoadingFollow },
+  } = useSearchUser(import.meta.env.VITE_FOLLWERS_ID);
 
   const switchData = (index: number) => {
-    if (!isLoading) {
+    if (!isLoading || !isLoadingFollow) {
       switch (index) {
         case 0: {
-          const filterData = AllUser.sort((a: User, b: User) => {
-            if (a.isOnline === b.isOnline) return 0;
-
-            return a.isOnline ? -1 : 1;
-          });
-          setData(filterData);
+          const filteredData = allUser.sort((a: User, b: User) =>
+            a.isOnline !== b.isOnline ? 1 : -1
+          );
+          setFilteredData(filteredData);
           break;
         }
         case 1: {
-          if (Follower && Follower['followers']) {
-            setData(Follower['followers']);
+          if (followerData && followerData['followers']) {
+            setFilteredData(followerData['followers']);
           }
           break;
         }
         case 2: {
-          if (Follower && Follower['following']) {
-            setData(Follower['following']);
+          if (followerData && followerData['following']) {
+            setFilteredData(followerData['following']);
           }
           break;
         }
@@ -44,5 +38,10 @@ export const useFilter = (initalState = []) => {
     }
   };
 
-  return [data, switchData];
+  useEffect(() => {
+    // localstorage에 값이 있다면 대입
+    switchData(0);
+  }, [isLoading]);
+
+  return [filteredData, switchData];
 };

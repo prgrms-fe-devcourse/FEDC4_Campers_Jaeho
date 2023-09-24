@@ -3,6 +3,7 @@ import { ROUTES } from '../constants/routes';
 import { User } from '../types/user';
 import { AxiosError } from 'axios';
 import instance from './axios';
+import titleValidation from '../utils/titleValidation';
 
 // 메인 데이터 표시
 export const searchPosterAll = async (id: string, offset = 0, limit = 0) => {
@@ -10,9 +11,9 @@ export const searchPosterAll = async (id: string, offset = 0, limit = 0) => {
     const { data } = await instance.get<PostResponse[]>(`posts/channel/${id}`, {
       params: { offset, limit },
     });
-    
+
     return data.map(({ title, updatedAt, _id, likes, image }) => ({
-      title,
+      title: titleValidation(title),
       updatedAt,
       _id,
       likes: likes.length,
@@ -24,16 +25,17 @@ export const searchPosterAll = async (id: string, offset = 0, limit = 0) => {
     }
   }
 };
-    
+
 // 전체 유저 검색
 export const searchUserAll = async () => {
   try {
     const { data } = await instance.get('users/get-users');
 
-    return data.map(({ _id, fullName, isOnline }: User) => ({
+    return data.map(({ _id, fullName, isOnline, image }: User) => ({
       _id,
       fullName,
       isOnline,
+      image,
     }));
   } catch (error) {
     if (error instanceof AxiosError) {
