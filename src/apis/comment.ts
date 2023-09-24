@@ -25,15 +25,13 @@ export const createComment = async ({ comment, postId }: CommentData) => {
 
 export const deleteComment = async (id: string) => {
   try {
-    const res = await instance.delete('comments/delete', {
+    await instance.delete('comments/delete', {
       headers: {
         'Content-Type': 'application/json',
       },
-      data: { id: id },
+      data: { id },
     });
-    console.log(res);
   } catch (error) {
-    console.log(error);
     console.error(error);
   }
 };
