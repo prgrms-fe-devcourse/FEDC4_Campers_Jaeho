@@ -12,7 +12,6 @@ export const createComment = async ({ comment, postId }: CommentData) => {
       comment,
       postId,
     });
-    alert('success');
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
