@@ -1,13 +1,14 @@
 import { useState, useRef, useCallback } from 'react';
 import useObserver from '../../hooks/useObserver';
-import PostGridList from '../PostGridList';
+import PrimaryGrid from '../common/PrimaryGrid';
 import { Spinner, Text, useBoolean, Stack, Center } from '@chakra-ui/react';
 import { searchPosterAll } from '../../apis/search';
+import PostCard from '../PostCard';
 export type MainPost = {
-  title: string;
-  updatedAt: string;
+  title?: string;
+  updatedAt?: string;
   _id: string;
-  likes: number;
+  likes?: number;
   image?: string;
 };
 
@@ -15,6 +16,7 @@ function MainPagePosts() {
   const [AllPosts, setAllPosts] = useState<MainPost[][] | []>([]);
   const [isPostsEmpty, setIsPostsEmpty] = useBoolean();
   const postsGetCount = useRef(0);
+  const { VITE_CHANNEL_ID } = import.meta.env;
   const observeRef = useObserver(() => {
     getMorePosts();
   });
@@ -22,7 +24,7 @@ function MainPagePosts() {
   const getMorePosts = useCallback(async (limit = 12) => {
     if (isPostsEmpty) return;
     const nextPosts = await searchPosterAll(
-      import.meta.env.VITE_MAIN_CHANNELID,
+      VITE_CHANNEL_ID,
       postsGetCount.current * limit,
       limit
     );
@@ -32,12 +34,17 @@ function MainPagePosts() {
       if (nextPosts.length !== limit) setIsPostsEmpty.on();
     }
   }, []);
+  console.log(AllPosts);
 
   return (
     <>
       <Stack p="15px">
         {AllPosts.map((posts, index) => (
-          <PostGridList posts={posts} minH="34vh" key={index} />
+          <PrimaryGrid key={index}>
+            {posts.map((post) => (
+              <PostCard post={post} key={post._id} />
+            ))}
+          </PrimaryGrid>
         ))}
         <Stack ref={observeRef as React.MutableRefObject<HTMLDivElement>} />
         <Center w="100%" paddingBottom="60px">

@@ -28,7 +28,6 @@ const UploadImage = ({
   return (
     <>
       <Image
-        {...props}
         src={
           selectImageFile
             ? URL.createObjectURL(selectImageFile)
@@ -38,6 +37,7 @@ const UploadImage = ({
         boxSize="150px"
         objectFit="cover"
         onClick={handleUpload}
+        {...props}
       />
       <Input
         type="file"

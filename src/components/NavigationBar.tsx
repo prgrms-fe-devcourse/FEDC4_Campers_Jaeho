@@ -16,8 +16,7 @@ const NavigationBar = () => {
       <Flex
         pos="fixed"
         w="100%"
-        p="10px"
-        textAlign="center"
+        h="50px"
         bottom={0}
         left={0}
         right={0}
@@ -28,16 +27,40 @@ const NavigationBar = () => {
       >
         {userData ? (
           <>
-            <PrimaryLink color="#0D1321" router={ROUTES.MAIN} flex="1">
+            <PrimaryLink
+              router={ROUTES.MAIN}
+              flex="1"
+              h="100%"
+              transition="all 0.3s"
+              _hover={{ bgColor: '#D3DCDE' }}
+            >
               <AiFillHome fontSize={22} />
             </PrimaryLink>
-            <PrimaryLink color="#0D1321" router={ROUTES.USER_LIST} flex="1">
+            <PrimaryLink
+              router={ROUTES.USER_LIST}
+              flex="1"
+              h="100%"
+              transition="all 0.3s"
+              _hover={{ bgColor: '#D3DCDE' }}
+            >
               <FaPeopleGroup fontSize={22} />
             </PrimaryLink>
-            <PrimaryLink color="#0D1321" router={ROUTES.CREATE_POST} flex="1">
+            <PrimaryLink
+              router={ROUTES.CREATE_POST}
+              flex="1"
+              h="100%"
+              transition="all 0.3s"
+              _hover={{ bgColor: '#D3DCDE' }}
+            >
               <IoIosAddCircle fontSize={22} />
             </PrimaryLink>
-            <PrimaryLink color="#0D1321" router={ROUTES.CHAT_LIST} flex="1">
+            <PrimaryLink
+              router={ROUTES.CHAT_LIST}
+              flex="1"
+              h="100%"
+              transition="all 0.3s"
+              _hover={{ bgColor: '#D3DCDE' }}
+            >
               <HiPaperAirplane fontSize={22} />
             </PrimaryLink>
             <PrimaryLink
@@ -48,7 +71,6 @@ const NavigationBar = () => {
               <PrimaryAvatar
                 size="sm"
                 src="https://bit.ly/dan-abramov"
-                userId="1234"
                 isOnline={true}
               />
             </PrimaryLink>

@@ -2,7 +2,7 @@ import { Text, TextProps, Box } from '@chakra-ui/react';
 
 const PrimaryText = ({ width, children, ...props }: TextProps) => {
   return (
-    <Box width={width}>
+    <Box w={width}>
       <Text {...props} isTruncated>
         {children}
       </Text>

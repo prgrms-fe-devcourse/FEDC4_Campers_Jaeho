@@ -1,26 +1,13 @@
-import { BoxProps, ListItem, Flex } from '@chakra-ui/react';
+import { ListItem, Flex, ListItemProps } from '@chakra-ui/react';
 import PrimaryAvatar, { AvatarImageProps } from './PrimaryAvatar';
 
-type PrimaryListProps = BoxProps & AvatarImageProps;
+type PrimaryListProps = ListItemProps & AvatarImageProps;
 
-const PrimaryList = ({
-  width = '20px',
-  isOnline,
-  userId,
-  src,
-  onClick,
-  children,
-  ...props
-}: PrimaryListProps) => {
+const PrimaryList = ({ onClick, children, ...props }: PrimaryListProps) => {
   return (
-    <ListItem {...props} onClick={onClick}>
+    <ListItem onClick={onClick}>
       <Flex>
-        <PrimaryAvatar
-          width={width}
-          isOnline={isOnline}
-          userId={userId}
-          src={src}
-        />
+        <PrimaryAvatar w="20px" {...props} />
         {children}
       </Flex>
     </ListItem>

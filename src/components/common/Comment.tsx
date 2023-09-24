@@ -14,6 +14,7 @@ import { FaEllipsisV } from 'react-icons/fa';
 import PrimaryAvatar from './PrimaryAvatar';
 import PrimaryText from './PrimaryText';
 import PrimaryButton from './PrimaryButton';
+
 const Comment = ({
   comment,
   image,
@@ -30,6 +31,7 @@ const Comment = ({
   const handleDelete = () => {
     alert('deldete');
   };
+
   return (
     <Flex bg="#ECE9E9" maxW="100%" p={2}>
       <PrimaryAvatar

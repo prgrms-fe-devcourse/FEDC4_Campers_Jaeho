@@ -9,11 +9,15 @@ const UserCard = ({ userData }: { userData: User }) => {
   const { image, _id, isOnline, fullName, email } = userData;
 
   return (
-    <Card transition="all 0.3s" _hover={{ bgColor: '#D3DCDE' }}>
+    <Card
+      transition="all 0.3s"
+      cursor="pointer"
+      _hover={{ bgColor: '#D3DCDE' }}
+    >
       <PrimaryLink router={ROUTES.USER_INFO(_id)}>
         <CardBody>
           <Flex gap={4} align="center">
-            <PrimaryAvatar src={image} userId={_id} isOnline={isOnline!} />
+            <PrimaryAvatar src={image} isOnline={isOnline!} />
             <PrimaryInfo
               flex={1}
               title={fullName}
