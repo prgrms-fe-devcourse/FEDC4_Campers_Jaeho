@@ -23,6 +23,7 @@ const PostCard = ({ post, isShowText = true, ...props }: PostCardProps) => {
       bgSize="100% auto;"
       bgPosition="center"
       transition="all 0.3s"
+      cursor="pointer"
       _hover={{ bgSize: '110% auto;' }}
       {...props}
     >
