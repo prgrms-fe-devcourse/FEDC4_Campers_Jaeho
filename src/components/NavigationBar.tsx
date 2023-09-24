@@ -7,11 +7,13 @@ import { ROUTES } from '../constants/routes';
 import { getLocalStorage } from '../utils/storage';
 import PrimaryAvatar from './common/PrimaryAvatar';
 import PrimaryLink from './common/PrimaryLink';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
 
 const NavigationBar = () => {
   // context를 뭘 사용해야할지 고민
   // user정보를 context로 하면 로그인 되어있는지 id를 받을수 있음
   const userToken = getLocalStorage('token');
+  const userData = useUserInfoContext();
 
   return (
     <>
@@ -45,7 +47,7 @@ const NavigationBar = () => {
             <PrimaryLink
               flex="1"
               color="#0D1321"
-              router={`${ROUTES.MY_PROFILE}/${userToken}`}
+              router={`${ROUTES.USER_INFO(userData?._id || '')}`}
             >
               <PrimaryAvatar
                 size="sm"
