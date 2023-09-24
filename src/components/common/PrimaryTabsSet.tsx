@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { useState, ReactNode } from 'react';
 import {
   Tab,
   TabList,
@@ -11,24 +11,29 @@ import {
 } from '@chakra-ui/react';
 
 type PrimaryTabsSetProps = {
-  tabIndex: number;
-  handleTabsChange: (index: number) => void;
   tabTexts: string[];
   tabPanelChildrens: ReactNode[];
   tabsMinH?: LayoutProps['minH'];
   tabTextFontWeight?: TypographyProps['fontWeight'];
   tabTextFontSize?: TypographyProps['fontSize'];
+  handleTabsChangeAdditionalFn?: (index: number) => void;
 };
 
 const PrimaryTabsSet = ({
-  tabIndex,
-  handleTabsChange,
   tabTexts,
   tabPanelChildrens,
   tabsMinH,
   tabTextFontWeight = 550,
   tabTextFontSize = 'lg',
+  handleTabsChangeAdditionalFn,
 }: PrimaryTabsSetProps) => {
+  const [tabIndex, setTabIndex] = useState(0);
+
+  const handleTabsChange = (index: number) => {
+    setTabIndex(index);
+    handleTabsChangeAdditionalFn && handleTabsChangeAdditionalFn(index);
+  };
+
   return (
     <Tabs minH={tabsMinH} index={tabIndex} onChange={handleTabsChange}>
       <TabList borderBottom="none" justifyContent="center">
