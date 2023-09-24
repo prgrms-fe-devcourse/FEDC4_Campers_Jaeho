@@ -1,59 +1,59 @@
-import { useState, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Container, Flex, Stack, Button, Center, Box } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
-import { useDisclosure } from '@chakra-ui/react';
-import { getLocalStorage } from '../utils/storage';
-import { searchUser } from '../apis/search';
-import { FileImage } from '../apis/search';
-import { getNotification } from '../apis/notification';
+import { useState, useEffect, MouseEventHandler } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
 import PrimaryInfo from '../components/common/PrimaryInfo';
 import PrimaryButton from '../components/common/PrimaryButton';
 import PrimaryLink from '../components/common/PrimaryLink';
-import { NotificationResponse } from '../types/user';
+import PrimaryGrid from '../components/common/PrimaryGrid';
+import TemperatureBar from '../components/common/TemperatureBar';
+import PostCard from '../components/PostCard';
+import { useDisclosure } from '@chakra-ui/react';
 import { MdNotifications } from 'react-icons/md';
 import { GrFormPrevious } from 'react-icons/gr';
 import { AiFillEdit } from 'react-icons/ai';
 import { BiMessageDetail } from 'react-icons/bi';
-import {
-  Container,
-  Image,
-  GridItem,
-  Stack,
-  Flex,
-  Box,
-  Center,
-} from '@chakra-ui/react';
 import PrimaryModal from '../components/common/PrimaryModal';
+import { NotificationResponse } from '../types/user';
+// import { useNotification } from '../hooks/query/useNotification';
+import { getNotification } from '../apis/Notification';
+import { useSearchUser } from '../hooks/query/useSearchUser';
+type FileImage = {
+  _id: string;
+  image?: string;
+};
 
 const UserProfile = () => {
-  const token = getLocalStorage('token');
+  const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
+  const [userImage, setUserImage] = useState<File | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [notifications, setNotifications] = useState<
     NotificationResponse[] | [] | undefined
   >();
-  const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
-  const [userImage, setUserImage] = useState<File | null>(null);
+  const { userId } = useParams();
+  // const { data, error } = useQuery(['user', 'info', userId], () =>
+  //   searchUser(userId!)
+  // );
+  const {
+    getSearchUser: { data, error },
+  } = useSearchUser(userId);
+  // const { data: notiData } = useNotification();
+  const newNotification = useQuery(['newNotification'], () =>
+    getNotification()
+  ).data;
+
   const [userInfo, setUserInfo] = useState({
     email: '',
     fullName: '',
     totalFollowers: 0,
     totalFollowings: 0,
   });
-  const { userId } = useParams();
 
   const navigate = useNavigate();
-  // 머지되면 react query 훅을 사용해 리팩토링 예정
-  const { data, error } = useQuery(['user', 'info', userId], () =>
-    searchUser(userId!)
-  );
-  const newNotification = useQuery(['newNotification', token], () =>
-    getNotification(token)
-  ).data;
 
   const handleSubmit: MouseEventHandler<HTMLButtonElement | null> = () => {
-    // 훅 폼 받아 upload post 쏠 예정
     const newForm = new FormData();
     newForm.append('isCover', 'false');
     if (userImage) {
@@ -84,12 +84,11 @@ const UserProfile = () => {
         );
       }
     }
-    if (token) {
-      setNotifications(newNotification);
-    }
+
+    setNotifications(newNotification);
+
     error && navigate('/not-found');
   }, [data, error]);
-  console.log(userPostsData);
 
   return (
     <>
@@ -125,15 +124,16 @@ const UserProfile = () => {
           </Flex>
         </PrimaryHeader>
         <Stack spacing={4} align="center">
-          <UploadImage borderRadius="full" />
-          <UserInfoItem title={userInfo.fullName} subTitle={userInfo.email} />
+          <UploadImage borderRadius="full" handleOnChange={handleChange} />
+          <PrimaryInfo title={userInfo.fullName} subTitle={userInfo.email} />
+          <TemperatureBar value={60} maxW="70%" />
           <Flex gap={10} textAlign="center">
-            <UserInfoItem title={`${userPostsData.length}`} subTitle="게시물" />
-            <UserInfoItem
+            <PrimaryInfo title={`${userPostsData.length}`} subTitle="게시물" />
+            <PrimaryInfo
               title={`${userInfo.totalFollowers}`}
               subTitle="팔로워"
             />
-            <UserInfoItem
+            <PrimaryInfo
               title={`${userInfo.totalFollowings}`}
               subTitle="팔로잉"
             />
@@ -142,16 +142,20 @@ const UserProfile = () => {
             <PrimaryButton w="150px">메시지</PrimaryButton>
             <PrimaryButton w="150px">로그아웃</PrimaryButton>
           </Flex>
-          <GridList>
-            {userPostsData &&
-              userPostsData.map((post) => (
-                <GridItem key={post._id}>
-                  <Image src={post.image} />
-                </GridItem>
-              ))}
-          </GridList>
+          <PrimaryGrid spacing={0}>
+            {userPostsData.map((post) => (
+              <PostCard
+                post={post}
+                key={post._id}
+                isShowText={false}
+                borderRadius="none"
+              />
+            ))}
+          </PrimaryGrid>
         </Stack>
+        <Button onClick={handleSubmit}>변경 UI</Button>
       </Container>
+      s
     </>
   );
 };
