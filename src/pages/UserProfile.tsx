@@ -10,7 +10,6 @@ import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
 import PrimaryInfo from '../components/common/PrimaryInfo';
 import PrimaryButton from '../components/common/PrimaryButton';
-import GridList from '../components/common/GridList';
 import PrimaryLink from '../components/common/PrimaryLink';
 import { NotificationResponse } from '../types/user';
 import { MdNotifications } from 'react-icons/md';
@@ -78,9 +77,9 @@ const UserProfile = () => {
 
       if (Array.isArray(posts)) {
         setUserPostsData(
-          posts.map((post) => ({
-            _id: post._id,
-            image: post.image ? post.image : 'https://via.placeholder.com/150',
+          posts.map(({ _id, image }) => ({
+            _id,
+            image,
           }))
         );
       }
@@ -90,6 +89,7 @@ const UserProfile = () => {
     }
     error && navigate('/not-found');
   }, [data, error]);
+  console.log(userPostsData);
 
   return (
     <>
@@ -153,40 +153,6 @@ const UserProfile = () => {
         </Stack>
       </Container>
     </>
-
-    <Container my={5}>
-      <PrimaryHeader>
-        <PrimaryLink router={-1}>
-          <ChevronLeftIcon boxSize={8} />
-        </PrimaryLink>
-      </PrimaryHeader>
-      <Stack spacing={4} align="center">
-        <UploadImage borderRadius="full" handleOnChange={handleChange} />
-        <PrimaryInfo title={userInfo.fullName} subTitle={userInfo.email} />
-        <Flex gap={10} textAlign="center">
-          <PrimaryInfo title={`${userPostsData.length}`} subTitle="게시물" />
-          <PrimaryInfo title={`${userInfo.totalFollowers}`} subTitle="팔로워" />
-          <PrimaryInfo
-            title={`${userInfo.totalFollowings}`}
-            subTitle="팔로잉"
-          />
-        </Flex>
-        <Flex gap={3}>
-          <PrimaryButton w="150px">메시지</PrimaryButton>
-          <PrimaryButton w="150px">로그아웃</PrimaryButton>
-        </Flex>
-        <GridList>
-          {userPostsData &&
-            userPostsData.map((post) => (
-              <GridItem key={post._id}>
-                <Image src={post.image} />
-              </GridItem>
-            ))}
-        </GridList>
-      </Stack>
-      <Button onClick={handleSubmit}>변경 UI</Button>
-    </Container>
-
   );
 };
 

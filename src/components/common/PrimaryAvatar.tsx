@@ -1,30 +1,12 @@
 import { AvatarProps, Avatar, AvatarBadge } from '@chakra-ui/react';
-import { useNavigate } from 'react-router-dom';
 
 type AvatarImageProps = AvatarProps & {
-  userId: string;
   isOnline: boolean;
 };
 
-const PrimaryAvatar = ({
-  userId,
-  isOnline,
-  size,
-  src,
-  name,
-  ...props
-}: AvatarImageProps) => {
-  const navigate = useNavigate();
-
+const PrimaryAvatar = ({ isOnline, ...props }: AvatarImageProps) => {
   return (
-    <Avatar
-      {...props}
-      onClick={() => navigate(`/users/${userId}`)}
-      size={size}
-      src={src || 'https://bit.ly/broken-link'}
-      name={name}
-      mr={isOnline ? undefined : 2}
-    >
+    <Avatar src={'https://bit.ly/broken-link'} {...props}>
       {isOnline && <AvatarBadge boxSize={4} bg="green.500" />}
     </Avatar>
   );

@@ -5,7 +5,7 @@ import { ROUTES } from '../constants/routes';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import PrimaryLink from '../components/common/PrimaryLink';
 import MainPagePosts from '../components/Main/MainPagePosts';
-
+import CircleIconBg from '../components/common/CircleIconBg';
 function Main() {
   return (
     <>
@@ -14,12 +14,9 @@ function Main() {
           Campers
         </Text>
         <PrimaryLink router={ROUTES.SEARCH}>
-          <SearchIcon
-            boxSize={8}
-            cursor="pointer"
-            p="5px"
-            borderRadius="15px"
-          />
+          <CircleIconBg>
+            <SearchIcon boxSize={5} />
+          </CircleIconBg>
         </PrimaryLink>
       </PrimaryHeader>
       <MainPagePosts />
