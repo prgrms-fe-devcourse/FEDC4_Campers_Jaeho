@@ -8,5 +8,5 @@ export const usePostsByChannel = (channelId = '', offset = 0, limit = 0) => {
     () => searchPosterAll(channelId, offset, limit)
   );
 
-  return { getMorePost };
+  return getMorePost;
 };

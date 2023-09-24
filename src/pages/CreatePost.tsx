@@ -20,7 +20,7 @@ const CreatePost = () => {
   const [postTitle, setPostTitle] = useState('');
   const [description, setDescription] = useState('');
   const [postImage, setPostImage] = useState<File | null>(null);
-  const { createPost } = useCreatePost();
+  const createPost = useCreatePost();
 
   const handleChange = (file: File) => {
     setPostImage(file);

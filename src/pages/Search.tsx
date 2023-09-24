@@ -25,9 +25,7 @@ import {
 const Search = () => {
   const navigate = useNavigate();
   const { keyword } = useParams<{ keyword: string }>();
-  const {
-    getAllBoth: { data, isLoading, isError },
-  } = useSearchAll(keyword);
+  const { data, isLoading, isError } = useSearchAll(keyword);
 
   const userResult = data?.filter((item): item is User => 'fullName' in item);
   const postResult = data
