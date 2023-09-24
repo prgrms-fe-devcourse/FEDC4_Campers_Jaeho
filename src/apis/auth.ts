@@ -3,7 +3,7 @@ import { ROUTES } from '../constants/routes';
 import { removeLocalStorage } from '../utils/storage';
 import { SignInValues, SignResponseData, SignUpValues } from '../types/auth';
 import { AxiosError } from 'axios';
-import { User, UserResponseData } from '../types/user';
+import { User } from '../types/user';
 
 export const signup = async ({
   email,
@@ -52,13 +52,11 @@ export const logout = async () => {
   }
 };
 
-export const checkAuth = async (): Promise<User | string | void> => {
+export const checkAuth = async (): Promise<User | void> => {
   try {
-    const {
-      data: { user },
-    } = await instance.get<UserResponseData>('auth-user');
+    const { data } = await instance.get<User>('auth-user');
 
-    return user;
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       return error.response?.data;

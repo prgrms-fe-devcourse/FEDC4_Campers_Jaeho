@@ -1,3 +1,5 @@
+import { PostResponse } from './post';
+
 export type Follow = {
   _id: string;
   user: string;
@@ -13,14 +15,14 @@ export type User = {
   role: string;
   coverImage?: string; // 커버 이미지
   isOnline?: boolean;
-  posts?: [];
+  posts: PostResponse[];
   likes?: [];
   comments?: [];
   followers?: [];
   following?: Follow[];
   notifications?: [];
   messages?: [];
-  email?: string;
+  email: string;
   createdAt?: string;
   updatedAt?: string;
   username?: string;

@@ -10,7 +10,8 @@ export const ROUTES = {
   USER_LIST: '/user',
   CHAT_LIST: '/chat',
   CHAT: '/chat/:chatId',
-  USER_INFO: (userId: string) => `users/${userId}`,
+  DETAIL: '/post/:postId',
+  USER_INFO: (userId: string) => `/users/${userId}`,
   FOLLOW_BY_USER_ID: (userId: string) => `/follow/${userId}`,
   FOLLOWER_BY_USER_ID: (userId: string) => `/follower/${userId}`,
 };

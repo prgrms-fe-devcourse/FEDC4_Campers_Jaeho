@@ -8,7 +8,7 @@ import { FileImage } from '../apis/search';
 import { getNotification } from '../apis/notification';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
-import UserInfoItem from '../components/common/UserInfoItem';
+import PrimaryInfo from '../components/common/PrimaryInfo';
 import PrimaryButton from '../components/common/PrimaryButton';
 import GridList from '../components/common/GridList';
 import PrimaryLink from '../components/common/PrimaryLink';
@@ -27,6 +27,7 @@ import {
   Center,
 } from '@chakra-ui/react';
 import PrimaryModal from '../components/common/PrimaryModal';
+
 const UserProfile = () => {
   const token = getLocalStorage('token');
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,6 +35,7 @@ const UserProfile = () => {
     NotificationResponse[] | [] | undefined
   >();
   const [userPostsData, setUserPostsData] = useState<FileImage[]>([]);
+  const [userImage, setUserImage] = useState<File | null>(null);
   const [userInfo, setUserInfo] = useState({
     email: '',
     fullName: '',
@@ -41,7 +43,9 @@ const UserProfile = () => {
     totalFollowings: 0,
   });
   const { userId } = useParams();
+
   const navigate = useNavigate();
+  // 머지되면 react query 훅을 사용해 리팩토링 예정
   const { data, error } = useQuery(['user', 'info', userId], () =>
     searchUser(userId!)
   );
@@ -49,23 +53,37 @@ const UserProfile = () => {
     getNotification(token)
   ).data;
 
+  const handleSubmit: MouseEventHandler<HTMLButtonElement | null> = () => {
+    // 훅 폼 받아 upload post 쏠 예정
+    const newForm = new FormData();
+    newForm.append('isCover', 'false');
+    if (userImage) {
+      newForm.append('image', userImage);
+    }
+  };
+
+  const handleChange = (file: File) => {
+    setUserImage(file);
+  };
+
   useEffect(() => {
     if (data) {
-      const { email, fullName, followers, followings, posts } = data;
+      const { email, fullName, followers, following, posts } = data;
       setUserInfo({
         email,
         fullName,
         totalFollowers: followers ? followers.length : 0,
-        totalFollowings: followings ? followings.length : 0,
+        totalFollowings: following ? following.length : 0,
       });
 
-      Array.isArray(posts) &&
+      if (Array.isArray(posts)) {
         setUserPostsData(
           posts.map((post) => ({
             _id: post._id,
-            image: post.image,
+            image: post.image ? post.image : 'https://via.placeholder.com/150',
           }))
         );
+      }
     }
     if (token) {
       setNotifications(newNotification);
@@ -135,6 +153,40 @@ const UserProfile = () => {
         </Stack>
       </Container>
     </>
+
+    <Container my={5}>
+      <PrimaryHeader>
+        <PrimaryLink router={-1}>
+          <ChevronLeftIcon boxSize={8} />
+        </PrimaryLink>
+      </PrimaryHeader>
+      <Stack spacing={4} align="center">
+        <UploadImage borderRadius="full" handleOnChange={handleChange} />
+        <PrimaryInfo title={userInfo.fullName} subTitle={userInfo.email} />
+        <Flex gap={10} textAlign="center">
+          <PrimaryInfo title={`${userPostsData.length}`} subTitle="게시물" />
+          <PrimaryInfo title={`${userInfo.totalFollowers}`} subTitle="팔로워" />
+          <PrimaryInfo
+            title={`${userInfo.totalFollowings}`}
+            subTitle="팔로잉"
+          />
+        </Flex>
+        <Flex gap={3}>
+          <PrimaryButton w="150px">메시지</PrimaryButton>
+          <PrimaryButton w="150px">로그아웃</PrimaryButton>
+        </Flex>
+        <GridList>
+          {userPostsData &&
+            userPostsData.map((post) => (
+              <GridItem key={post._id}>
+                <Image src={post.image} />
+              </GridItem>
+            ))}
+        </GridList>
+      </Stack>
+      <Button onClick={handleSubmit}>변경 UI</Button>
+    </Container>
+
   );
 };
 

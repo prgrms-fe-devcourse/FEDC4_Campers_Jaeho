@@ -9,8 +9,9 @@ import { useSearch } from '../../hooks/useSearch';
 
 const SearchBar = () => {
   const { keyword, handleChange, handleSubmit } = useSearch();
+
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} style={{ width: '100%' }}>
       <InputGroup>
         <Input placeholder="게시물 검색" onChange={handleChange} />
         <InputRightElement>
