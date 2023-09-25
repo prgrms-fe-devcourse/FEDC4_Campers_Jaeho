@@ -19,7 +19,7 @@ const Main = () => {
   });
 
   return (
-    <Container h="100vh" maxW="container.sm" justifyContent="center" p={0}>
+    <Container minH="100vh" maxW="container.sm" justifyContent="center" p={0}>
       <PrimaryHeader h="60px">
         <Text fontSize="24px" flexGrow={1}>
           Campers
