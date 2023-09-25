@@ -14,13 +14,13 @@ import { FaEllipsisV } from 'react-icons/fa';
 import PrimaryAvatar from './PrimaryAvatar';
 import PrimaryText from './PrimaryText';
 import PrimaryButton from './PrimaryButton';
+import { useComment } from '../../hooks/mutation/useComment';
 const Comment = ({
   comment,
   image,
   isOnline,
   name,
   userId,
-  handleDelete,
 }: {
   name: string;
   comment: string;
@@ -28,8 +28,9 @@ const Comment = ({
   isOnline: boolean;
   userId: string;
 }) => {
+  const { DeleteComment } = useComment();
   const onHandleDelete = () => {
-    handleDelete(userId);
+    DeleteComment.mutate(userId);
   };
 
   return (

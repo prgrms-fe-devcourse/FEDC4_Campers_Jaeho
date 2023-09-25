@@ -2,26 +2,20 @@ import { useState } from 'react';
 import PrimaryButton from './PrimaryButton';
 import { Box, Input, Center } from '@chakra-ui/react';
 import { useCallback } from 'react';
-import { useUserInfoContext } from '../../contexts/UserInfoProvider';
 import { useComment } from '../../hooks/mutation/useComment';
 import _ from 'lodash';
-export const InputForm = ({ postId, handleComment }) => {
+export const InputForm = ({ postId }) => {
   const [newcomment, setNewcomment] = useState<string>('');
   const handleChange = (event) => setNewcomment(event.target.value);
-  const userInfo = useUserInfoContext();
   const { CreateCommnet } = useComment();
   const handleKeyDown = useCallback(
     _.debounce(
       (e) => {
         if (e.key === 'Enter') {
-          handleComment(newcomment);
-
-          CreateCommnet.mutateAsync({
+          CreateCommnet.mutate({
             postId: postId,
             comment: newcomment,
           });
-          console.log(newcomment, 'sent!!');
-          setNewcomment('');
         }
       },
       1000,
@@ -31,13 +25,10 @@ export const InputForm = ({ postId, handleComment }) => {
   );
 
   const handleSubmit = () => {
-    console.log('send data', newcomment, userInfo?._id);
-    handleComment(newcomment);
     CreateCommnet.mutateAsync({
       postId: postId,
       comment: newcomment,
     });
-    setNewcomment('');
   };
 
   return (
