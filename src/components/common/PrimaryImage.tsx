@@ -4,10 +4,7 @@ const PrimaryImage = ({
   ...props
 }: ImageProps & { imageSrc: string }) => {
   return (
-    <Image
-      {...props}
-      src={imageSrc ? imageSrc : 'https://via.placeholder.com/150'}
-    />
+    <Image {...props} src={imageSrc ?? 'https://via.placeholder.com/150'} />
   );
 };
 
