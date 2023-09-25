@@ -62,10 +62,10 @@ export const searchUserOnline = async () => {
 export const searchUser = async (userId: string) => {
   try {
     const {
-      data: { _id, fullName, email, posts, followers, following },
+      data: { _id, fullName, email, posts, followers, following, image },
     } = await instance.get<User>(`${ROUTES.USER_INFO(userId)}`);
 
-    return { _id, fullName, email, posts, followers, following };
+    return { _id, fullName, email, posts, followers, following, image };
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
