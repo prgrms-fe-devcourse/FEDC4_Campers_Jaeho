@@ -22,7 +22,7 @@ import PrimaryButton from '../components/common/PrimaryButton';
 import RecommendButton from '../components/common/RecommendButton';
 import { formatDate } from '../utils/formateData';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import PrimaryText from '../components/common/PrimaryText';
 import { useDetailPost } from '../hooks/query/useDetailPost';
 import { InputForm } from '../components/common/InputForm';
@@ -55,16 +55,12 @@ const Detail = () => {
     console.log(commentId);
     if (commentId === userInfo?._id) {
       alert('deldete');
-      /*
+
       deleteComment.mutateAsync({
         postId: userInfo?._id,
-      });*/
+      });
     }
   };
-  useEffect(() => {
-    setComments(commentInfo);
-  }, [isLoading]);
-  console.log(userInfo?._id);
 
   return (
     <Container maxW="100%" h="auto">
