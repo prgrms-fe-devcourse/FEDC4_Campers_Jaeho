@@ -14,13 +14,13 @@ import { FaEllipsisV } from 'react-icons/fa';
 import PrimaryAvatar from './PrimaryAvatar';
 import PrimaryText from './PrimaryText';
 import PrimaryButton from './PrimaryButton';
-
 const Comment = ({
   comment,
   image,
   isOnline,
   name,
   userId,
+  handleDelete,
 }: {
   name: string;
   comment: string;
@@ -28,20 +28,20 @@ const Comment = ({
   isOnline: boolean;
   userId: string;
 }) => {
-  const handleDelete = () => {
-    alert('deldete');
+  const onHandleDelete = () => {
+    handleDelete(userId);
   };
 
   return (
     <Flex bg="#ECE9E9" maxW="100%" p={2}>
       <PrimaryAvatar
-        src={`${image}`}
+        src={image}
         isOnline={isOnline}
         size={'sm'}
         userId={userId}
       />
       <Box>
-        <PrimaryText children={`ID:${name}`} />
+        <PrimaryText children={name} />
         <PrimaryText children={comment} />
       </Box>
       <Spacer />
@@ -55,7 +55,7 @@ const Comment = ({
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
-            <PrimaryButton onClick={handleDelete}>Delete</PrimaryButton>
+            <PrimaryButton handleClick={onHandleDelete}>Delete!!</PrimaryButton>
           </PopoverBody>
         </PopoverContent>
       </Popover>
