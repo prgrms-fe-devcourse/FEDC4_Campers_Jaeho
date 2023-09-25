@@ -1,12 +1,23 @@
 import { SearchIcon } from '@chakra-ui/icons';
-import { Text } from '@chakra-ui/react';
 import NavigationBar from '../components/NavigationBar';
 import { ROUTES } from '../constants/routes';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import PrimaryLink from '../components/common/PrimaryLink';
-import MainPagePosts from '../components/Main/MainPagePosts';
 import CircleIconBg from '../components/common/CircleIconBg';
+import PostCard from '../components/PostCard';
+import PrimaryGrid from '../components/common/PrimaryGrid';
+import { Spinner, Text, Stack, Center, Box } from '@chakra-ui/react';
+import useMainPageRender from '../hooks/query/useMainPageRender';
+import useObserver from '../hooks/useObserver';
+
 function Main() {
+  const { VITE_MAIN_CHANNELID } = import.meta.env;
+  const { data, hasNextPage, fetchNextPage } =
+    useMainPageRender(VITE_MAIN_CHANNELID);
+  const observeRef = useObserver(() => {
+    fetchNextPage();
+  });
+
   return (
     <>
       <PrimaryHeader h="60px" p="0 15px">
@@ -19,7 +30,28 @@ function Main() {
           </CircleIconBg>
         </PrimaryLink>
       </PrimaryHeader>
-      <MainPagePosts />
+      {data &&
+        data.pages.map((page, index) => (
+          <Box key={index}>
+            <PrimaryGrid>
+              {page?.map((post) => <PostCard post={post} key={post._id} />)}
+            </PrimaryGrid>
+          </Box>
+        ))}
+      <Stack p="15px">
+        <Center w="100%" paddingBottom="60px">
+          {!data || hasNextPage ? (
+            <Spinner
+              ref={observeRef as React.MutableRefObject<HTMLDivElement>}
+            />
+          ) : (
+            <Text fontSize="xl" fontWeight="bold">
+              더 이상 게시물이 없습니다
+            </Text>
+          )}
+        </Center>
+      </Stack>
+
       <NavigationBar />
     </>
   );
