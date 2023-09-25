@@ -1,10 +1,7 @@
-import { SearchPosterResponse, CommentInfo } from '../types/detail';
-import { useEffect, useState } from 'react';
 import {
   Box,
   Flex,
   Image,
-  Input,
   Stack,
   Center,
   Divider,
@@ -26,72 +23,74 @@ import PrimaryButton from '../components/common/PrimaryButton';
 import RecommendButton from '../components/common/RecommendButton';
 import { formatDate } from '../utils/formateData';
 import { useParams } from 'react-router-dom';
-import { searchPoster } from '../apis/poster';
-import { useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import PrimaryText from '../components/common/PrimaryText';
-
-import _ from 'lodash';
-
+import { useDetailPost } from '../hooks/query/useDetailPost';
+import { InputForm } from '../components/common/InputForm';
+import { CommentInfo } from '../types/detail';
+import { v4 as uuidv4 } from 'uuid';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
+import { isFilterData } from '../utils/fliterdata';
 const Detail = () => {
-  const [data, setData] = useState<SearchPosterResponse | null>(null);
-  const [comments, setComments] = useState<CommentInfo[] | null>(null);
   const { postId } = useParams<{ postId: string }>();
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
+  const [comments, setComments] = useState<CommentInfo[]>([]);
+  const { data: { postInfo, commentInfo, likeInfo } = {}, isLoading } =
+    useDetailPost(postId);
+  const userInfo = useUserInfoContext();
 
-  const handleKeyDown = useCallback(
-    _.debounce(
-      (e) => {
-        if (e.key === 'Enter') {
-          console.log('Enter key pressed');
-          console.log(postId);
-        }
-      },
-      1000,
-      { leading: true, trailing: false }
-    ),
-    []
-  );
+  const handleComment = (newcomment: string): void => {
+    const Info = {
+      _id: uuidv4(),
+      fullName: userInfo?.fullName,
+      isOnline: userInfo?.isOnline,
+      image: userInfo?.image,
+    };
+    setComments([...comments, { comment: newcomment, ...Info }]);
+  };
+  useEffect(() => {
+    setComments(commentInfo);
+  }, [isLoading]);
 
-  const fetchData = async (postId: string) => {
-    const fetchedData = await searchPoster(postId);
-    if (fetchedData) {
-      setData(fetchedData);
-      setComments(fetchedData.commentInfo);
-    } else {
-      console.error('Data is undefined.');
+  const handleDelete = (commentId) => {
+    console.log(commentId);
+    if (commentId === userInfo?._id) {
+      alert('deldete');
+      /*
+      deleteComment.mutateAsync({
+        postId: userInfo?._id,
+      });*/
     }
   };
-
-  useEffect(() => {
-    if (postId === undefined) return;
-    fetchData(postId);
-  }, [postId]);
+  console.log('likeInfo', likeInfo);
 
   return (
     <Container maxW="100%" h="auto">
-      <Image src="src/images/more.png" maxW="100%" maxH="5%" />
-      {data ? (
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : (
         <>
           <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={5}>
+            <Image src={postInfo?.image} maxW="100%" maxH="5%" />
             <Flex justifyContent="space-between">
               <Box>
                 <Stack spacing={2}>
                   <PrimaryText
                     fontSize={10}
-                    children={formatDate(data.posterInfo.updatedAt)}
+                    children={formatDate(postInfo?.updatedAt)}
                   />
                   <WrapItem>
                     <PrimaryAvatar
-                      userId={data.posterInfo._id}
+                      userId={postInfo?._id}
                       size={'sm'}
-                      name={data.posterInfo.fullName}
-                      src="https://i.pravatar.cc/2"
-                      isOnline={data.posterInfo.isOnline}
+                      name={postInfo?.fullName}
+                      src={postInfo?.image}
+                      isOnline={postInfo?.isOnline}
                     />
                     <Box>
                       <PrimaryText
                         fontSize={15}
-                        children={data.posterInfo.fullName}
+                        children={postInfo?.fullName}
                       />
                       <TemperatureBar value={80} />
                     </Box>
@@ -100,8 +99,8 @@ const Detail = () => {
               </Box>
               <Box>
                 <RecommendButton
-                  recommendCount={data.likeCount}
-                  isRecommended={false}
+                  recommendCount={likeInfo?.length}
+                  isRecommended={isFilterData('like', likeInfo, userInfo?._id)}
                   bg="#D3DCDE"
                   width={20}
                   height={30}
@@ -116,7 +115,7 @@ const Detail = () => {
               maxW="80%"
               h={238}
               fontSize={20}
-              children={data.posterInfo.description}
+              children={postInfo?.description}
             />
           </Box>
           <AspectRatio ratio={1}>
@@ -135,15 +134,15 @@ const Detail = () => {
                 ?.slice(0, 3)
                 .map((comment) => (
                   <Comment
-                    key={comment._id}
                     comment={comment.comment}
-                    image={'https://i.pravatar.cc/2'}
+                    image={comment.image}
                     isOnline={comment.isOnline}
                     name={comment.fullName}
+                    userId={comment._id}
+                    handleDelete={handleDelete}
                   />
                 ))}
             </Box>
-
             <Center>
               <PrimaryButton
                 alignSelf="center"
@@ -168,11 +167,12 @@ const Detail = () => {
                   <DrawerBody>
                     {comments?.map((comment) => (
                       <Comment
-                        key={comment._id}
                         comment={comment.comment}
                         image={'https://i.pravatar.cc/2'}
                         isOnline={comment.isOnline}
                         name={comment.fullName}
+                        userId={comment._id}
+                        handleDelete={handleDelete}
                       />
                     ))}
                   </DrawerBody>
@@ -181,28 +181,11 @@ const Detail = () => {
             </Center>
           </Box>
           <Box bg="#ECE9E9" maxW="100%">
-            <Center>
-              <Input
-                focusBorderColor="green.400"
-                maxW="94%"
-                height={101}
-                borderRadius={5}
-                bg="gray.100"
-                onKeyDown={handleKeyDown}
-              />
-            </Center>
-            <Box display="flex" justifyContent="flex-end" p="20px">
-              <PrimaryButton width={82} height={35} borderRadius={5}>
-                댓글달기!
-              </PrimaryButton>
-            </Box>
+            <InputForm postId={postId} handleComment={handleComment} />
           </Box>
         </>
-      ) : (
-        <div>Loading...</div>
       )}
     </Container>
   );
 };
-
 export default Detail;

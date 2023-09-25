@@ -29,14 +29,21 @@ export const searchPoster = async (postId: string) => {
     } = data;
 
     const commentInfo = data.comments.map(
-      ({ _id, comment, author: { fullName, isOnline } }: CommentResponse) => ({
+      ({
+        _id,
+        comment,
+        author: { fullName, isOnline, _id: author_id },
+      }: CommentResponse) => ({
         _id,
         comment,
         fullName,
         isOnline,
+        author_id,
       })
     );
-
+    const likeInfo = data.likes.map(({ user }) => ({
+      user,
+    }));
     const { title, description } = JSON.parse(data.title);
 
     const response = {
@@ -50,8 +57,9 @@ export const searchPoster = async (postId: string) => {
         description,
       },
       commentInfo,
-      likeCount: data.likes.length,
+      likeInfo,
     };
+    console.log('response', response);
 
     return response;
   } catch (error) {
