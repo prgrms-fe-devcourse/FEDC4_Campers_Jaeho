@@ -9,7 +9,7 @@ import PrimaryLink from './common/PrimaryLink';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
 
 const NavigationBar = () => {
-  const userInfo = useUserInfoContext();
+  const { userInfo } = useUserInfoContext();
 
   return (
     <Flex
