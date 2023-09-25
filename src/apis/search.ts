@@ -6,11 +6,12 @@ import instance from './axios';
 import titleValidation from '../utils/titleValidation';
 
 // 메인 데이터 표시
-export const searchPosterAll = async (id: string, offset = 0, limit = 0) => {
+export const searchPosterAll = async (id: string, pageParam: number) => {
   try {
-    const { data } = await instance.get<PostResponse[]>(`posts/channel/${id}`, {
-      params: { offset, limit },
-    });
+    const { data } = await instance.get<PostResponse[]>(
+      `posts/channel/${id}?limit=12&offset=${pageParam}`
+    );
+    console.log(data);
 
     return data.map(({ title, updatedAt, _id, likes, image }) => ({
       title: titleValidation(title),
