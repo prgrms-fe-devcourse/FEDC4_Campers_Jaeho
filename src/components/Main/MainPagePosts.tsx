@@ -1,9 +1,17 @@
 import { useState, useRef, useCallback } from 'react';
 import useObserver from '../../hooks/useObserver';
 import PrimaryGrid from '../common/PrimaryGrid';
-import { Spinner, Text, useBoolean, Stack, Center } from '@chakra-ui/react';
+import {
+  Spinner,
+  Text,
+  useBoolean,
+  Stack,
+  Center,
+  Box,
+} from '@chakra-ui/react';
 import { searchPosterAll } from '../../apis/search';
 import PostCard from '../PostCard';
+
 export type MainPost = {
   title?: string;
   updatedAt?: string;
@@ -21,7 +29,7 @@ function MainPagePosts() {
     getMorePosts();
   });
 
-  const getMorePosts = useCallback(async (limit = 12) => {
+  const getMorePosts = useCallback(async (limit = 15) => {
     if (isPostsEmpty) return;
     const nextPosts = await searchPosterAll(
       VITE_MAIN_CHANNELID,
@@ -34,11 +42,10 @@ function MainPagePosts() {
       if (nextPosts.length !== limit) setIsPostsEmpty.on();
     }
   }, []);
-  console.log(AllPosts);
 
   return (
-    <>
-      <Stack p="15px">
+    <Box maxW="container.sm" width="100%">
+      <Stack>
         {AllPosts.map((posts, index) => (
           <PrimaryGrid key={index}>
             {posts.map((post) => (
@@ -57,7 +64,8 @@ function MainPagePosts() {
           )}
         </Center>
       </Stack>
-    </>
+    </Box>
   );
 }
+
 export default MainPagePosts;
