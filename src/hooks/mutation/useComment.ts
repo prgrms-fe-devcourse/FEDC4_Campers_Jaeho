@@ -1,13 +1,23 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createComment, deleteComment } from '../../apis/comment';
 
 export const useComment = () => {
+  const querClient = useQueryClient();
   const CreateCommnet = useMutation(
     ({ comment, postId }: { comment: string; postId: string }) =>
-      createComment({ comment, postId })
+      createComment({ comment, postId }),
+    {
+      onSuccess() {
+        querClient.invalidateQueries(['detail']);
+      },
+    }
   );
 
-  const DeleteComment = useMutation((id: string) => deleteComment(id));
+  const DeleteComment = useMutation((id: string) => deleteComment(id), {
+    onSuccess(data) {
+      querClient.invalidateQueries(['detail', data?.data.post]);
+    },
+  });
 
   return { CreateCommnet, DeleteComment };
 };

@@ -13,7 +13,6 @@ import {
   DrawerHeader,
   DrawerBody,
   Container,
-  AspectRatio,
   useBoolean,
 } from '@chakra-ui/react';
 import Comment from '../components/common/Comment';
@@ -39,8 +38,6 @@ const Detail = () => {
   const userInfo = useUserInfoContext();
   const doesUserIdExist = (arr, id) => {
     const foundUser = arr.find((item) => item.user === id);
-    console.log('foundUser', foundUser);
-    console.log('compare', id);
 
     return !!foundUser;
   };
@@ -53,9 +50,6 @@ const Detail = () => {
     };
     setComments([...comments, { comment: newcomment, ...Info }]);
   };
-  useEffect(() => {
-    setComments(commentInfo);
-  }, [isLoading]);
 
   const handleDelete = (commentId) => {
     console.log(commentId);
@@ -67,6 +61,10 @@ const Detail = () => {
       });*/
     }
   };
+  useEffect(() => {
+    setComments(commentInfo);
+  }, [isLoading]);
+  console.log(userInfo?._id);
 
   return (
     <Container maxW="100%" h="auto">
@@ -80,7 +78,7 @@ const Detail = () => {
               <Box>
                 <Stack spacing={2}>
                   <PrimaryText
-                    fontSize={10}
+                    fontSize={15}
                     children={formatDate(postInfo?.updatedAt)}
                   />
                   <WrapItem>
@@ -88,7 +86,7 @@ const Detail = () => {
                       userId={postInfo?._id}
                       size={'sm'}
                       name={postInfo?.fullName}
-                      src={postInfo?.image}
+                      src={postInfo?.authorImage}
                       isOnline={postInfo?.isOnline}
                     />
                     <Box>
@@ -123,19 +121,11 @@ const Detail = () => {
               children={postInfo?.description}
             />
           </Box>
-          <AspectRatio ratio={1}>
-            <Box bg="#ECE9E9" maxW="100%">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3963.952912260219!2d3.375295414770757!3d6.5276316452784755!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x103b8b2ae68280c1%3A0xdc9e87a367c3d9cb!2sLagos!5e0!3m2!1sen!2sng!4v1567723392506!5m2!1sen!2sng"
-                width="95%"
-                height="90%"
-              />
-            </Box>
-          </AspectRatio>
+
           <Divider bg="gray.100" />
           <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={4}>
             <Box>
-              {comments
+              {commentInfo
                 ?.slice(0, 3)
                 .map((comment) => (
                   <Comment
@@ -170,10 +160,10 @@ const Detail = () => {
                   <DrawerCloseButton />
                   <DrawerHeader>댓글</DrawerHeader>
                   <DrawerBody>
-                    {comments?.map((comment) => (
+                    {commentInfo?.map((comment) => (
                       <Comment
                         comment={comment.comment}
-                        image={'https://i.pravatar.cc/2'}
+                        image={comment.image}
                         isOnline={comment.isOnline}
                         name={comment.fullName}
                         userId={comment._id}
