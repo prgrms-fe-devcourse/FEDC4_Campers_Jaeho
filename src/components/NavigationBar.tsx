@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import { AiFillHome } from 'react-icons/ai';
 import { FaPeopleGroup } from 'react-icons/fa6';
 import { IoIosAddCircle } from 'react-icons/io';
@@ -12,14 +12,10 @@ const NavigationBar = () => {
   const userData = useUserInfoContext();
 
   return (
-    <>
+    <Box position="fixed" width="100%" bottom={0} maxW="container.sm">
       <Flex
-        pos="fixed"
-        w="100%"
         h="50px"
-        bottom={0}
-        left={0}
-        right={0}
+        width="100%"
         cursor="pointer"
         bgColor={userData ? '#ECE9E9' : '#28B67E'}
         align="center"
@@ -29,7 +25,7 @@ const NavigationBar = () => {
           <>
             <PrimaryLink
               router={ROUTES.MAIN}
-              flex="1"
+              flex={1}
               h="100%"
               transition="all 0.3s"
               _hover={{ bgColor: '#D3DCDE' }}
@@ -38,7 +34,7 @@ const NavigationBar = () => {
             </PrimaryLink>
             <PrimaryLink
               router={ROUTES.USER_LIST}
-              flex="1"
+              flex={1}
               h="100%"
               transition="all 0.3s"
               _hover={{ bgColor: '#D3DCDE' }}
@@ -47,7 +43,7 @@ const NavigationBar = () => {
             </PrimaryLink>
             <PrimaryLink
               router={ROUTES.CREATE_POST}
-              flex="1"
+              flex={1}
               h="100%"
               transition="all 0.3s"
               _hover={{ bgColor: '#D3DCDE' }}
@@ -56,7 +52,7 @@ const NavigationBar = () => {
             </PrimaryLink>
             <PrimaryLink
               router={ROUTES.CHAT_LIST}
-              flex="1"
+              flex={1}
               h="100%"
               transition="all 0.3s"
               _hover={{ bgColor: '#D3DCDE' }}
@@ -64,7 +60,7 @@ const NavigationBar = () => {
               <HiPaperAirplane fontSize={22} />
             </PrimaryLink>
             <PrimaryLink
-              flex="1"
+              flex={1}
               color="#0D1321"
               router={`${ROUTES.USER_INFO(userData?._id || '')}`}
             >
@@ -81,7 +77,7 @@ const NavigationBar = () => {
           </PrimaryLink>
         )}
       </Flex>
-    </>
+    </Box>
   );
 };
 
