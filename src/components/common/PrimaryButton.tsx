@@ -1,16 +1,28 @@
-import { Button, ButtonProps } from '@chakra-ui/react';
+import { ComponentProps } from 'react';
+import { Button } from '@chakra-ui/react';
 
-const PrimaryButton = ({ children, ...props }: ButtonProps) => {
+type PrimaryButtonProps = ComponentProps<typeof Button> & {
+  hoverBgColor?: string;
+};
+
+const PrimaryButton = ({
+  children,
+  handleClick,
+  bgColor = 'green.400',
+  hoverBgColor = 'green.500',
+  ...props
+}: PrimaryButtonProps) => {
   return (
     <Button
+      {...props}
       my={2}
       px={[4, 8]}
-      bgColor="green.400"
+      bgColor={bgColor}
       color="white"
+      onClick={handleClick}
       _hover={{
-        bgColor: 'green.500',
+        bgColor: hoverBgColor,
       }}
-      {...props}
     >
       {children}
     </Button>
