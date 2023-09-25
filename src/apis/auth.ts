@@ -1,9 +1,8 @@
 import instance from './axios';
-import { ROUTES } from '../constants/routes';
 import { removeLocalStorage } from '../utils/storage';
-import { SignInValues, SignResponseData, SignUpValues } from '../types/auth';
 import { AxiosError } from 'axios';
 import { User } from '../types/user';
+import { SignInValues, SignResponseData, SignUpValues } from '../types/auth';
 
 export const signup = async ({
   email,
@@ -48,7 +47,6 @@ export const logout = async () => {
 
   if (status === 200) {
     removeLocalStorage('token');
-    location.href = ROUTES.MAIN;
   }
 };
 
