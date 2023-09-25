@@ -2,11 +2,13 @@ import { Image, Input, ImageProps } from '@chakra-ui/react';
 import { ChangeEvent, useRef, useState } from 'react';
 
 type Props = {
+  image: string;
   handleOnChange: (file: File) => void;
 };
 
 const UploadImage = ({
   borderRadius,
+  image,
   handleOnChange,
   ...props
 }: Props & ImageProps) => {
@@ -31,6 +33,8 @@ const UploadImage = ({
         src={
           selectImageFile
             ? URL.createObjectURL(selectImageFile)
+            : image
+            ? image
             : 'https://via.placeholder.com/150'
         }
         borderRadius={borderRadius}

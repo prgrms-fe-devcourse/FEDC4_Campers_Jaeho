@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 export const useChangeUserInfo = () => {
   const queryClient = useQueryClient();
 
-  const postProfileImage = useMutation(
+  const postProfileImage = useMutation<unknown, unknown, FormData>(
     (formData) => ChangeProfileImage(formData!),
     {
       onSuccess() {
@@ -16,8 +16,8 @@ export const useChangeUserInfo = () => {
   const putUserInfo = useMutation(
     (params: UserInfo) => ChangeUserInfo(params),
     {
-      onSuccess() {
-        queryClient.invalidateQueries(['search', 'user']);
+      onSuccess(newData) {
+        queryClient.invalidateQueries(['search', 'user', newData?._id]);
       },
     }
   );
