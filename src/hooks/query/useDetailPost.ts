@@ -3,12 +3,12 @@ import { searchPoster } from '../../apis/poster';
 
 export const useDetailPost = (postId = '') => {
   const getDetailPost = useQuery(
-    ['detail-post', postId],
+    ['detail', postId],
     () => searchPoster(postId),
     {
       enabled: !!postId,
     }
   );
 
-  return { getDetailPost };
+  return getDetailPost;
 };
