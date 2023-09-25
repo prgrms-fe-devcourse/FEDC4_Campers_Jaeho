@@ -39,8 +39,10 @@ const Detail = () => {
   const userInfo = useUserInfoContext();
   const doesUserIdExist = (arr, id) => {
     const foundUser = arr.find((item) => item.user === id);
+    console.log('foundUser', foundUser);
+    console.log('compare', id);
 
-    return !!foundUser; // Converts the found user object to a boolean (true if found, false if not)
+    return !!foundUser;
   };
   const handleComment = (newcomment: string): void => {
     const Info = {
@@ -65,7 +67,6 @@ const Detail = () => {
       });*/
     }
   };
-  console.log('likeInfo', likeInfo);
 
   return (
     <Container maxW="100%" h="auto">
@@ -109,6 +110,7 @@ const Detail = () => {
                   height={30}
                   top={10}
                   size={'lg'}
+                  postId={postId}
                 />
               </Box>
             </Flex>
