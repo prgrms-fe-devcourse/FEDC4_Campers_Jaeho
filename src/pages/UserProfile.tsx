@@ -1,6 +1,12 @@
-import { Container, Flex, Stack, Center, Box, Input } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Container, Flex, Stack, Center, Box, Input } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
+import { MdNotifications } from 'react-icons/md';
+import { GrFormPrevious } from 'react-icons/gr';
+import { AiFillEdit } from 'react-icons/ai';
+import { BiMessageDetail } from 'react-icons/bi';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
 import PrimaryInfo from '../components/common/PrimaryInfo';
@@ -9,22 +15,18 @@ import PrimaryLink from '../components/common/PrimaryLink';
 import PrimaryGrid from '../components/common/PrimaryGrid';
 import TemperatureBar from '../components/common/TemperatureBar';
 import PostCard from '../components/PostCard';
-import { useDisclosure } from '@chakra-ui/react';
-import { MdNotifications } from 'react-icons/md';
-import { GrFormPrevious } from 'react-icons/gr';
-import { AiFillEdit } from 'react-icons/ai';
-import { BiMessageDetail } from 'react-icons/bi';
 import PrimaryModal from '../components/common/PrimaryModal';
 import { useSearchUser } from '../hooks/query/useSearchUser';
 import { useNotification } from '../hooks/query/useNotification';
 import { useChangeUserInfo } from '../hooks/mutation/useChangeUserInfo';
 import PrimaryText from '../components/common/PrimaryText';
-import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { isSameUser } from '../utils/isSameUser';
 import PrimaryImage from '../components/common/PrimaryImage';
-import { useLogout } from '../hooks/mutation/useLogout';
+import { logout } from '../apis/auth';
 
 const UserProfile = () => {
+  const navigate = useNavigate();
+  const { userInfo, setUserInfo } = useUserInfoContext();
   const [userImage, setUserImage] = useState<File | null>(null);
   const [isEdit, setIsEdit] = useState(false);
   const [userName, setUserName] = useState('');
@@ -34,23 +36,23 @@ const UserProfile = () => {
   const { getSearchUser: { data, error } = {} } = useSearchUser(userId);
   const { data: notificationData } = useNotification();
   const { postProfileImage, putUserInfo } = useChangeUserInfo();
-  const postLogout = useLogout();
-  const navigate = useNavigate();
-  const userData = useUserInfoContext();
 
   const handleChange = (file: File) => {
     setUserImage(file);
   };
 
-  const handleLogout = () => {
-    postLogout.mutate();
+  const handleLogout = async () => {
+    await logout();
+    // alert
+    setUserInfo(null);
+    navigate('/');
   };
 
   useEffect(() => {
-    if (userData && data) {
-      isSameUser(userData._id, data._id) && setIsMyInfo(true);
+    if (userInfo && data) {
+      isSameUser(userInfo._id, data._id) && setIsMyInfo(true);
     }
-  }, [data?._id, userData?._id]);
+  }, [data?._id, userInfo?._id]);
 
   useEffect(() => {
     if (data?.fullName !== userName && userName !== '' && isEdit === false) {
@@ -113,7 +115,6 @@ const UserProfile = () => {
               ) : (
                 <PrimaryImage imageSrc={data.image} borderRadius="full" />
               )}
-
               <Flex align="center">
                 {isEdit ? (
                   <Input
