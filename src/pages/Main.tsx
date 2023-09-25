@@ -6,11 +6,11 @@ import PrimaryLink from '../components/common/PrimaryLink';
 import CircleIconBg from '../components/common/CircleIconBg';
 import PostCard from '../components/PostCard';
 import PrimaryGrid from '../components/common/PrimaryGrid';
-import { Spinner, Text, Stack, Center, Box } from '@chakra-ui/react';
+import { Spinner, Text, Stack, Center, Box, Container } from '@chakra-ui/react';
 import useMainPageRender from '../hooks/query/useMainPageRender';
 import useObserver from '../hooks/useObserver';
 
-function Main() {
+const Main = () => {
   const { VITE_MAIN_CHANNELID } = import.meta.env;
   const { data, hasNextPage, fetchNextPage } =
     useMainPageRender(VITE_MAIN_CHANNELID);
@@ -19,9 +19,9 @@ function Main() {
   });
 
   return (
-    <>
-      <PrimaryHeader h="60px" p="0 15px">
-        <Text fontSize="24px" flexGrow="1">
+    <Container h="100vh" maxW="container.sm" justifyContent="center" p={0}>
+      <PrimaryHeader h="60px">
+        <Text fontSize="24px" flexGrow={1}>
           Campers
         </Text>
         <PrimaryLink router={ROUTES.SEARCH}>
@@ -51,10 +51,9 @@ function Main() {
           )}
         </Center>
       </Stack>
-
       <NavigationBar />
-    </>
+    </Container>
   );
-}
+};
 
 export default Main;
