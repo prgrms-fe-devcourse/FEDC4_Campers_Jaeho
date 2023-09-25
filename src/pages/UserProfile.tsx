@@ -23,6 +23,8 @@ import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { isSameUser } from '../utils/isSameUser';
 import PrimaryImage from '../components/common/PrimaryImage';
 import { useLogout } from '../hooks/mutation/useLogout';
+import { useHandleNotification } from '../hooks/mutation/useHandleNotification';
+import { useFollow } from '../hooks/mutation/useFollow';
 
 const UserProfile = () => {
   const [userImage, setUserImage] = useState<File | null>(null);
@@ -35,6 +37,8 @@ const UserProfile = () => {
   const { data: notificationData } = useNotification();
   const { postProfileImage, putUserInfo } = useChangeUserInfo();
   const postLogout = useLogout();
+  const { postCreateNotification } = useHandleNotification();
+  const { createPostFollow } = useFollow();
   const navigate = useNavigate();
   const userData = useUserInfoContext();
 
@@ -44,6 +48,18 @@ const UserProfile = () => {
 
   const handleLogout = () => {
     postLogout.mutate();
+  };
+
+  const handleFollow = () => {
+    if (userData && data) {
+      createPostFollow.mutate(data._id);
+      postCreateNotification.mutate({
+        notificationType: 'FOLLOW',
+        notificationTypeId: userData._id,
+        userId: data._id,
+        postId: null,
+      });
+    }
   };
 
   useEffect(() => {
@@ -145,7 +161,9 @@ const UserProfile = () => {
                   로그아웃
                 </PrimaryButton>
               ) : (
-                <PrimaryButton w="150px">팔로우</PrimaryButton>
+                <PrimaryButton w="150px" onClick={handleFollow}>
+                  팔로우
+                </PrimaryButton>
               )}
               <PrimaryGrid spacing={0}>
                 {data.posts.map(({ _id, title, image }) => (
