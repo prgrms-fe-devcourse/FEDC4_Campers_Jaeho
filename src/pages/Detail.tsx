@@ -30,7 +30,6 @@ import { InputForm } from '../components/common/InputForm';
 import { CommentInfo } from '../types/detail';
 import { v4 as uuidv4 } from 'uuid';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
-import { isFilterData } from '../utils/fliterdata';
 const Detail = () => {
   const { postId } = useParams<{ postId: string }>();
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
@@ -38,7 +37,13 @@ const Detail = () => {
   const { data: { postInfo, commentInfo, likeInfo } = {}, isLoading } =
     useDetailPost(postId);
   const userInfo = useUserInfoContext();
+  const doesUserIdExist = (arr, id) => {
+    const foundUser = arr.find((item) => item.user === id);
+    console.log('foundUser', foundUser);
+    console.log('compare', id);
 
+    return !!foundUser;
+  };
   const handleComment = (newcomment: string): void => {
     const Info = {
       _id: uuidv4(),
@@ -62,7 +67,6 @@ const Detail = () => {
       });*/
     }
   };
-  console.log('likeInfo', likeInfo);
 
   return (
     <Container maxW="100%" h="auto">
@@ -100,12 +104,13 @@ const Detail = () => {
               <Box>
                 <RecommendButton
                   recommendCount={likeInfo?.length}
-                  isRecommended={isFilterData('like', likeInfo, userInfo?._id)}
+                  isRecommended={doesUserIdExist(likeInfo, userInfo?._id)}
                   bg="#D3DCDE"
                   width={20}
                   height={30}
                   top={10}
                   size={'lg'}
+                  postId={postId}
                 />
               </Box>
             </Flex>

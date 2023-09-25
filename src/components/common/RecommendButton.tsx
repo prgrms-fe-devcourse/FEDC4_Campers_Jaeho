@@ -1,39 +1,32 @@
 import { useState } from 'react';
-import { Button, ButtonProps, Text, Icon, useBoolean } from '@chakra-ui/react';
+import { Button, ButtonProps, Text, Icon } from '@chakra-ui/react';
 import { MdThumbUp } from 'react-icons/md';
-
+import { useRecommend } from '../../hooks/mutation/useRecommend';
 type RecommendButtonProps = ButtonProps & {
+  postId: string;
   recommendCount: number;
   isRecommended: boolean;
 };
 
 const RecommendButton = ({
+  postId,
   recommendCount,
   isRecommended,
   ...props
 }: RecommendButtonProps) => {
   const [count, setCount] = useState(recommendCount);
-  const [isClicked, setIsClicked] = useBoolean(isRecommended);
-  const [isClicking, setIsClicking] = useBoolean();
-
-  const handleToggleClicked = () => {
-    if (isClicking) return;
-
-    setIsClicking.on();
-
+  const [isClicked, setIsClicked] = useState(isRecommended);
+  const { createRecommend, deleteRecommend } = useRecommend();
+  const handleToggleClicked = async () => {
     if (isClicked) {
-      // 비동기 통신
-
       setCount((prev) => prev - 1);
-      setIsClicked.off();
+      setIsClicked(false);
+      deleteRecommend.mutate(postId);
     } else {
-      // 비동기 통신
-
       setCount((prev) => prev + 1);
-      setIsClicked.on();
+      setIsClicked(true);
+      createRecommend.mutate(postId);
     }
-
-    setIsClicking.off();
   };
 
   return (
