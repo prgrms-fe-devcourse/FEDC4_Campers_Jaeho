@@ -24,7 +24,9 @@ export const DeleteRecommend = async (postId: string) => {
 // 특정 유저 팔로우
 export const createFollow = async (userId: string) => {
   try {
-    await instance.post('follow/create', { userId });
+    const response = await instance.post('follow/create', { userId });
+
+    return response;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
@@ -35,7 +37,11 @@ export const createFollow = async (userId: string) => {
 //특정 유저 언팔로우
 export const deleteFollow = async (userId: string) => {
   try {
-    await instance.delete('follow/delete', { data: { id: userId } });
+    const response = await instance.delete('follow/delete', {
+      data: { id: userId },
+    });
+
+    return response;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);

@@ -22,6 +22,8 @@ import { useChangeUserInfo } from '../hooks/mutation/useChangeUserInfo';
 import PrimaryText from '../components/common/PrimaryText';
 import { isSameUser } from '../utils/isSameUser';
 import PrimaryImage from '../components/common/PrimaryImage';
+import { useHandleNotification } from '../hooks/mutation/useHandleNotification';
+import { useFollow } from '../hooks/mutation/useFollow';
 import { logout } from '../apis/auth';
 
 const UserProfile = () => {
@@ -31,11 +33,16 @@ const UserProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [userName, setUserName] = useState('');
   const [isMyInfo, setIsMyInfo] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { userId } = useParams();
   const { getSearchUser: { data, error } = {} } = useSearchUser(userId);
   const { data: notificationData } = useNotification();
   const { postProfileImage, putUserInfo } = useChangeUserInfo();
+  const { postCreateNotification } = useHandleNotification();
+  const { createPostFollow, deletePostFollow } = useFollow();
+  const navigate = useNavigate();
+  const userData = useUserInfoContext();
 
   const handleChange = (file: File) => {
     setUserImage(file);
@@ -48,11 +55,37 @@ const UserProfile = () => {
     navigate('/');
   };
 
-  useEffect(() => {
-    if (userInfo && data) {
-      isSameUser(userInfo._id, data._id) && setIsMyInfo(true);
+  const handleFollow = () => {
+    if (userData && data) {
+      if (isFollow) {
+        const findIdIndex = data?.followers?.findIndex(
+          (follow) => follow.follower === userData?._id
+        );
+        if (findIdIndex !== -1) {
+          deletePostFollow.mutate(
+            data.followers![findIdIndex!] as unknown as string
+          );
+        }
+      } else {
+        createPostFollow.mutate(data._id);
+        postCreateNotification.mutate({
+          notificationType: 'FOLLOW',
+          notificationTypeId: userData._id,
+          userId: data._id,
+          postId: null,
+        });
+      }
     }
-  }, [data?._id, userInfo?._id]);
+  };
+
+  useEffect(() => {
+    if (userData && data) {
+      isSameUser(userData._id, data._id) && setIsMyInfo(true);
+      setIsFollow(
+        data.followers!.some(({ follower }) => follower === userData._id)
+      );
+    }
+  }, [data, userData]);
 
   useEffect(() => {
     if (data?.fullName !== userName && userName !== '' && isEdit === false) {
@@ -146,7 +179,9 @@ const UserProfile = () => {
                   로그아웃
                 </PrimaryButton>
               ) : (
-                <PrimaryButton w="150px">팔로우</PrimaryButton>
+                <PrimaryButton w="150px" onClick={handleFollow}>
+                  {isFollow ? '언팔로우' : '팔로우'}
+                </PrimaryButton>
               )}
               <PrimaryGrid spacing={0}>
                 {data.posts.map(({ _id, title, image }) => (

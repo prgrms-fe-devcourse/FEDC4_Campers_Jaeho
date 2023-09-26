@@ -7,7 +7,6 @@ import CreatePost from './pages/CreatePost';
 import UserProfile from './pages/UserProfile';
 import Detail from './pages/Detail';
 import Search from './pages/Search';
-import SearchAll from './components/Search/SearchResponse';
 import UserList from './pages/UserList';
 
 const App = () => {
