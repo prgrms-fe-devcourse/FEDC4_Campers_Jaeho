@@ -25,6 +25,7 @@ import PrimaryImage from '../components/common/PrimaryImage';
 import { useHandleNotification } from '../hooks/mutation/useHandleNotification';
 import { useFollow } from '../hooks/mutation/useFollow';
 import { logout } from '../apis/auth';
+import PrimaryAlertDialogSet from '../components/common/PrimaryAlertDialogSet';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -35,6 +36,11 @@ const UserProfile = () => {
   const [isMyInfo, setIsMyInfo] = useState(false);
   const [isFollow, setIsFollow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isLogoutOpen,
+    onOpen: onLogoutOpen,
+    onClose: onLogoutClose,
+  } = useDisclosure();
   const { userId } = useParams();
   const { getSearchUser: { data, error } = {} } = useSearchUser(userId);
   const { data: notificationData } = useNotification();
@@ -48,10 +54,10 @@ const UserProfile = () => {
     setUserImage(file);
   };
 
-  const handleLogout = async () => {
-    await logout();
-    // alert
+  const handleLogoutConfirm = async () => {
+    onLogoutClose();
     setUserInfo(null);
+    await logout();
     navigate('/');
   };
 
@@ -106,6 +112,14 @@ const UserProfile = () => {
 
   return (
     <>
+      <PrimaryAlertDialogSet
+        bodyContentSentences={['로그아웃을 하시겠습니까?']}
+        isOpen={isLogoutOpen}
+        onClose={onLogoutClose}
+        hasCancelButton
+        hasOverlay
+        handleConfirm={handleLogoutConfirm}
+      />
       {data && notificationData ? (
         <>
           <PrimaryModal isOpen={isOpen} onClose={onClose}>
@@ -175,7 +189,7 @@ const UserProfile = () => {
                 />
               </Flex>
               {isMyInfo ? (
-                <PrimaryButton w="150px" onClick={handleLogout}>
+                <PrimaryButton w="150px" onClick={onLogoutOpen}>
                   로그아웃
                 </PrimaryButton>
               ) : (

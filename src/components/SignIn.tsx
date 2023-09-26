@@ -23,13 +23,17 @@ const SignIn = () => {
   const { setUserInfo } = useUserInfoContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
+  const handleConfirm = () => {
+    onClose();
+    setFocus('email');
+    reset();
+  };
+
   const onSubmit = async (data: SignInFormValues) => {
     const response = await signin(data);
 
     if (typeof response === 'string') {
       onOpen();
-      setFocus('email');
-      reset();
 
       return;
     }
@@ -65,9 +69,14 @@ const SignIn = () => {
   return (
     <>
       <PrimaryAlertDialogSet
-        bodyContent="이메일 혹은 비밀번호가 잘못되었습니다"
+        bodyContentSentences={[
+          '이메일 혹은 비밀번호가 잘못되었습니다.',
+          '초기화하시겠습니까?',
+        ]}
         isOpen={isOpen}
         onClose={onClose}
+        hasCancelButton
+        handleConfirm={handleConfirm}
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <AuthInputFieldWithForm

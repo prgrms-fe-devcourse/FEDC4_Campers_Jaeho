@@ -22,15 +22,19 @@ const SignUp = () => {
   const { setUserInfo } = useUserInfoContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
+  const handleConfirm = () => {
+    onClose();
+    setFocus('email');
+    reset({
+      email: '',
+    });
+  };
+
   const onSubmit = async (data: SignUpFormValues) => {
     const response = await signup(data);
 
     if (typeof response === 'string') {
       onOpen();
-      setFocus('email');
-      reset({
-        email: '',
-      });
 
       return;
     }
@@ -78,9 +82,14 @@ const SignUp = () => {
   return (
     <>
       <PrimaryAlertDialogSet
-        bodyContent="이미 존재하는 이메일입니다"
+        bodyContentSentences={[
+          '이미 존재하는 이메일입니다.',
+          '이메일을 초기화하시겠습니까?',
+        ]}
         isOpen={isOpen}
         onClose={onClose}
+        hasCancelButton
+        handleConfirm={handleConfirm}
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <AuthInputFieldWithForm
