@@ -6,8 +6,8 @@ import { ROUTES } from '../../constants/routes';
 
 export type UserCardProps = {
   _id: string;
-  isOnline: boolean;
-  fullName: string;
+  isOnline?: boolean;
+  fullName?: string;
   email?: string;
   image?: string;
 };

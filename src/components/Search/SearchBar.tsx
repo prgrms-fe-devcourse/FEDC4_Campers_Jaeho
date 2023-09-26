@@ -13,7 +13,7 @@ const SearchBar = () => {
   return (
     <form onSubmit={handleSubmit} style={{ width: '100%' }}>
       <InputGroup>
-        <Input placeholder="게시물 검색" onChange={handleChange} />
+        <Input placeholder="유저 또는 게시물 검색!" onChange={handleChange} />
         <InputRightElement>
           <IconButton
             type="submit"
