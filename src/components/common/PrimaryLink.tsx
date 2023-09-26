@@ -1,8 +1,8 @@
-import { Center } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { ComponentProps } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-type PrimaryLinkProps = ComponentProps<typeof Center> & {
+type PrimaryLinkProps = ComponentProps<typeof Box> & {
   router: string | number;
 };
 
@@ -14,9 +14,9 @@ const PrimaryLink = ({ router, children, ...props }: PrimaryLinkProps) => {
   };
 
   return (
-    <Center {...props} onClick={handleLink}>
+    <Box {...props} onClick={handleLink}>
       {children}
-    </Center>
+    </Box>
   );
 };
 

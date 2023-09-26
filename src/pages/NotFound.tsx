@@ -1,13 +1,13 @@
 import { useNavigate } from 'react-router-dom';
-import { Container, Image, Text } from '@chakra-ui/react';
+import { Image, Text } from '@chakra-ui/react';
 import NotFoundImage from '../assets/images/not_found.png';
 import PrimaryButton from '../components/common/PrimaryButton';
-
+import PrimaryContainer from '../components/common/PrimaryContainer';
 const NotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <Container h="100vh" centerContent justifyContent="center">
+    <PrimaryContainer centerContent>
       <Image src={NotFoundImage} />
       <Text fontSize={[20, 25]} fontWeight={700} marginBottom={2}>
         여기가 어디죠...
@@ -18,7 +18,7 @@ const NotFound = () => {
       <PrimaryButton onClick={() => navigate('/')}>
         홈으로 돌아가기
       </PrimaryButton>
-    </Container>
+    </PrimaryContainer>
   );
 };
 

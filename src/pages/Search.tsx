@@ -13,7 +13,6 @@ import PostCard from '../components/PostCard';
 import searchImage from '../assets/images/search.png';
 import { User } from '../types/user';
 import {
-  Container,
   Image,
   Tabs,
   TabList,
@@ -22,6 +21,7 @@ import {
   TabPanel,
   Stack,
 } from '@chakra-ui/react';
+import PrimaryContainer from '../components/common/PrimaryContainer';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -42,7 +42,7 @@ const Search = () => {
   isError && navigate('/search');
 
   return (
-    <Container p={5} minH="100vh" pos="relative">
+    <PrimaryContainer p="10px">
       <SearchBar />
       {keyword ? (
         isLoading ? (
@@ -92,7 +92,7 @@ const Search = () => {
           />
         </AbsoluteCenterBox>
       )}
-    </Container>
+    </PrimaryContainer>
   );
 };
 

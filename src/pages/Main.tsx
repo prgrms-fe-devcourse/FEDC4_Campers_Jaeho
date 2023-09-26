@@ -6,9 +6,10 @@ import PrimaryLink from '../components/common/PrimaryLink';
 import CircleIconBg from '../components/common/CircleIconBg';
 import PostCard from '../components/PostCard';
 import PrimaryGrid from '../components/common/PrimaryGrid';
-import { Spinner, Text, Stack, Center, Box, Container } from '@chakra-ui/react';
+import { Spinner, Text, Stack, Center, Box } from '@chakra-ui/react';
 import useMainPageRender from '../hooks/query/useMainPageRender';
 import useObserver from '../hooks/useObserver';
+import PrimaryContainer from '../components/common/PrimaryContainer';
 
 const Main = () => {
   const { VITE_MAIN_CHANNELID } = import.meta.env;
@@ -19,8 +20,8 @@ const Main = () => {
   });
 
   return (
-    <Container minH="100vh" maxW="container.sm" justifyContent="center" p={0}>
-      <PrimaryHeader h="60px">
+    <PrimaryContainer>
+      <PrimaryHeader>
         <Text fontSize="24px" flexGrow={1}>
           Campers
         </Text>
@@ -30,14 +31,16 @@ const Main = () => {
           </CircleIconBg>
         </PrimaryLink>
       </PrimaryHeader>
-      {data &&
-        data.pages.map((page, index) => (
-          <Box key={index}>
-            <PrimaryGrid>
-              {page?.map((post) => <PostCard post={post} key={post._id} />)}
-            </PrimaryGrid>
-          </Box>
-        ))}
+      <Stack p="10px">
+        {data &&
+          data.pages.map((page, index) => (
+            <Box key={index}>
+              <PrimaryGrid>
+                {page?.map((post) => <PostCard post={post} key={post._id} />)}
+              </PrimaryGrid>
+            </Box>
+          ))}
+      </Stack>
       <Stack p="15px">
         <Center w="100%" paddingBottom="60px">
           {!data || hasNextPage ? (
@@ -52,7 +55,7 @@ const Main = () => {
         </Center>
       </Stack>
       <NavigationBar />
-    </Container>
+    </PrimaryContainer>
   );
 };
 
