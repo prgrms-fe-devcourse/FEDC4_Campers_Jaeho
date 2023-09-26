@@ -14,7 +14,7 @@ export const ChangeProfileImage = async (formData: FormData) => {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
 
-    return data.image;
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
