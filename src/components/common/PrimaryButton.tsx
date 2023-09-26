@@ -12,6 +12,8 @@ const PrimaryButton = ({
   hoverBgColor = 'green.500',
   ...props
 }: PrimaryButtonProps) => {
+  console.log(handleClick);
+
   return (
     <Button
       {...props}

@@ -25,10 +25,11 @@ export const InputForm = ({ postId }) => {
   );
 
   const handleSubmit = () => {
-    CreateCommnet.mutateAsync({
+    CreateCommnet.mutate({
       postId: postId,
       comment: newcomment,
     });
+    setNewcomment('');
   };
 
   return (
