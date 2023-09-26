@@ -10,7 +10,7 @@ export type UserInfo = {
 // 프로필 이미지 변경
 export const ChangeProfileImage = async (formData: FormData) => {
   try {
-    const { data } = await instance.post('users/upload-photo', formData, {
+    const { data } = await instance.post<User>('users/upload-photo', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
 

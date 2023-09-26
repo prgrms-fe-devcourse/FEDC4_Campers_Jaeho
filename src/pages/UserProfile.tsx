@@ -47,8 +47,6 @@ const UserProfile = () => {
   const { postProfileImage, putUserInfo } = useChangeUserInfo();
   const { postCreateNotification } = useHandleNotification();
   const { createPostFollow, deletePostFollow } = useFollow();
-  const navigate = useNavigate();
-  const userData = useUserInfoContext();
 
   const handleChange = (file: File) => {
     setUserImage(file);
@@ -62,10 +60,10 @@ const UserProfile = () => {
   };
 
   const handleFollow = () => {
-    if (userData && data) {
+    if (userInfo && data) {
       if (isFollow) {
         const findIdIndex = data?.followers?.findIndex(
-          (follow) => follow.follower === userData?._id
+          (follow) => follow.follower === userInfo?._id
         );
         if (findIdIndex !== -1) {
           deletePostFollow.mutate(
@@ -76,7 +74,7 @@ const UserProfile = () => {
         createPostFollow.mutate(data._id);
         postCreateNotification.mutate({
           notificationType: 'FOLLOW',
-          notificationTypeId: userData._id,
+          notificationTypeId: userInfo!._id,
           userId: data._id,
           postId: null,
         });
@@ -85,13 +83,13 @@ const UserProfile = () => {
   };
 
   useEffect(() => {
-    if (userData && data) {
-      isSameUser(userData._id, data._id) && setIsMyInfo(true);
+    if (userInfo && data) {
+      isSameUser(userInfo._id, data._id) && setIsMyInfo(true);
       setIsFollow(
-        data.followers!.some(({ follower }) => follower === userData._id)
+        data.followers!.some(({ follower }) => follower === userInfo._id)
       );
     }
-  }, [data, userData]);
+  }, [data, userInfo]);
 
   useEffect(() => {
     if (data?.fullName !== userName && userName !== '' && isEdit === false) {
