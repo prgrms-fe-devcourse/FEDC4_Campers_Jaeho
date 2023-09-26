@@ -6,7 +6,7 @@ type AvatarImageProps = AvatarProps & {
 
 const PrimaryAvatar = ({ isOnline, ...props }: AvatarImageProps) => {
   return (
-    <Avatar src={Image} {...props}>
+    <Avatar {...props}>
       {isOnline && <AvatarBadge boxSize={4} bg="green.500" />}
     </Avatar>
   );
