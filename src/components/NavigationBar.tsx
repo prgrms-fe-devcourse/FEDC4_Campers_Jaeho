@@ -14,7 +14,7 @@ const NavigationBar = () => {
       w="100%"
       h="50px"
       cursor="pointer"
-      bgColor={userInfo ? '#ECE9E9' : '#28B67E'}
+      bgColor="#ECE9E9"
       align="center"
       justify="center"
       pos="fixed"
@@ -63,8 +63,17 @@ const NavigationBar = () => {
           </PrimaryLink>
         </>
       ) : (
-        <PrimaryLink color="white" router={ROUTES.AUTH} fontWeight="bold">
-          로그인!
+        <PrimaryLink
+          w="100%"
+          h="100%"
+          bgColor="#28B67E"
+          color="white"
+          fontWeight="bold"
+          router={ROUTES.AUTH}
+        >
+          <Center w="100%" h="100%">
+            로그인!
+          </Center>
         </PrimaryLink>
       )}
     </Flex>
