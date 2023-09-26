@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Container, Flex, Stack, Center, Box, Input } from '@chakra-ui/react';
+import { Flex, Stack, Center, Box, Input } from '@chakra-ui/react';
 import { useDisclosure } from '@chakra-ui/react';
 import { MdNotifications } from 'react-icons/md';
 import { GrFormPrevious } from 'react-icons/gr';
@@ -26,6 +26,7 @@ import { useHandleNotification } from '../hooks/mutation/useHandleNotification';
 import { useFollow } from '../hooks/mutation/useFollow';
 import { logout } from '../apis/auth';
 import PrimaryAlertDialogSet from '../components/common/PrimaryAlertDialogSet';
+import PrimaryContainer from '../components/common/PrimaryContainer';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -140,7 +141,7 @@ const UserProfile = () => {
               )}
             </Box>
           </PrimaryModal>
-          <Container my={5}>
+          <PrimaryContainer>
             <PrimaryHeader>
               <PrimaryLink router={-1}>
                 <GrFormPrevious fontSize="25px" />
@@ -206,7 +207,7 @@ const UserProfile = () => {
                 ))}
               </PrimaryGrid>
             </Stack>
-          </Container>
+          </PrimaryContainer>
         </>
       ) : null}
     </>

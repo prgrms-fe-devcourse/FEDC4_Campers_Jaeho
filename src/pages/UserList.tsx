@@ -1,4 +1,4 @@
-import { Container, List, Spacer, Text, VStack } from '@chakra-ui/react';
+import { List, Spacer, Text, VStack } from '@chakra-ui/react';
 import NavigationBar from '../components/NavigationBar';
 import PrimaryLink from '../components/common/PrimaryLink';
 import PrimaryHeader from '../components/common/PrimaryHeader';
@@ -9,14 +9,15 @@ import { IoArrowBackOutline } from 'react-icons/io5';
 import { ROUTES } from '../constants/routes';
 import { useFilter } from '../hooks/useFilter';
 import { User } from '../types/user';
+import PrimaryContainer from '../components/common/PrimaryContainer';
 
 const UserList = () => {
   const [filteredData, switchData] = useFilter([]);
 
   return (
-    <Container padding={0}>
+    <PrimaryContainer>
       <VStack spacing={3} align="stretch">
-        <PrimaryHeader height={14} borderRadius={3}>
+        <PrimaryHeader>
           <PrimaryLink
             router={ROUTES.MAIN}
             color="#0D1321"
@@ -90,7 +91,7 @@ const UserList = () => {
         />
         <NavigationBar />
       </VStack>
-    </Container>
+    </PrimaryContainer>
   );
 };
 

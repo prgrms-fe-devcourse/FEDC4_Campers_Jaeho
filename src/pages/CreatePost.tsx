@@ -1,5 +1,4 @@
 import {
-  Container,
   FormControl,
   FormLabel,
   Input,
@@ -15,6 +14,7 @@ import UploadImage from '../components/common/UploadImage';
 import PrimaryButton from '../components/common/PrimaryButton';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import PrimaryLink from '../components/common/PrimaryLink';
+import PrimaryContainer from '../components/common/PrimaryContainer';
 
 const CreatePost = () => {
   const [postTitle, setPostTitle] = useState('');
@@ -43,8 +43,8 @@ const CreatePost = () => {
   };
 
   return (
-    <Container mt={5}>
-      <PrimaryHeader mb={5}>
+    <PrimaryContainer>
+      <PrimaryHeader>
         <PrimaryLink router={'/'}>
           <ChevronLeftIcon boxSize={10} />
         </PrimaryLink>
@@ -77,7 +77,7 @@ const CreatePost = () => {
           </PrimaryButton>
         </Stack>
       </form>
-    </Container>
+    </PrimaryContainer>
   );
 };
 
