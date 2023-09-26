@@ -2,7 +2,7 @@ import { Flex, FlexProps } from '@chakra-ui/react';
 
 const PrimaryHeader = ({ children, ...props }: FlexProps) => {
   return (
-    <Flex align="center" {...props}>
+    <Flex align="center" minH="60px" p="10px" {...props}>
       {children}
     </Flex>
   );
