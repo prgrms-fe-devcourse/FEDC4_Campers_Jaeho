@@ -21,7 +21,7 @@ const Main = () => {
 
   return (
     <PrimaryContainer>
-      <PrimaryHeader>
+      <PrimaryHeader isShowBackBtn={false}>
         <Text fontSize="24px" flexGrow={1}>
           Campers
         </Text>
