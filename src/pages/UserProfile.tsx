@@ -31,6 +31,7 @@ const UserProfile = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [userName, setUserName] = useState('');
   const [isMyInfo, setIsMyInfo] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { userId } = useParams();
   const { getSearchUser: { data, error } = {} } = useSearchUser(userId);
@@ -38,7 +39,7 @@ const UserProfile = () => {
   const { postProfileImage, putUserInfo } = useChangeUserInfo();
   const postLogout = useLogout();
   const { postCreateNotification } = useHandleNotification();
-  const { createPostFollow } = useFollow();
+  const { createPostFollow, deletePostFollow } = useFollow();
   const navigate = useNavigate();
   const userData = useUserInfoContext();
 
@@ -52,21 +53,35 @@ const UserProfile = () => {
 
   const handleFollow = () => {
     if (userData && data) {
-      createPostFollow.mutate(data._id);
-      postCreateNotification.mutate({
-        notificationType: 'FOLLOW',
-        notificationTypeId: userData._id,
-        userId: data._id,
-        postId: null,
-      });
+      if (isFollow) {
+        const findIdIndex = data?.followers?.findIndex(
+          (follow) => follow.follower === userData?._id
+        );
+        if (findIdIndex !== -1) {
+          deletePostFollow.mutate(
+            data.followers![findIdIndex!] as unknown as string
+          );
+        }
+      } else {
+        createPostFollow.mutate(data._id);
+        postCreateNotification.mutate({
+          notificationType: 'FOLLOW',
+          notificationTypeId: userData._id,
+          userId: data._id,
+          postId: null,
+        });
+      }
     }
   };
 
   useEffect(() => {
     if (userData && data) {
       isSameUser(userData._id, data._id) && setIsMyInfo(true);
+      setIsFollow(
+        data.followers!.some(({ follower }) => follower === userData._id)
+      );
     }
-  }, [data?._id, userData?._id]);
+  }, [data, userData]);
 
   useEffect(() => {
     if (data?.fullName !== userName && userName !== '' && isEdit === false) {
@@ -162,7 +177,7 @@ const UserProfile = () => {
                 </PrimaryButton>
               ) : (
                 <PrimaryButton w="150px" onClick={handleFollow}>
-                  팔로우
+                  {isFollow ? '언팔로우' : '팔로우'}
                 </PrimaryButton>
               )}
               <PrimaryGrid spacing={0}>
