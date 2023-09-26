@@ -57,7 +57,9 @@ const PrimaryAlertDialogSet = ({
           </AlertDialogHeader>
           <AlertDialogBody>
             {bodyContentSentences.map((bodyContentSentense, index) => (
-              <Text mt={index > 0 ? 1 : 0}>{bodyContentSentense}</Text>
+              <Text key={index} mt={index > 0 ? 1 : 0}>
+                {bodyContentSentense}
+              </Text>
             ))}
           </AlertDialogBody>
           <AlertDialogFooter>
