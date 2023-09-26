@@ -4,11 +4,9 @@ import { PostResponse, CommentResponse, UpdatePost } from '../types/post';
 
 export const createPoster = async (formData: FormData) => {
   try {
-    console.log(formData.getAll('title'));
     const response = await instance.post('posts/create', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    console.log(response);
 
     return response;
   } catch (error) {
@@ -22,7 +20,6 @@ export const createPoster = async (formData: FormData) => {
 export const searchPoster = async (postId: string) => {
   try {
     const { data } = await instance.get<PostResponse>(`posts/${postId}`);
-
     const {
       image,
       author: { fullName, image: authorImage, isOnline, _id },
@@ -42,12 +39,14 @@ export const searchPoster = async (postId: string) => {
         author_id,
       })
     );
+
     const likeInfo = data.likes.map(({ user }) => ({
       user,
     }));
+
     const { title, description } = JSON.parse(data.title);
 
-    const response = {
+    return {
       postInfo: {
         fullName,
         authorImage,
@@ -61,8 +60,6 @@ export const searchPoster = async (postId: string) => {
       commentInfo,
       likeInfo,
     };
-
-    return response;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error as Error);
@@ -74,6 +71,7 @@ export const searchPoster = async (postId: string) => {
 export const updatePost = async (updateData: UpdatePost) => {
   try {
     const formData = new FormData();
+
     formData.append('postId', updateData.postId);
     formData.append('title', updateData.title);
     updateData.image && formData.append('image', updateData.image);
