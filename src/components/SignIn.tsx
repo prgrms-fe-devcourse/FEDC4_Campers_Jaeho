@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { ButtonGroup, useDisclosure } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
 import PrimaryAlertDialogSet from './common/PrimaryAlertDialogSet';
@@ -19,6 +20,7 @@ const SignIn = () => {
     reset,
   } = useForm<SignInFormValues>();
   const navigate = useNavigate();
+  const { setUserInfo } = useUserInfoContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const onSubmit = async (data: SignInFormValues) => {
@@ -36,6 +38,7 @@ const SignIn = () => {
       const { token } = response;
 
       setLocalStorage('token', token);
+      setUserInfo(response.user);
       history.replaceState(null, '', '/');
       navigate('/');
     }

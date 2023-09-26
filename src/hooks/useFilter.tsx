@@ -4,7 +4,7 @@ import { Follow, User } from '../types/user';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
 
 export const useFilter = (initalState = []) => {
-  const user = useUserInfoContext();
+  const { userInfo } = useUserInfoContext();
 
   const [filteredData, setFilteredData] = useState<User[] | Follow[]>(
     initalState
@@ -13,7 +13,7 @@ export const useFilter = (initalState = []) => {
   const {
     getSearchAllUser: { data: allUser, isLoading },
     getSearchUser: { data: followerData, isLoading: isLoadingFollow },
-  } = useSearchUser(user?._id);
+  } = useSearchUser(userInfo?._id);
 
   const switchData = (index: number) => {
     if (!isLoading || !isLoadingFollow) {

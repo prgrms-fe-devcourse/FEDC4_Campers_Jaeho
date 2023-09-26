@@ -12,19 +12,27 @@ type UserInfoProviderProps = {
   children: ReactNode;
 };
 
-const UserInfoContext = createContext<User | null>(null);
+type UserInfoContextType = {
+  userInfo: User | null;
+  setUserInfo: React.Dispatch<React.SetStateAction<User | null>>;
+};
+
+const UserInfoContext = createContext<UserInfoContextType>({
+  userInfo: null,
+  setUserInfo: () => {},
+});
 
 export const useUserInfoContext = () => useContext(UserInfoContext);
 
 const UserInfoProvider = ({ children }: UserInfoProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [userInfo, setUserInfo] = useState<User | null>(null);
 
   useEffect(() => {
     const getUserInfo = async () => {
       const response = await checkAuth();
 
       if (typeof response === 'object') {
-        setUser(response);
+        setUserInfo(response);
       }
     };
 
@@ -32,7 +40,9 @@ const UserInfoProvider = ({ children }: UserInfoProviderProps) => {
   }, []);
 
   return (
-    <UserInfoContext.Provider value={user}>{children}</UserInfoContext.Provider>
+    <UserInfoContext.Provider value={{ userInfo, setUserInfo }}>
+      {children}
+    </UserInfoContext.Provider>
   );
 };
 

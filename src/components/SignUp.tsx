@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { ButtonGroup, useDisclosure } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
 import PrimaryAlertDialogSet from './common/PrimaryAlertDialogSet';
@@ -18,6 +19,7 @@ const SignUp = () => {
     reset,
   } = useForm<SignUpFormValues>();
   const navigate = useNavigate();
+  const { setUserInfo } = useUserInfoContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const onSubmit = async (data: SignUpFormValues) => {
@@ -37,6 +39,7 @@ const SignUp = () => {
       const { token } = response;
 
       setLocalStorage('token', token);
+      setUserInfo(response.user);
       history.replaceState(null, '', '/');
       navigate('/');
     }

@@ -1,7 +1,8 @@
-import { Center, CenterProps } from '@chakra-ui/react';
+import { Center } from '@chakra-ui/react';
+import { ComponentProps } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-type PrimaryLinkProps = CenterProps & {
+type PrimaryLinkProps = ComponentProps<typeof Center> & {
   router: string | number;
 };
 

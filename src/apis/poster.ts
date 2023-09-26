@@ -24,7 +24,8 @@ export const searchPoster = async (postId: string) => {
     const { data } = await instance.get<PostResponse>(`posts/${postId}`);
 
     const {
-      author: { fullName, image, isOnline, _id },
+      image,
+      author: { fullName, image: authorImage, isOnline, _id },
       updatedAt,
     } = data;
 
@@ -49,6 +50,7 @@ export const searchPoster = async (postId: string) => {
     const response = {
       postInfo: {
         fullName,
+        authorImage,
         image,
         isOnline,
         _id,
@@ -59,7 +61,6 @@ export const searchPoster = async (postId: string) => {
       commentInfo,
       likeInfo,
     };
-    console.log('response', response);
 
     return response;
   } catch (error) {
