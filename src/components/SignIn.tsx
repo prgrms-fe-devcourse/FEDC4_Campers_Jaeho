@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { ButtonGroup, useDisclosure } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
 import PrimaryAlertDialogSet from './common/PrimaryAlertDialogSet';
@@ -19,15 +20,20 @@ const SignIn = () => {
     reset,
   } = useForm<SignInFormValues>();
   const navigate = useNavigate();
+  const { setUserInfo } = useUserInfoContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const handleConfirm = () => {
+    onClose();
+    setFocus('email');
+    reset();
+  };
 
   const onSubmit = async (data: SignInFormValues) => {
     const response = await signin(data);
 
     if (typeof response === 'string') {
       onOpen();
-      setFocus('email');
-      reset();
 
       return;
     }
@@ -36,6 +42,7 @@ const SignIn = () => {
       const { token } = response;
 
       setLocalStorage('token', token);
+      setUserInfo(response.user);
       history.replaceState(null, '', '/');
       navigate('/');
     }
@@ -62,9 +69,14 @@ const SignIn = () => {
   return (
     <>
       <PrimaryAlertDialogSet
-        bodyContent="이메일 혹은 비밀번호가 잘못되었습니다"
+        bodyContentSentences={[
+          '이메일 혹은 비밀번호가 잘못되었습니다.',
+          '초기화하시겠습니까?',
+        ]}
         isOpen={isOpen}
         onClose={onClose}
+        hasCancelButton
+        handleConfirm={handleConfirm}
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <AuthInputFieldWithForm

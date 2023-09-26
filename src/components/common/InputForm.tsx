@@ -29,6 +29,7 @@ export const InputForm = ({ postId }) => {
       postId: postId,
       comment: newcomment,
     });
+    setNewcomment('');
   };
 
   return (
@@ -50,7 +51,7 @@ export const InputForm = ({ postId }) => {
           width={82}
           height={35}
           borderRadius={5}
-          handleClick={handleSubmit}
+          onClick={handleSubmit}
         >
           댓글달기!
         </PrimaryButton>

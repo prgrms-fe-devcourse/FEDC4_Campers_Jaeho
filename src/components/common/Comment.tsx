@@ -56,7 +56,7 @@ const Comment = ({
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
-            <PrimaryButton handleClick={onHandleDelete}>Delete!!</PrimaryButton>
+            <PrimaryButton onClick={onHandleDelete}>Delete!!</PrimaryButton>
           </PopoverBody>
         </PopoverContent>
       </Popover>

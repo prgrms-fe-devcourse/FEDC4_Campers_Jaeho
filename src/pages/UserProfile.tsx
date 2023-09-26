@@ -1,6 +1,12 @@
-import { Container, Flex, Stack, Center, Box, Input } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Container, Flex, Stack, Center, Box, Input } from '@chakra-ui/react';
+import { useDisclosure } from '@chakra-ui/react';
+import { MdNotifications } from 'react-icons/md';
+import { GrFormPrevious } from 'react-icons/gr';
+import { AiFillEdit } from 'react-icons/ai';
+import { BiMessageDetail } from 'react-icons/bi';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
 import PrimaryInfo from '../components/common/PrimaryInfo';
@@ -9,48 +15,81 @@ import PrimaryLink from '../components/common/PrimaryLink';
 import PrimaryGrid from '../components/common/PrimaryGrid';
 import TemperatureBar from '../components/common/TemperatureBar';
 import PostCard from '../components/PostCard';
-import { useDisclosure } from '@chakra-ui/react';
-import { MdNotifications } from 'react-icons/md';
-import { GrFormPrevious } from 'react-icons/gr';
-import { AiFillEdit } from 'react-icons/ai';
-import { BiMessageDetail } from 'react-icons/bi';
 import PrimaryModal from '../components/common/PrimaryModal';
 import { useSearchUser } from '../hooks/query/useSearchUser';
 import { useNotification } from '../hooks/query/useNotification';
 import { useChangeUserInfo } from '../hooks/mutation/useChangeUserInfo';
 import PrimaryText from '../components/common/PrimaryText';
-import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { isSameUser } from '../utils/isSameUser';
 import PrimaryImage from '../components/common/PrimaryImage';
-import { useLogout } from '../hooks/mutation/useLogout';
+import { useHandleNotification } from '../hooks/mutation/useHandleNotification';
+import { useFollow } from '../hooks/mutation/useFollow';
+import { logout } from '../apis/auth';
+import PrimaryAlertDialogSet from '../components/common/PrimaryAlertDialogSet';
 
 const UserProfile = () => {
+  const navigate = useNavigate();
+  const { userInfo, setUserInfo } = useUserInfoContext();
   const [userImage, setUserImage] = useState<File | null>(null);
   const [isEdit, setIsEdit] = useState(false);
   const [userName, setUserName] = useState('');
   const [isMyInfo, setIsMyInfo] = useState(false);
+  const [isFollow, setIsFollow] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isLogoutOpen,
+    onOpen: onLogoutOpen,
+    onClose: onLogoutClose,
+  } = useDisclosure();
   const { userId } = useParams();
   const { getSearchUser: { data, error } = {} } = useSearchUser(userId);
   const { data: notificationData } = useNotification();
   const { postProfileImage, putUserInfo } = useChangeUserInfo();
-  const postLogout = useLogout();
-  const navigate = useNavigate();
-  const userData = useUserInfoContext();
+  const { postCreateNotification } = useHandleNotification();
+  const { createPostFollow, deletePostFollow } = useFollow();
 
   const handleChange = (file: File) => {
     setUserImage(file);
   };
 
-  const handleLogout = () => {
-    postLogout.mutate();
+  const handleLogoutConfirm = async () => {
+    onLogoutClose();
+    setUserInfo(null);
+    await logout();
+    navigate('/');
+  };
+
+  const handleFollow = () => {
+    if (userInfo && data) {
+      if (isFollow) {
+        const findIdIndex = data?.followers?.findIndex(
+          (follow) => follow.follower === userInfo?._id
+        );
+        if (findIdIndex !== -1) {
+          deletePostFollow.mutate(
+            data.followers![findIdIndex!] as unknown as string
+          );
+        }
+      } else {
+        createPostFollow.mutate(data._id);
+        postCreateNotification.mutate({
+          notificationType: 'FOLLOW',
+          notificationTypeId: userInfo!._id,
+          userId: data._id,
+          postId: null,
+        });
+      }
+    }
   };
 
   useEffect(() => {
-    if (userData && data) {
-      isSameUser(userData._id, data._id) && setIsMyInfo(true);
+    if (userInfo && data) {
+      isSameUser(userInfo._id, data._id) && setIsMyInfo(true);
+      setIsFollow(
+        data.followers!.some(({ follower }) => follower === userInfo._id)
+      );
     }
-  }, [data?._id, userData?._id]);
+  }, [data, userInfo]);
 
   useEffect(() => {
     if (data?.fullName !== userName && userName !== '' && isEdit === false) {
@@ -71,6 +110,14 @@ const UserProfile = () => {
 
   return (
     <>
+      <PrimaryAlertDialogSet
+        bodyContentSentences={['로그아웃을 하시겠습니까?']}
+        isOpen={isLogoutOpen}
+        onClose={onLogoutClose}
+        hasCancelButton
+        hasOverlay
+        handleConfirm={handleLogoutConfirm}
+      />
       {data && notificationData ? (
         <>
           <PrimaryModal isOpen={isOpen} onClose={onClose}>
@@ -113,7 +160,6 @@ const UserProfile = () => {
               ) : (
                 <PrimaryImage imageSrc={data.image} borderRadius="full" />
               )}
-
               <Flex align="center">
                 {isEdit ? (
                   <Input
@@ -141,11 +187,13 @@ const UserProfile = () => {
                 />
               </Flex>
               {isMyInfo ? (
-                <PrimaryButton w="150px" onClick={handleLogout}>
+                <PrimaryButton w="150px" onClick={onLogoutOpen}>
                   로그아웃
                 </PrimaryButton>
               ) : (
-                <PrimaryButton w="150px">팔로우</PrimaryButton>
+                <PrimaryButton w="150px" onClick={handleFollow}>
+                  {isFollow ? '언팔로우' : '팔로우'}
+                </PrimaryButton>
               )}
               <PrimaryGrid spacing={0}>
                 {data.posts.map(({ _id, title, image }) => (
