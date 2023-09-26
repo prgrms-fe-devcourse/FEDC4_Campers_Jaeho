@@ -8,10 +8,12 @@ type CommentData = {
 
 export const createComment = async ({ comment, postId }: CommentData) => {
   try {
-    await instance.post('/comments/create', {
+    const data = await instance.post('/comments/create', {
       comment,
       postId,
     });
+
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
@@ -25,12 +27,14 @@ export const createComment = async ({ comment, postId }: CommentData) => {
 
 export const deleteComment = async (id: string) => {
   try {
-    await instance.delete('comments/delete', {
+    const data = await instance.delete('comments/delete', {
       headers: {
         'Content-Type': 'application/json',
       },
       data: { id },
     });
+
+    return data;
   } catch (error) {
     console.error(error);
   }

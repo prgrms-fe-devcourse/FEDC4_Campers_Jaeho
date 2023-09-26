@@ -11,7 +11,6 @@ export const searchPosterAll = async (id: string, pageParam: number) => {
     const { data } = await instance.get<PostResponse[]>(
       `posts/channel/${id}?limit=12&offset=${pageParam}`
     );
-    console.log(data);
 
     return data.map(({ title, updatedAt, _id, likes, image }) => ({
       title: titleValidation(title),

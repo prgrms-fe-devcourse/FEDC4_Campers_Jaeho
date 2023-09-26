@@ -11,7 +11,7 @@ export const CreateRecommend = async (postId: string) => {
   }
 };
 
-export const deleteRecommend = async (postId: string) => {
+export const DeleteRecommend = async (postId: string) => {
   try {
     await instance.delete('likes/delete', { data: { id: postId } });
   } catch (error) {
