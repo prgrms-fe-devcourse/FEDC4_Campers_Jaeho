@@ -18,7 +18,7 @@ export type User = {
   posts: PostResponse[];
   likes?: [];
   comments?: [];
-  followers?: [];
+  followers?: Follow[];
   following?: Follow[];
   notifications?: [];
   messages?: [];

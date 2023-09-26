@@ -2,7 +2,7 @@ import { Image, Input, ImageProps } from '@chakra-ui/react';
 import { ChangeEvent, useRef, useState } from 'react';
 
 type Props = {
-  image: string;
+  image?: string;
   handleOnChange: (file: File) => void;
 };
 

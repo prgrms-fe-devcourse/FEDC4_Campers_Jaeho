@@ -24,7 +24,8 @@ export const searchPoster = async (postId: string) => {
     const { data } = await instance.get<PostResponse>(`posts/${postId}`);
 
     const {
-      author: { fullName, image, isOnline, _id },
+      image,
+      author: { fullName, image: authorImage, isOnline, _id },
       updatedAt,
     } = data;
 
@@ -32,13 +33,14 @@ export const searchPoster = async (postId: string) => {
       ({
         _id,
         comment,
-        author: { fullName, isOnline, _id: author_id },
+        author: { fullName, isOnline, _id: author_id, image: author_image },
       }: CommentResponse) => ({
         _id,
         comment,
         fullName,
         isOnline,
         author_id,
+        author_image,
       })
     );
     const likeInfo = data.likes.map(({ user }) => ({
@@ -49,6 +51,7 @@ export const searchPoster = async (postId: string) => {
     const response = {
       postInfo: {
         fullName,
+        authorImage,
         image,
         isOnline,
         _id,
@@ -59,7 +62,6 @@ export const searchPoster = async (postId: string) => {
       commentInfo,
       likeInfo,
     };
-    console.log('response', response);
 
     return response;
   } catch (error) {

@@ -9,8 +9,9 @@ import PrimaryGrid from '../components/common/PrimaryGrid';
 import { Spinner, Text, Stack, Center, Box } from '@chakra-ui/react';
 import useMainPageRender from '../hooks/query/useMainPageRender';
 import useObserver from '../hooks/useObserver';
+import PrimaryContainer from '../components/common/PrimaryContainer';
 
-function Main() {
+const Main = () => {
   const { VITE_MAIN_CHANNELID } = import.meta.env;
   const { data, hasNextPage, fetchNextPage } =
     useMainPageRender(VITE_MAIN_CHANNELID);
@@ -19,9 +20,9 @@ function Main() {
   });
 
   return (
-    <>
-      <PrimaryHeader h="60px" p="0 15px">
-        <Text fontSize="24px" flexGrow="1">
+    <PrimaryContainer>
+      <PrimaryHeader>
+        <Text fontSize="24px" flexGrow={1}>
           Campers
         </Text>
         <PrimaryLink router={ROUTES.SEARCH}>
@@ -30,16 +31,20 @@ function Main() {
           </CircleIconBg>
         </PrimaryLink>
       </PrimaryHeader>
-      {data &&
-        data.pages.map((page, index) => (
-          <Box key={index}>
-            <PrimaryGrid>
-              {page?.map((post) => <PostCard post={post} key={post._id} />)}
-            </PrimaryGrid>
-          </Box>
-        ))}
+      <Stack p="10px">
+        {data &&
+          data.pages.map((page, index) => (
+            <Box key={index}>
+              <PrimaryGrid>
+                {page?.map((post) => (
+                  <PostCard post={post} key={post._id} minH="25vh" />
+                ))}
+              </PrimaryGrid>
+            </Box>
+          ))}
+      </Stack>
       <Stack p="15px">
-        <Center w="100%" paddingBottom="60px">
+        <Center w="100%" pb="60px">
           {!data || hasNextPage ? (
             <Spinner
               ref={observeRef as React.MutableRefObject<HTMLDivElement>}
@@ -51,10 +56,9 @@ function Main() {
           )}
         </Center>
       </Stack>
-
       <NavigationBar />
-    </>
+    </PrimaryContainer>
   );
-}
+};
 
 export default Main;

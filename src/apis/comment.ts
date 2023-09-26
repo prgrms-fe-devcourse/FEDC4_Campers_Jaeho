@@ -8,10 +8,12 @@ type CommentData = {
 
 export const createComment = async ({ comment, postId }: CommentData) => {
   try {
-    await instance.post('/comments/create', {
+    const data = await instance.post('/comments/create', {
       comment,
       postId,
     });
+
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);

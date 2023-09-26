@@ -1,12 +1,10 @@
 import { Box, Text, AspectRatio, AspectRatioProps } from '@chakra-ui/react';
-import { MainPost } from './Main/MainPagePosts';
 import PrimaryLink from './common/PrimaryLink';
 import { ROUTES } from '../constants/routes';
 
 type PostCardProps = AspectRatioProps & {
-  post: MainPost;
+  post: { _id: string; title?: string; image?: string };
   isShowText?: boolean;
-  spacing?: number;
 };
 
 const PostCard = ({ post, isShowText = true, ...props }: PostCardProps) => {

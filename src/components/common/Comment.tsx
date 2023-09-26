@@ -15,6 +15,7 @@ import PrimaryAvatar from './PrimaryAvatar';
 import PrimaryText from './PrimaryText';
 import PrimaryButton from './PrimaryButton';
 import { useComment } from '../../hooks/mutation/useComment';
+
 const Comment = ({
   comment,
   image,
@@ -25,22 +26,17 @@ const Comment = ({
   name: string;
   comment: string;
   image: string;
-  isOnline: boolean;
+  isOnline: boolean | null;
   userId: string;
 }) => {
   const { DeleteComment } = useComment();
-  const onHandleDelete = () => {
+  const onDelete = () => {
     DeleteComment.mutate(userId);
   };
 
   return (
     <Flex bg="#ECE9E9" maxW="100%" p={2}>
-      <PrimaryAvatar
-        src={image}
-        isOnline={isOnline}
-        size={'sm'}
-        userId={userId}
-      />
+      <PrimaryAvatar src={image} isOnline={isOnline ?? false} size={'sm'} />
       <Box>
         <PrimaryText children={name} />
         <PrimaryText children={comment} />
@@ -56,7 +52,7 @@ const Comment = ({
           <PopoverArrow />
           <PopoverCloseButton />
           <PopoverBody>
-            <PrimaryButton handleClick={onHandleDelete}>Delete!!</PrimaryButton>
+            <PrimaryButton onClick={onDelete}>Delete!!</PrimaryButton>
           </PopoverBody>
         </PopoverContent>
       </Popover>
