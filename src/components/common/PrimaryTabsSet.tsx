@@ -8,6 +8,7 @@ import {
   Text,
   TypographyProps,
   LayoutProps,
+  TabsProps,
 } from '@chakra-ui/react';
 
 type PrimaryTabsSetProps = {
@@ -16,6 +17,7 @@ type PrimaryTabsSetProps = {
   tabsMinH?: LayoutProps['minH'];
   tabTextFontWeight?: TypographyProps['fontWeight'];
   tabTextFontSize?: TypographyProps['fontSize'];
+  tabsIsFitted?: TabsProps['isFitted'];
   handleTabsChangeAdditionalFn?: (index: number) => void;
 };
 
@@ -25,6 +27,7 @@ const PrimaryTabsSet = ({
   tabsMinH,
   tabTextFontWeight = 550,
   tabTextFontSize = 'lg',
+  tabsIsFitted = false,
   handleTabsChangeAdditionalFn,
 }: PrimaryTabsSetProps) => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -35,7 +38,12 @@ const PrimaryTabsSet = ({
   };
 
   return (
-    <Tabs minH={tabsMinH} index={tabIndex} onChange={handleTabsChange}>
+    <Tabs
+      isFitted={tabsIsFitted}
+      minH={tabsMinH}
+      index={tabIndex}
+      onChange={handleTabsChange}
+    >
       <TabList borderBottom="none" justifyContent="center">
         {tabTexts.map((tabText, index) => (
           <Tab key={index} color="green.400">
@@ -51,7 +59,9 @@ const PrimaryTabsSet = ({
       </TabList>
       <TabPanels>
         {tabPanelChildrens.map((tabPanelChildren, index) => (
-          <TabPanel key={index}>{tabPanelChildren}</TabPanel>
+          <TabPanel px={tabsIsFitted ? 0 : undefined} key={index}>
+            {tabPanelChildren}
+          </TabPanel>
         ))}
       </TabPanels>
     </Tabs>
