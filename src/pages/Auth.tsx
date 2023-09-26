@@ -6,23 +6,24 @@ import PrimaryLink from '../components/common/PrimaryLink';
 import useAuthCheck from '../hooks/useAuthCheck';
 import { GrFormPrevious } from 'react-icons/gr';
 import PrimaryContainer from '../components/common/PrimaryContainer';
-import AbsoluteCenterBox from '../components/common/AbsoluteCenterBox';
+import CircleIconBg from '../components/common/CircleIconBg';
+
 const Auth = () => {
   useAuthCheck();
 
   return (
     <PrimaryContainer>
-      <PrimaryHeader>
+      <PrimaryHeader mb={10}>
         <PrimaryLink cursor="pointer" router={-1}>
-          <GrFormPrevious fontSize="25px" />
+          <CircleIconBg>
+            <GrFormPrevious fontSize="25px" />
+          </CircleIconBg>
         </PrimaryLink>
       </PrimaryHeader>
-      <AbsoluteCenterBox>
-        <PrimaryTabsSet
-          tabTexts={['로그인', '회원가입']}
-          tabPanelChildrens={[<SignIn />, <SignUp />]}
-        />
-      </AbsoluteCenterBox>
+      <PrimaryTabsSet
+        tabTexts={['로그인', '회원가입']}
+        tabPanelChildrens={[<SignIn />, <SignUp />]}
+      />
     </PrimaryContainer>
   );
 };
