@@ -135,7 +135,7 @@ const Detail = () => {
           <Divider bg="gray.100" />
           <Box bg="#ECE9E9" maxW="100%" maxH="5%" p={4}>
             <Box>
-              {comments
+              {commentInfo
                 ?.slice(0, 3)
                 .map((comment) => (
                   <Comment
@@ -170,7 +170,7 @@ const Detail = () => {
                   <DrawerCloseButton />
                   <DrawerHeader>댓글</DrawerHeader>
                   <DrawerBody>
-                    {comments?.map((comment) => (
+                    {commentInfo?.map((comment) => (
                       <Comment
                         comment={comment.comment}
                         image={'https://i.pravatar.cc/2'}

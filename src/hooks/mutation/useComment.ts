@@ -7,8 +7,9 @@ export const useComment = () => {
     ({ comment, postId }: { comment: string; postId: string }) =>
       createComment({ comment, postId }),
     {
-      onSuccess() {
-        querClient.invalidateQueries(['detail']);
+      onSuccess(data) {
+        console.log('mutation', data);
+        querClient.invalidateQueries(['detail', data?.data.post]);
       },
     }
   );
