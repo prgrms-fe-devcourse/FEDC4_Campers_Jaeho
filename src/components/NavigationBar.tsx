@@ -49,6 +49,9 @@ const NavigationBar = () => {
             flex={1}
             color="#0D1321"
             router={`${ROUTES.USER_INFO(userInfo?._id || '')}`}
+            h="100%"
+            transition="all 0.3s"
+            _hover={{ bgColor: '#D3DCDE' }}
           >
             <Center h="100%">
               <PrimaryAvatar
