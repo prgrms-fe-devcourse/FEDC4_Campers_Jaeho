@@ -12,17 +12,10 @@ import PrimaryGrid from '../components/common/PrimaryGrid';
 import PostCard from '../components/PostCard';
 import searchImage from '../assets/images/search.png';
 import { User } from '../types/user';
-import {
-  Image,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Stack,
-} from '@chakra-ui/react';
+import { Image, Stack } from '@chakra-ui/react';
 import PrimaryContainer from '../components/common/PrimaryContainer';
 import NavigationBar from '../components/NavigationBar';
+import PrimaryTabsSet from '../components/common/PrimaryTabsSet';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -52,38 +45,35 @@ const Search = () => {
               <Loading />
             </AbsoluteCenterBox>
           ) : (
-            <Tabs colorScheme="green">
-              <TabList>
-                <Tab flex={1}>Users ({userResult && userResult.length})</Tab>
-                <Tab flex={1}>Posts ({postResult && postResult.length})</Tab>
-              </TabList>
-              <TabPanels p="10px 0">
-                <TabPanel p={0}>
-                  <Stack>
-                    {userResult?.length !== 0 ? (
-                      userResult?.map((res) => (
-                        <UserCard key={res._id} userData={res} />
-                      ))
-                    ) : (
-                      <NoResult />
-                    )}
-                  </Stack>
-                </TabPanel>
-                <TabPanel p={0}>
-                  <Stack>
-                    {postResult && postResult.length !== 0 ? (
-                      <PrimaryGrid>
-                        {postResult.map((post) => (
-                          <PostCard post={post} key={post._id} />
-                        ))}
-                      </PrimaryGrid>
-                    ) : (
-                      <NoResult />
-                    )}
-                  </Stack>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
+            <PrimaryTabsSet
+              tabTexts={[
+                `Users (${userResult && userResult.length})`,
+                `Posts (${postResult && postResult.length})`,
+              ]}
+              tabPanelChildrens={[
+                <Stack>
+                  {userResult?.length !== 0 ? (
+                    userResult?.map((res) => (
+                      <UserCard key={res._id} userData={res} />
+                    ))
+                  ) : (
+                    <NoResult />
+                  )}
+                </Stack>,
+                <Stack>
+                  {postResult && postResult.length !== 0 ? (
+                    <PrimaryGrid>
+                      {postResult.map((post) => (
+                        <PostCard post={post} key={post._id} />
+                      ))}
+                    </PrimaryGrid>
+                  ) : (
+                    <NoResult />
+                  )}
+                </Stack>,
+              ]}
+              tabsIsFitted
+            />
           )
         ) : (
           <AbsoluteCenterBox>
@@ -95,7 +85,6 @@ const Search = () => {
           </AbsoluteCenterBox>
         )}
       </Stack>
-
       <NavigationBar />
     </PrimaryContainer>
   );
