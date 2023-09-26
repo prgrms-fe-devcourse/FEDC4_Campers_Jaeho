@@ -36,13 +36,15 @@ const Main = () => {
           data.pages.map((page, index) => (
             <Box key={index}>
               <PrimaryGrid>
-                {page?.map((post) => <PostCard post={post} key={post._id} />)}
+                {page?.map((post) => (
+                  <PostCard post={post} key={post._id} minH="25vh" />
+                ))}
               </PrimaryGrid>
             </Box>
           ))}
       </Stack>
       <Stack p="15px">
-        <Center w="100%" paddingBottom="60px">
+        <Center w="100%" pb="60px">
           {!data || hasNextPage ? (
             <Spinner
               ref={observeRef as React.MutableRefObject<HTMLDivElement>}
