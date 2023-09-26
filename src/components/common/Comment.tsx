@@ -15,25 +15,30 @@ import PrimaryAvatar from './PrimaryAvatar';
 import PrimaryText from './PrimaryText';
 import PrimaryButton from './PrimaryButton';
 import { useComment } from '../../hooks/mutation/useComment';
-
+import { useUserInfoContext } from '../../contexts/UserInfoProvider';
 const Comment = ({
+  _id,
   comment,
   image,
   isOnline,
   name,
-  userId,
+  author,
 }: {
+  _id: string;
   name: string;
   comment: string;
   image: string;
   isOnline: boolean | null;
-  userId: string;
+  author: string;
 }) => {
   const { DeleteComment } = useComment();
   const onHandleDelete = () => {
-    console.log(userId);
-    DeleteComment.mutate(userId);
+    if (userInfo !== null && userInfo?._id === author) {
+      DeleteComment.mutate(_id);
+    }
   };
+  const { userInfo } = useUserInfoContext();
+  console.log('commentid', _id, userInfo?._id);
 
   return (
     <Flex bg="#ECE9E9" maxW="100%" p={2}>

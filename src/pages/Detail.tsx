@@ -30,8 +30,10 @@ import { useUserInfoContext } from '../contexts/UserInfoProvider';
 const Detail = () => {
   const { postId } = useParams<{ postId: string }>();
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
+
   const { data: { postInfo, commentInfo, likeInfo } = {}, isLoading } =
     useDetailPost(postId);
+
   const { userInfo } = useUserInfoContext();
   const doesUserIdExist = (arr: { user: string }[], id: string): boolean => {
     const foundUser = arr.find((item) => item.user === id);
@@ -106,11 +108,13 @@ const Detail = () => {
                 ?.slice(0, 3)
                 .map((comment) => (
                   <Comment
+                    key={comment._id}
                     comment={comment.comment}
-                    image={comment.author_image}
+                    image={comment._id}
                     isOnline={comment?.isOnline || false}
                     name={comment.fullName}
-                    userId={comment.author_id}
+                    _id={comment._id}
+                    author={comment.author_id}
                   />
                 ))}
             </Box>
@@ -138,11 +142,13 @@ const Detail = () => {
                   <DrawerBody>
                     {commentInfo?.map((comment) => (
                       <Comment
+                        key={comment._id}
                         comment={comment.comment}
-                        image={comment.author_image}
+                        image={comment._id}
                         isOnline={comment?.isOnline || false}
                         name={comment.fullName}
-                        userId={comment.author_id}
+                        _id={comment._id}
+                        author={comment.author_id}
                       />
                     ))}
                   </DrawerBody>

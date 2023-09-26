@@ -43,9 +43,7 @@ export const searchPoster = async (postId: string) => {
         author_image,
       })
     );
-    const likeInfo = data.likes.map(({ user }) => ({
-      user,
-    }));
+    const likeInfo = data.likes;
     const { title, description } = JSON.parse(data.title);
 
     const response = {
