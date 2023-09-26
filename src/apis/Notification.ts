@@ -1,7 +1,7 @@
+import { NotificationInfo } from './../types/social';
 import { NotificationResponse } from './../types/user';
 import instance from './axios';
 import { AxiosError } from 'axios';
-import { NotificationInfo } from '../../types/social';
 
 export const getNotification = async () => {
   try {

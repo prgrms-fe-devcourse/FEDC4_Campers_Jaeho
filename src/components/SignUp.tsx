@@ -1,5 +1,6 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { ButtonGroup, useDisclosure } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
 import PrimaryAlertDialogSet from './common/PrimaryAlertDialogSet';
@@ -18,17 +19,22 @@ const SignUp = () => {
     reset,
   } = useForm<SignUpFormValues>();
   const navigate = useNavigate();
+  const { setUserInfo } = useUserInfoContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
+
+  const handleConfirm = () => {
+    onClose();
+    setFocus('email');
+    reset({
+      email: '',
+    });
+  };
 
   const onSubmit = async (data: SignUpFormValues) => {
     const response = await signup(data);
 
     if (typeof response === 'string') {
       onOpen();
-      setFocus('email');
-      reset({
-        email: '',
-      });
 
       return;
     }
@@ -37,6 +43,7 @@ const SignUp = () => {
       const { token } = response;
 
       setLocalStorage('token', token);
+      setUserInfo(response.user);
       history.replaceState(null, '', '/');
       navigate('/');
     }
@@ -75,9 +82,14 @@ const SignUp = () => {
   return (
     <>
       <PrimaryAlertDialogSet
-        bodyContent="이미 존재하는 이메일입니다"
+        bodyContentSentences={[
+          '이미 존재하는 이메일입니다.',
+          '이메일을 초기화하시겠습니까?',
+        ]}
         isOpen={isOpen}
         onClose={onClose}
+        hasCancelButton
+        handleConfirm={handleConfirm}
       />
       <form onSubmit={handleSubmit(onSubmit)}>
         <AuthInputFieldWithForm

@@ -7,7 +7,6 @@ type PrimaryButtonProps = ComponentProps<typeof Button> & {
 
 const PrimaryButton = ({
   children,
-  handleClick,
   bgColor = 'green.400',
   hoverBgColor = 'green.500',
   ...props
@@ -21,7 +20,6 @@ const PrimaryButton = ({
       px={[4, 8]}
       bgColor={bgColor}
       color="white"
-      onClick={handleClick}
       _hover={{
         bgColor: hoverBgColor,
       }}

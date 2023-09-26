@@ -44,7 +44,12 @@ const AuthInputFieldWithForm = forwardRef<
       </InputGroup>
       {helperTexts &&
         helperTexts.map((helperText, index) => (
-          <Text key={index} fontSize="xs" color="blackAlpha.600">
+          <Text
+            key={index}
+            fontSize="xs"
+            color="blackAlpha.600"
+            wordBreak="keep-all"
+          >
             {helperText}
           </Text>
         ))}

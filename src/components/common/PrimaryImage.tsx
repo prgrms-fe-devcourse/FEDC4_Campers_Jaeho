@@ -4,7 +4,11 @@ const PrimaryImage = ({
   ...props
 }: ImageProps & { imageSrc: string }) => {
   return (
-    <Image {...props} src={imageSrc ?? 'https://via.placeholder.com/150'} />
+    <Image
+      {...props}
+      boxSize="150px"
+      src={imageSrc ?? 'https://via.placeholder.com/150'}
+    />
   );
 };
 
