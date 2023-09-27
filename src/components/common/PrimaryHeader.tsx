@@ -1,7 +1,8 @@
 import { Flex, FlexProps } from '@chakra-ui/react';
 import CircleIconBg from './CircleIconBg';
 import PrimaryLink from './PrimaryLink';
-import { ChevronLeftIcon } from '@chakra-ui/icons';
+// import { ChevronLeftIcon } from '@chakra-ui/icons';
+import { IoIosArrowBack } from 'react-icons/io';
 
 type PrimaryHeaderProps = FlexProps & {
   isShowBackBtn?: boolean;
@@ -13,11 +14,18 @@ const PrimaryHeader = ({
   ...props
 }: PrimaryHeaderProps) => {
   return (
-    <Flex align="center" minH="60px" p="10px" pos="relative" {...props}>
+    <Flex
+      align="center"
+      minH="60px"
+      p="10px"
+      pos="relative"
+      gap="10px"
+      {...props}
+    >
       {isShowBackBtn && (
         <PrimaryLink router={-1} pos="absolute">
           <CircleIconBg>
-            <ChevronLeftIcon boxSize={8} color="white" />
+            <IoIosArrowBack />
           </CircleIconBg>
         </PrimaryLink>
       )}

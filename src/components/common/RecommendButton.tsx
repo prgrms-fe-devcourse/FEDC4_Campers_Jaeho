@@ -1,5 +1,11 @@
 import { useState } from 'react';
-import { Flex, FlexProps, Text, Box } from '@chakra-ui/react';
+import {
+  Flex,
+  FlexProps,
+  Text,
+  Box,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import { useRecommend } from '../../hooks/mutation/useRecommend';
 import { useNotification } from '../../hooks/query/useNotification';
 import { useUserInfoContext } from '../../contexts/UserInfoProvider';
@@ -25,6 +31,11 @@ const RecommendButton = ({
   const { createRecommend, deleteRecommend } = useRecommend();
   const { createNewNotification } = useNotification();
   const { userInfo } = useUserInfoContext();
+  const Color = useColorModeValue('rgba(0,0,0,0.1)', 'rgba(255,255,255,0.1)');
+  const HoverColor = useColorModeValue(
+    'rgba(0,0,0,0.2)',
+    'rgba(255,255,255,0.2)'
+  );
 
   const handleToggleClicked = () => {
     if (
@@ -71,13 +82,13 @@ const RecommendButton = ({
   return (
     <>
       <Flex
-        bgColor="gray.100"
+        bgColor={Color}
         align="center"
         p="10px 15px"
         borderRadius="30px"
         onClick={() => handleToggleClicked()}
         transition="all 0.3s"
-        _hover={{ bgColor: 'gray.300' }}
+        _hover={{ bgColor: HoverColor }}
         {...props}
       >
         <Box
