@@ -1,14 +1,20 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getNotification, createNotification } from '../../apis/Notification';
 import { NotificationInfo } from '../../types/social';
 
 export const useNotification = () => {
+  const queryClient = useQueryClient();
+
   const getNewNotification = useQuery(['new', 'notification'], getNotification);
 
-  const createNewNotification = useMutation((notification: NotificationInfo) =>
-    createNotification(notification)
+  const createNewNotification = useMutation(
+    (notification: NotificationInfo) => createNotification(notification),
+    {
+      onSuccess() {
+        queryClient.invalidateQueries(['new', 'notification']);
+      },
+    }
   );
-  console.log('check');
 
   return { getNewNotification, createNewNotification };
 };
