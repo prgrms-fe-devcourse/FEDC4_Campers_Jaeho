@@ -3,26 +3,28 @@ import PrimaryLink from './common/PrimaryLink';
 import { ROUTES } from '../constants/routes';
 
 type PostCardProps = AspectRatioProps & {
-  post: { _id: string; title?: string; image?: string };
+  post: { _id: string; title?: string; image?: string; updatedAt?: string };
   isShowText?: boolean;
 };
 
 const PostCard = ({ post, isShowText = true, ...props }: PostCardProps) => {
-  const { _id, title, image } = post;
+  const { _id, title, image, updatedAt } = post;
+  console.log(post);
 
   return (
     <AspectRatio
       ratio={1}
       key={_id}
       overflow="hidden"
-      borderRadius="10"
+      borderRadius="20px"
       bgImg={image ?? '../src/assets/images/no_image.png'}
       bgRepeat="no-repeat"
       bgSize="cover;"
       bgPosition="center"
       transition="all 0.3s"
       cursor="pointer"
-      _hover={{ bgSize: 'cover;' }}
+      color="rgba(0, 0, 0, 0)"
+      _hover={{ borderRadius: '0px;', color: 'rgba(211, 220, 222, 1)' }}
       {...props}
     >
       <PrimaryLink router={`${ROUTES.POST_DETAIL(_id)}`}>
@@ -38,9 +40,9 @@ const PostCard = ({ post, isShowText = true, ...props }: PostCardProps) => {
           rgba(0, 0, 0, 0.6) 100%
         )"
           >
-            {/* <Text pos="absolute" bottom="50" left="15" color="#D3DCDE">
-              북한
-            </Text> */}
+            <Text pos="absolute" bottom="50" left="15">
+              {updatedAt && updatedAt.slice(0, 10)}
+            </Text>
             <Text
               pos="absolute"
               bottom="15"
