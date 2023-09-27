@@ -1,4 +1,4 @@
-import { Stack, Text } from '@chakra-ui/react';
+import { Stack, Text, useColorModeValue } from '@chakra-ui/react';
 
 const PrimaryInfo = ({
   title = '',
@@ -7,6 +7,8 @@ const PrimaryInfo = ({
   subTitleSize = 'xs',
   ...props
 }) => {
+  const textColor = useColorModeValue('blackAlpha.600', 'white');
+
   return (
     <Stack textAlign="center" spacing={2} {...props}>
       <Text
