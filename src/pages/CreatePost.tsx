@@ -9,11 +9,9 @@ import {
 } from '@chakra-ui/react';
 import { FormEvent, useState } from 'react';
 import { useCreatePost } from '../hooks/mutation/useCreatePost';
-import { ChevronLeftIcon } from '@chakra-ui/icons';
 import UploadImage from '../components/common/UploadImage';
 import PrimaryButton from '../components/common/PrimaryButton';
 import PrimaryHeader from '../components/common/PrimaryHeader';
-import PrimaryLink from '../components/common/PrimaryLink';
 import PrimaryContainer from '../components/common/PrimaryContainer';
 
 const CreatePost = () => {
@@ -45,38 +43,39 @@ const CreatePost = () => {
   return (
     <PrimaryContainer>
       <PrimaryHeader>
-        <PrimaryLink router={'/'}>
-          <ChevronLeftIcon boxSize={10} />
-        </PrimaryLink>
         <Spacer />
-        <Text as="b" fontSize="2xl">
+        <Text as="b" fontSize="20px">
           후기작성
         </Text>
         <Spacer />
       </PrimaryHeader>
-      <form onSubmit={handleSubmit}>
-        <Stack spacing={6}>
-          <FormControl>
-            <FormLabel>제목</FormLabel>
-            <Input
-              placeholder="제목을 입력하세요"
-              value={postTitle}
-              onChange={(event) => setPostTitle(event.target.value)}
-            />
-          </FormControl>
-          <FormControl>
-            <FormLabel>후기</FormLabel>
-            <Textarea
-              value={description}
-              onChange={(event) => setDescription(event.target.value)}
-            />
-          </FormControl>
-          <UploadImage handleOnChange={handleChange} />
-          <PrimaryButton type="submit" w="200px">
-            글 올리기
-          </PrimaryButton>
-        </Stack>
-      </form>
+      <Stack p="20px">
+        <form onSubmit={handleSubmit}>
+          <Stack spacing={6}>
+            <FormControl>
+              <FormLabel>제목</FormLabel>
+              <Input
+                placeholder="제목을 입력하세요"
+                value={postTitle}
+                onChange={(event) => setPostTitle(event.target.value)}
+              />
+            </FormControl>
+            <FormControl>
+              <FormLabel>후기</FormLabel>
+              <Textarea
+                value={description}
+                onChange={(event) => setDescription(event.target.value)}
+                minH="250px"
+                h="auto"
+              />
+            </FormControl>
+            <UploadImage handleOnChange={handleChange} />
+            <PrimaryButton type="submit" w="200px">
+              글 올리기
+            </PrimaryButton>
+          </Stack>
+        </form>
+      </Stack>
     </PrimaryContainer>
   );
 };
