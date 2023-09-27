@@ -34,6 +34,7 @@ export const InputForm = ({ postId }: InputFormProps) => {
       postId: postId,
       comment: newcomment,
     });
+     setNewcomment('');
   };
 
   return (
