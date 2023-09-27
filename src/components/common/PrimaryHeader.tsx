@@ -17,7 +17,7 @@ const PrimaryHeader = ({
       {isShowBackBtn && (
         <PrimaryLink router={-1} pos="absolute">
           <CircleIconBg>
-            <ChevronLeftIcon boxSize={8} />
+            <ChevronLeftIcon boxSize={8} color="white" />
           </CircleIconBg>
         </PrimaryLink>
       )}
