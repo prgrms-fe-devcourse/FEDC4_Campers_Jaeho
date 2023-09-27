@@ -56,6 +56,13 @@ const UserProfile = () => {
 
   const handleChange = (file: File) => {
     setUserImage(file);
+
+    if (userInfo) {
+      setUserInfo({
+        ...userInfo,
+        image: URL.createObjectURL(file),
+      });
+    }
   };
 
   const handleLogoutConfirm = async () => {
