@@ -42,7 +42,6 @@ const Detail = () => {
             >
               <PrimaryHeader />
             </Box>
-
             <Stack p="20px">
               <Stack borderBottom="1px solid #eee">
                 <Text color="gray.500">{postInfo.updatedAt.slice(0, 10)}</Text>

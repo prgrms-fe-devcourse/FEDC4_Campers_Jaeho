@@ -168,10 +168,7 @@ const UserProfile = () => {
               <Flex gap="10px" fontSize="25px">
                 {isMyInfo && (
                   <CircleIconBg>
-                    <MdNotifications
-                      style={{ fontSize: '25px' }}
-                      onClick={onOpen}
-                    />
+                    <MdNotifications onClick={onOpen} />
                   </CircleIconBg>
                 )}
               </Flex>

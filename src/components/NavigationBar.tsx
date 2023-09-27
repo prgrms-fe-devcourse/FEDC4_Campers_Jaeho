@@ -9,13 +9,14 @@ import { useUserInfoContext } from '../contexts/UserInfoProvider';
 const NavigationBar = () => {
   const { userInfo } = useUserInfoContext();
   const iconColor = useColorModeValue('white', '#2D3748');
+  const boxColor = useColorModeValue('#2F3C4C', '#F0F0F0');
 
   return (
     <Flex
       w="100%"
       h="50px"
       cursor="pointer"
-      bgColor="#d3dcde"
+      bgColor={boxColor}
       align="center"
       justify="center"
       pos="fixed"

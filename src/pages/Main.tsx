@@ -26,12 +26,12 @@ const Main = () => {
     <PrimaryContainer>
       <PrimaryHeader isShowBackBtn={false}>
         <Box flexGrow={1}>
-          <Image w="100px" h="40px" src={Logo} />
+          <Image w="140px" h="40px" src={Logo} />
         </Box>
         <DarkMode />
         <PrimaryLink router={ROUTES.SEARCH}>
           <CircleIconBg>
-            <SearchIcon boxSize={5} />
+            <SearchIcon />
           </CircleIconBg>
         </PrimaryLink>
       </PrimaryHeader>
