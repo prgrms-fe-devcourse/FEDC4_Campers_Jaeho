@@ -8,6 +8,7 @@ import {
   Text,
   TypographyProps,
   LayoutProps,
+  useColorModeValue,
 } from '@chakra-ui/react';
 
 type PrimaryTabsSetProps = {
@@ -28,6 +29,7 @@ const PrimaryTabsSet = ({
   handleTabsChangeAdditionalFn,
 }: PrimaryTabsSetProps) => {
   const [tabIndex, setTabIndex] = useState(0);
+  const textColor = useColorModeValue('#2D3748', 'white');
 
   const handleTabsChange = (index: number) => {
     setTabIndex(index);
@@ -42,7 +44,7 @@ const PrimaryTabsSet = ({
             <Text
               fontSize={tabTextFontSize}
               fontWeight={tabTextFontWeight}
-              color={tabIndex === index ? 'green.400' : 'blackAlpha.600'}
+              color={tabIndex === index ? 'green.400' : textColor}
             >
               {tabText}
             </Text>
