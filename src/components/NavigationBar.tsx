@@ -15,7 +15,7 @@ const NavigationBar = () => {
       w="100%"
       h="50px"
       cursor="pointer"
-      bgColor="gray.100"
+      bgColor="#d3dcde"
       align="center"
       justify="center"
       pos="fixed"
