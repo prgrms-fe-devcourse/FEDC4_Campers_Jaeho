@@ -1,4 +1,4 @@
-import { Flex, Center } from '@chakra-ui/react';
+import { Flex, Center, useColorModeValue } from '@chakra-ui/react';
 import { AiFillHome } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
 import { ROUTES } from '../constants/routes';
@@ -8,18 +8,19 @@ import { useUserInfoContext } from '../contexts/UserInfoProvider';
 
 const NavigationBar = () => {
   const { userInfo } = useUserInfoContext();
+  const iconColor = useColorModeValue('white', '#2D3748');
 
   return (
     <Flex
       w="100%"
       h="50px"
       cursor="pointer"
-      bgColor="#ECE9E9"
+      bgColor="gray.100"
       align="center"
       justify="center"
       pos="fixed"
       bottom={0}
-      maxW="container.sm"
+      maxW="60ch"
     >
       {userInfo ? (
         <>
@@ -28,10 +29,10 @@ const NavigationBar = () => {
             flex={1}
             h="100%"
             transition="all 0.3s"
-            _hover={{ bgColor: '#D3DCDE' }}
+            _hover={{ bgColor: 'gray.200' }}
           >
             <Center h="100%">
-              <AiFillHome fontSize={22} />
+              <AiFillHome fontSize={22} color={iconColor} />
             </Center>
           </PrimaryLink>
           <PrimaryLink
@@ -39,10 +40,10 @@ const NavigationBar = () => {
             flex={1}
             h="100%"
             transition="all 0.3s"
-            _hover={{ bgColor: '#D3DCDE' }}
+            _hover={{ bgColor: 'gray.200' }}
           >
             <Center h="100%">
-              <IoIosAddCircle fontSize={22} />
+              <IoIosAddCircle fontSize={22} color={iconColor} />
             </Center>
           </PrimaryLink>
           <PrimaryLink
@@ -51,7 +52,7 @@ const NavigationBar = () => {
             router={`${ROUTES.USER_INFO(userInfo?._id || '')}`}
             h="100%"
             transition="all 0.3s"
-            _hover={{ bgColor: '#D3DCDE' }}
+            _hover={{ bgColor: 'gray.200' }}
           >
             <Center h="100%">
               <PrimaryAvatar

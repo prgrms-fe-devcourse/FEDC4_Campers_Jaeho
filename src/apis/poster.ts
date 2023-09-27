@@ -32,7 +32,9 @@ export const searchPoster = async (postId: string) => {
       ({
         _id,
         comment,
+
         author: { fullName, isOnline, _id: author_id, image },
+
       }: CommentResponse) => ({
         _id,
         comment,
@@ -47,6 +49,7 @@ export const searchPoster = async (postId: string) => {
       user,
       _id,
     }));
+
 
     const { title, description } = JSON.parse(data.title);
 

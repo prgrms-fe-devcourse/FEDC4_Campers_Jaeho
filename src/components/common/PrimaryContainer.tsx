@@ -8,7 +8,6 @@ const PrimaryContainer = ({
   return (
     <Container
       minH="100vh"
-      maxW="container.sm"
       justifyContent="center"
       pos="relative"
       p={0}

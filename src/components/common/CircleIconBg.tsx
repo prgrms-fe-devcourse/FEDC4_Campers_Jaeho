@@ -1,4 +1,4 @@
-import { Stack, StackProps } from '@chakra-ui/react';
+import { Stack, StackProps, Button } from '@chakra-ui/react';
 
 const CircleIconBg = ({ children, ...props }: StackProps) => {
   return (
@@ -6,12 +6,11 @@ const CircleIconBg = ({ children, ...props }: StackProps) => {
       align="center"
       cursor="pointer"
       transition="all 0.3s"
-      _hover={{ bgColor: 'gray.100' }}
       borderRadius="50%"
       p="10px"
       {...props}
     >
-      {children}
+      <Button variant="ghost">{children}</Button>
     </Stack>
   );
 };

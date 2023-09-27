@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Flex, Stack, Center, Box, Input } from '@chakra-ui/react';
-import { useDisclosure } from '@chakra-ui/react';
+import {
+  Flex,
+  Stack,
+  Center,
+  Box,
+  Input,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { MdNotifications } from 'react-icons/md';
-import { GrFormPrevious } from 'react-icons/gr';
 import { AiFillEdit } from 'react-icons/ai';
 import { BiMessageDetail } from 'react-icons/bi';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import UploadImage from '../components/common/UploadImage';
 import PrimaryInfo from '../components/common/PrimaryInfo';
 import PrimaryButton from '../components/common/PrimaryButton';
-import PrimaryLink from '../components/common/PrimaryLink';
 import PrimaryGrid from '../components/common/PrimaryGrid';
 import TemperatureBar from '../components/common/TemperatureBar';
 import PostCard from '../components/PostCard';
@@ -27,6 +31,7 @@ import { useFollow } from '../hooks/mutation/useFollow';
 import { logout } from '../apis/auth';
 import PrimaryAlertDialogSet from '../components/common/PrimaryAlertDialogSet';
 import PrimaryContainer from '../components/common/PrimaryContainer';
+import CircleIconBg from '../components/common/CircleIconBg';
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -51,6 +56,13 @@ const UserProfile = () => {
 
   const handleChange = (file: File) => {
     setUserImage(file);
+
+    if (userInfo) {
+      setUserInfo({
+        ...userInfo,
+        image: URL.createObjectURL(file),
+      });
+    }
   };
 
   const handleLogoutConfirm = async () => {
@@ -143,12 +155,16 @@ const UserProfile = () => {
           </PrimaryModal>
           <PrimaryContainer>
             <PrimaryHeader>
-              <PrimaryLink router={-1}>
-                <GrFormPrevious fontSize="25px" />
-              </PrimaryLink>
               <Box flex={1}></Box>
               <Flex gap="10px" fontSize="25px">
-                {isMyInfo && <MdNotifications onClick={onOpen} />}
+                {isMyInfo && (
+                  <CircleIconBg>
+                    <MdNotifications
+                      style={{ fontSize: '23px' }}
+                      onClick={onOpen}
+                    />
+                  </CircleIconBg>
+                )}
               </Flex>
             </PrimaryHeader>
             <Stack spacing={4} align="center">
@@ -175,7 +191,7 @@ const UserProfile = () => {
                 {isMyInfo && <AiFillEdit onClick={() => setIsEdit(!isEdit)} />}
               </Flex>
               <PrimaryText color="gray.300">{data.email}</PrimaryText>
-              <TemperatureBar value={60} maxW="70%" />
+              <TemperatureBar value={60} maxW="50%" />
               <Flex gap={10} textAlign="center">
                 <PrimaryInfo title={`${data.posts.length}`} subTitle="게시물" />
                 <PrimaryInfo
