@@ -7,7 +7,7 @@ const PrimaryInfo = ({
   subTitleSize = 'xs',
   ...props
 }) => {
-  const textColor = useColorModeValue('blackAlpha.600', 'white');
+  const subColor = useColorModeValue('blackAlpha.600', 'white');
 
   return (
     <Stack textAlign="center" spacing={2} {...props}>
@@ -21,7 +21,7 @@ const PrimaryInfo = ({
         {title}
       </Text>
       <Text
-        color="blackAlpha.600"
+        color={subColor}
         overflow="hidden"
         whiteSpace="nowrap"
         textOverflow="ellipsis"
