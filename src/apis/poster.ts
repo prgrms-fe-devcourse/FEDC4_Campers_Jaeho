@@ -33,18 +33,17 @@ export const searchPoster = async (postId: string) => {
       ({
         _id,
         comment,
-        author: { fullName, isOnline, _id: author_id },
+        author: { fullName, isOnline, _id: author_id, image: author_image },
       }: CommentResponse) => ({
         _id,
         comment,
         fullName,
         isOnline,
         author_id,
+        author_image,
       })
     );
-    const likeInfo = data.likes.map(({ user }) => ({
-      user,
-    }));
+    const likeInfo = data.likes;
     const { title, description } = JSON.parse(data.title);
 
     const response = {
