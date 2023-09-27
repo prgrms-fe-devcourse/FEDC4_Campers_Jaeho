@@ -3,7 +3,9 @@ import { AxiosError } from 'axios';
 
 export const CreateRecommend = async (postId: string) => {
   try {
-    await instance.post('likes/create', { postId });
+    const data = await instance.post('likes/create', { postId });
+
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
@@ -13,7 +15,11 @@ export const CreateRecommend = async (postId: string) => {
 
 export const DeleteRecommend = async (postId: string) => {
   try {
-    await instance.delete('likes/delete', { data: { id: postId } });
+    const data = await instance.delete('likes/delete', {
+      data: { id: postId },
+    });
+
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);

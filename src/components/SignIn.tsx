@@ -31,7 +31,6 @@ const SignIn = () => {
 
   const onSubmit = async (data: SignInFormValues) => {
     const response = await signin(data);
-
     if (typeof response === 'string') {
       onOpen();
 
@@ -44,7 +43,7 @@ const SignIn = () => {
       setLocalStorage('token', token);
       setUserInfo(response.user);
       history.replaceState(null, '', '/');
-      navigate('/');
+      navigate(-1);
     }
   };
 

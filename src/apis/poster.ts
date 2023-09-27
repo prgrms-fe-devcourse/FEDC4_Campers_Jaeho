@@ -22,32 +22,40 @@ export const createPoster = async (formData: FormData) => {
 export const searchPoster = async (postId: string) => {
   try {
     const { data } = await instance.get<PostResponse>(`posts/${postId}`);
-
     const {
       image,
-      author: { fullName, image: authorImage, isOnline, _id },
+      _id,
+      author: { fullName, image: authorImage, isOnline, _id: authorId },
       updatedAt,
     } = data;
-
     const commentInfo = data.comments.map(
       ({
         _id,
         comment,
-        author: { fullName, isOnline, _id: author_id, image: author_image },
+
+        author: { fullName, isOnline, _id: author_id, image },
+
       }: CommentResponse) => ({
         _id,
         comment,
         fullName,
         isOnline,
         author_id,
-        author_image,
+        image,
       })
     );
-    const likeInfo = data.likes;
+
+    const likeInfo = data.likes.map(({ user, _id }) => ({
+      user,
+      _id,
+    }));
+
+
     const { title, description } = JSON.parse(data.title);
 
     const response = {
       postInfo: {
+        authorId,
         fullName,
         authorImage,
         image,
@@ -82,6 +90,18 @@ export const updatePost = async (updateData: UpdatePost) => {
     await instance.put('posts/update', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.error(error.message);
+    }
+  }
+};
+
+export const deletePost = async (id: string) => {
+  try {
+    const data = await instance.delete(`/posts/delete`, { data: { id } });
+
+    return data;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error.message);
