@@ -1,7 +1,7 @@
 import { Flex, FlexProps } from '@chakra-ui/react';
-import { GrFormPrevious } from 'react-icons/gr';
 import CircleIconBg from './CircleIconBg';
 import PrimaryLink from './PrimaryLink';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
 
 type PrimaryHeaderProps = FlexProps & {
   isShowBackBtn?: boolean;
@@ -17,7 +17,7 @@ const PrimaryHeader = ({
       {isShowBackBtn && (
         <PrimaryLink router={-1} pos="absolute">
           <CircleIconBg>
-            <GrFormPrevious fontSize="25px" />
+            <ChevronLeftIcon boxSize={8} />
           </CircleIconBg>
         </PrimaryLink>
       )}

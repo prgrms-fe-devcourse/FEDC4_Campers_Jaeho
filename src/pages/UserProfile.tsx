@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Flex, Stack, Center, Box, Input } from '@chakra-ui/react';
-import { useDisclosure } from '@chakra-ui/react';
+import {
+  Flex,
+  Stack,
+  Center,
+  Box,
+  Input,
+  useDisclosure,
+} from '@chakra-ui/react';
 import { MdNotifications } from 'react-icons/md';
 import { AiFillEdit } from 'react-icons/ai';
 import { BiMessageDetail } from 'react-icons/bi';
@@ -153,7 +159,10 @@ const UserProfile = () => {
               <Flex gap="10px" fontSize="25px">
                 {isMyInfo && (
                   <CircleIconBg>
-                    <MdNotifications onClick={onOpen} />
+                    <MdNotifications
+                      style={{ fontSize: '23px' }}
+                      onClick={onOpen}
+                    />
                   </CircleIconBg>
                 )}
               </Flex>
