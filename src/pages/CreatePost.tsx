@@ -26,7 +26,6 @@ const CreatePost = () => {
   const { createPost, isLoading } = useCreatePost();
   const [isFocusingTitle, setIsFocusingTitle] = useBoolean();
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const createPost = useCreatePost();
   const titleInputRef = useRef<HTMLInputElement | null>(null);
 
   const handleConfirm = () => {
@@ -55,10 +54,6 @@ const CreatePost = () => {
     }
   };
 
-  if (isLoading) {
-    return <Loading pos="fixed" top="50%" left="50%" w="100vw" h="100vh" />;
-  }
-
   useTimeout(isFocusingTitle, () => {
     titleInputRef.current?.focus();
     setIsFocusingTitle.off();
@@ -67,6 +62,10 @@ const CreatePost = () => {
   useEffect(() => {
     titleInputRef.current?.focus();
   }, []);
+
+  if (isLoading) {
+    return <Loading pos="fixed" top="50%" left="50%" w="100vw" h="100vh" />;
+  }
 
   return (
     <>
