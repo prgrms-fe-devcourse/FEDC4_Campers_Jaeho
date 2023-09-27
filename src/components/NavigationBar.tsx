@@ -1,4 +1,4 @@
-import { Flex, Center } from '@chakra-ui/react';
+import { Flex, Center, useColorModeValue } from '@chakra-ui/react';
 import { AiFillHome } from 'react-icons/ai';
 import { IoIosAddCircle } from 'react-icons/io';
 import { ROUTES } from '../constants/routes';
@@ -8,6 +8,7 @@ import { useUserInfoContext } from '../contexts/UserInfoProvider';
 
 const NavigationBar = () => {
   const { userInfo } = useUserInfoContext();
+  const iconColor = useColorModeValue('white', '#2D3748');
 
   return (
     <Flex
@@ -31,7 +32,7 @@ const NavigationBar = () => {
             _hover={{ bgColor: 'gray.200' }}
           >
             <Center h="100%">
-              <AiFillHome fontSize={22} />
+              <AiFillHome fontSize={22} color={iconColor} />
             </Center>
           </PrimaryLink>
           <PrimaryLink
@@ -42,7 +43,7 @@ const NavigationBar = () => {
             _hover={{ bgColor: 'gray.200' }}
           >
             <Center h="100%">
-              <IoIosAddCircle fontSize={22} />
+              <IoIosAddCircle fontSize={22} color={iconColor} />
             </Center>
           </PrimaryLink>
           <PrimaryLink

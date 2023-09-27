@@ -1,50 +1,25 @@
 import { useSearchUser } from './query/useSearchUser';
 import { useEffect, useState } from 'react';
-import { Follow, User } from '../types/user';
-import { useUserInfoContext } from '../contexts/UserInfoProvider';
+import { User } from '../types/user';
 
-export const useFilter = (initalState = []) => {
-  const { userInfo } = useUserInfoContext();
-
-  const [filteredData, setFilteredData] = useState<User[] | Follow[]>(
-    initalState
-  );
-
+export const useFilter = () => {
   const {
-    getSearchAllUser: { data: allUser, isLoading },
-    getSearchUser: { data: followerData, isLoading: isLoadingFollow },
-  } = useSearchUser(userInfo?._id);
-
-  const switchData = (index: number) => {
-    if (!isLoading || !isLoadingFollow) {
-      switch (index) {
-        case 0: {
-          const filteredData = allUser.sort((a: User, b: User) =>
-            a.isOnline !== b.isOnline ? 1 : -1
-          );
-          setFilteredData(filteredData);
-          break;
-        }
-        case 1: {
-          if (followerData && followerData['followers']) {
-            setFilteredData(followerData['followers']);
-          }
-          break;
-        }
-        case 2: {
-          if (followerData && followerData['following']) {
-            setFilteredData(followerData['following']);
-          }
-          break;
-        }
-      }
-    }
-  };
+    getSearchAllUser: { data: allUser, isLoading, isError },
+  } = useSearchUser();
+  const [filteredData, setFilteredData] = useState<User[] | null>();
 
   useEffect(() => {
-    // localstorage에 값이 있다면 대입
-    switchData(0);
-  }, [isLoading]);
+    if (allUser) {
+      setFilteredData(
+        allUser.sort((a: User, b: User) => {
+          if (a.isOnline && !b.isOnline) return -1;
+          if (!a.isOnline && b.isOnline) return 1;
 
-  return [filteredData, switchData];
+          return 0;
+        })
+      );
+    }
+  }, [allUser]);
+
+  return { filteredData, isLoading, isError };
 };
