@@ -52,6 +52,11 @@ const Main = () => {
         <Center w="100%" pb="60px">
           {!data || hasNextPage ? (
             <Spinner
+              thickness="4px"
+              speed="0.65s"
+              emptyColor="gray.200"
+              color="blue.500"
+              size="xl"
               ref={observeRef as React.MutableRefObject<HTMLDivElement>}
             />
           ) : (
