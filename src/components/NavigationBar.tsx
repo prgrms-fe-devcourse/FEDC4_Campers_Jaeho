@@ -14,12 +14,12 @@ const NavigationBar = () => {
       w="100%"
       h="50px"
       cursor="pointer"
-      bgColor="#ECE9E9"
+      bgColor="gray.100"
       align="center"
       justify="center"
       pos="fixed"
       bottom={0}
-      maxW="container.sm"
+      maxW="60ch"
     >
       {userInfo ? (
         <>
@@ -28,7 +28,7 @@ const NavigationBar = () => {
             flex={1}
             h="100%"
             transition="all 0.3s"
-            _hover={{ bgColor: '#D3DCDE' }}
+            _hover={{ bgColor: 'gray.200' }}
           >
             <Center h="100%">
               <AiFillHome fontSize={22} />
@@ -39,7 +39,7 @@ const NavigationBar = () => {
             flex={1}
             h="100%"
             transition="all 0.3s"
-            _hover={{ bgColor: '#D3DCDE' }}
+            _hover={{ bgColor: 'gray.200' }}
           >
             <Center h="100%">
               <IoIosAddCircle fontSize={22} />
@@ -51,7 +51,7 @@ const NavigationBar = () => {
             router={`${ROUTES.USER_INFO(userInfo?._id || '')}`}
             h="100%"
             transition="all 0.3s"
-            _hover={{ bgColor: '#D3DCDE' }}
+            _hover={{ bgColor: 'gray.200' }}
           >
             <Center h="100%">
               <PrimaryAvatar

@@ -11,6 +11,8 @@ import useMainPageRender from '../hooks/query/useMainPageRender';
 import useObserver from '../hooks/useObserver';
 import PrimaryContainer from '../components/common/PrimaryContainer';
 import Weather from '../components/Weather';
+import DarkMode from '../components/common/DarkMode';
+
 
 const Main = () => {
   const { VITE_MAIN_CHANNELID } = import.meta.env;
@@ -22,10 +24,11 @@ const Main = () => {
 
   return (
     <PrimaryContainer>
-      <PrimaryHeader>
+      <PrimaryHeader isShowBackBtn={false}>
         <Text fontSize="24px" flexGrow={1}>
           Campers
         </Text>
+        <DarkMode />
         <PrimaryLink router={ROUTES.SEARCH}>
           <CircleIconBg>
             <SearchIcon boxSize={5} />
