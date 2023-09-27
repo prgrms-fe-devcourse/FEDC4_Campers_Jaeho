@@ -2,15 +2,17 @@ import { Flex, Progress, Text, ProgressProps } from '@chakra-ui/react';
 
 type TemperatureBarProps = ProgressProps & {
   fontSize?: string;
+  justify?: string;
 };
 
 const TemperatureBar = ({
   value,
   fontSize = '12px',
+  justify = 'center',
   ...props
 }: TemperatureBarProps) => {
   return (
-    <Flex align="center" justify="center" w="100%">
+    <Flex align="center" justify={justify} w="100%">
       <Progress
         colorScheme="green"
         size="sm"

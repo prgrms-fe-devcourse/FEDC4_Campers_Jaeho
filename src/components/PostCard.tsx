@@ -18,11 +18,11 @@ const PostCard = ({ post, isShowText = true, ...props }: PostCardProps) => {
       borderRadius="10"
       bgImg={image ?? '../src/assets/images/no_image.png'}
       bgRepeat="no-repeat"
-      bgSize="100% auto;"
+      bgSize="cover;"
       bgPosition="center"
       transition="all 0.3s"
       cursor="pointer"
-      _hover={{ bgSize: '110% auto;' }}
+      _hover={{ bgSize: 'cover;' }}
       {...props}
     >
       <PrimaryLink router={`${ROUTES.POST_DETAIL(_id)}`}>
@@ -38,9 +38,9 @@ const PostCard = ({ post, isShowText = true, ...props }: PostCardProps) => {
           rgba(0, 0, 0, 0.6) 100%
         )"
           >
-            <Text pos="absolute" bottom="50" left="15" color="#D3DCDE">
+            {/* <Text pos="absolute" bottom="50" left="15" color="#D3DCDE">
               북한
-            </Text>
+            </Text> */}
             <Text
               pos="absolute"
               bottom="15"

@@ -1,6 +1,6 @@
 import { Stack, StackProps } from '@chakra-ui/react';
 
-const CircleIconBg = ({ children, bgSize, ...props }: StackProps) => {
+const CircleIconBg = ({ children, ...props }: StackProps) => {
   return (
     <Stack
       align="center"
@@ -9,8 +9,6 @@ const CircleIconBg = ({ children, bgSize, ...props }: StackProps) => {
       _hover={{ bgColor: 'gray.100' }}
       borderRadius="50%"
       p="10px"
-      w={bgSize}
-      h={bgSize}
       {...props}
     >
       {children}

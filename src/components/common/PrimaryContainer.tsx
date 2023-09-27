@@ -12,6 +12,7 @@ const PrimaryContainer = ({
       justifyContent="center"
       pos="relative"
       p={0}
+      boxShadow="md"
       {...props}
     >
       {children}
