@@ -10,10 +10,10 @@ import PrimaryAvatar from '../components/common/PrimaryAvatar';
 import TemperatureBar from '../components/common/TemperatureBar';
 import PrimaryLink from '../components/common/PrimaryLink';
 import { Box, Flex, Stack, Text } from '@chakra-ui/react';
-import { GrFormPrevious } from 'react-icons/gr';
 import { InputForm } from '../components/common/InputForm';
 import RecommendButton from '../components/common/RecommendButton';
 import Comment from '../components/common/Comment';
+import PrimaryHeader from '../components/common/PrimaryHeader';
 const Detail = () => {
   const { userInfo } = useUserInfoContext();
   const { postId } = useParams<{ postId: string }>();
@@ -39,14 +39,7 @@ const Detail = () => {
               boxShadow="xl"
               p="10px"
             >
-              <PrimaryLink router={-1} pos="absolute">
-                <CircleIconBg
-                  bgColor="rgba(255,255,255,0.5)"
-                  _hover={{ bgColor: 'rgba(255,255,255,0.8)' }}
-                >
-                  <GrFormPrevious fontSize="25px" />
-                </CircleIconBg>
-              </PrimaryLink>
+              <PrimaryHeader />
             </Box>
 
             <Stack p="20px">
