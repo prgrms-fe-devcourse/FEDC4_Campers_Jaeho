@@ -13,12 +13,13 @@ import UploadImage from '../components/common/UploadImage';
 import PrimaryButton from '../components/common/PrimaryButton';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import PrimaryContainer from '../components/common/PrimaryContainer';
+import Loading from '../components/common/Loading';
 
 const CreatePost = () => {
   const [postTitle, setPostTitle] = useState('');
   const [description, setDescription] = useState('');
   const [postImage, setPostImage] = useState<File | null>(null);
-  const createPost = useCreatePost();
+  const { createPost, isLoading } = useCreatePost();
 
   const handleChange = (file: File) => {
     setPostImage(file);
@@ -39,6 +40,10 @@ const CreatePost = () => {
       alert('타이틀을 입력해주세요');
     }
   };
+
+  if (isLoading) {
+    return <Loading pos="fixed" top="50%" left="50%" w="100vw" h="100vh" />;
+  }
 
   return (
     <PrimaryContainer>
