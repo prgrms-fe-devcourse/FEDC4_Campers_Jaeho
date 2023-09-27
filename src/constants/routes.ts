@@ -7,10 +7,8 @@ export const ROUTES = {
   CREATE_POST: '/createpost',
   USER_PROFILE: '/users/:userId',
   DETAIL: '/post/:postId',
-  EDIT: '/postedit/:postId',
   USER_INFO: (userId: string) => `/users/${userId}`,
   POST_DETAIL: (postId: string) => `/post/${postId}`,
-  POST_EDIT: (postId: string) => `/postedit/${postId}`,
   FOLLOW_BY_USER_ID: (userId: string) => `/follow/${userId}`,
   FOLLOWER_BY_USER_ID: (userId: string) => `/follower/${userId}`,
 };
