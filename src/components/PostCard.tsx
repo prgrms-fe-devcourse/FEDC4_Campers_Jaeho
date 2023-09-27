@@ -1,6 +1,7 @@
 import { Box, Text, AspectRatio, AspectRatioProps } from '@chakra-ui/react';
 import PrimaryLink from './common/PrimaryLink';
 import { ROUTES } from '../constants/routes';
+import titleValidation from '../utils/titleValidation';
 
 type PostCardProps = AspectRatioProps & {
   post: { _id: string; title?: string; image?: string; updatedAt?: string };
@@ -9,7 +10,6 @@ type PostCardProps = AspectRatioProps & {
 
 const PostCard = ({ post, isShowText = true, ...props }: PostCardProps) => {
   const { _id, title, image, updatedAt } = post;
-  console.log(post);
 
   return (
     <AspectRatio
@@ -55,7 +55,7 @@ const PostCard = ({ post, isShowText = true, ...props }: PostCardProps) => {
               textOverflow="ellipsis"
               fontWeight="bold"
             >
-              {title}
+              {title && titleValidation(title)}
             </Text>
           </Box>
         )}

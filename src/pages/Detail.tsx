@@ -9,11 +9,12 @@ import CircleIconBg from '../components/common/CircleIconBg';
 import PrimaryAvatar from '../components/common/PrimaryAvatar';
 import TemperatureBar from '../components/common/TemperatureBar';
 import PrimaryLink from '../components/common/PrimaryLink';
-import { Box, Flex, Stack, Text } from '@chakra-ui/react';
-import { InputForm } from '../components/common/InputForm';
 import RecommendButton from '../components/common/RecommendButton';
 import Comment from '../components/common/Comment';
+import { Box, Flex, Stack, Text } from '@chakra-ui/react';
+import { InputForm } from '../components/common/InputForm';
 import PrimaryHeader from '../components/common/PrimaryHeader';
+
 const Detail = () => {
   const { userInfo } = useUserInfoContext();
   const { postId } = useParams<{ postId: string }>();
@@ -135,19 +136,16 @@ const Detail = () => {
                         isOnline,
                         image,
                       }) => (
-                        <>
-                          <>
-                            <Comment
-                              userInfo={userInfo}
-                              comment={comment}
-                              image={image}
-                              isOnline={!!isOnline}
-                              fullName={fullName}
-                              _id={_id}
-                              author_id={author_id}
-                            />
-                          </>
-                        </>
+                        <Comment
+                          userInfo={userInfo}
+                          comment={comment}
+                          image={image}
+                          isOnline={!!isOnline}
+                          fullName={fullName}
+                          _id={_id}
+                          key={_id}
+                          author_id={author_id}
+                        />
                       )
                     )}
                   </Stack>

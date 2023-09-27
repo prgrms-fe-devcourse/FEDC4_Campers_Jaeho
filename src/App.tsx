@@ -7,7 +7,6 @@ import CreatePost from './pages/CreatePost';
 import UserProfile from './pages/UserProfile';
 import Detail from './pages/Detail';
 import Search from './pages/Search';
-import PostEdit from './pages/PostEdit';
 const App = () => {
   return (
     <>
@@ -20,7 +19,6 @@ const App = () => {
         <Route path={ROUTES.CREATE_POST} element={<CreatePost />} />
         <Route path={ROUTES.USER_PROFILE} element={<UserProfile />} />
         <Route path={ROUTES.DETAIL} element={<Detail />} />
-        <Route path={ROUTES.EDIT} element={<PostEdit />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </>

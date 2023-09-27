@@ -35,7 +35,7 @@ const Weather = () => {
       >
         {isLoading ? (
           <Center p="20px" w="100%">
-            <Loading size="md" />
+            <Loading />
           </Center>
         ) : (
           <>
