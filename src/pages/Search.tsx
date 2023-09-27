@@ -10,7 +10,7 @@ import AbsoluteCenterBox from '../components/common/AbsoluteCenterBox';
 import PrimaryGrid from '../components/common/PrimaryGrid';
 import PostCard from '../components/PostCard';
 import { User } from '../types/user';
-import { Image, Stack } from '@chakra-ui/react';
+import { Box, Stack } from '@chakra-ui/react';
 import PrimaryContainer from '../components/common/PrimaryContainer';
 import UserList from './UserList';
 import NavigationBar from '../components/NavigationBar';

@@ -14,6 +14,7 @@ import UploadImage from '../components/common/UploadImage';
 import PrimaryButton from '../components/common/PrimaryButton';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import PrimaryContainer from '../components/common/PrimaryContainer';
+import Loading from '../components/common/Loading';
 import PrimaryAlertDialogSet from '../components/common/PrimaryAlertDialogSet';
 import { useCreatePost } from '../hooks/mutation/useCreatePost';
 import useTimeout from '../hooks/useTimeout';
@@ -22,6 +23,7 @@ const CreatePost = () => {
   const [postTitle, setPostTitle] = useState('');
   const [description, setDescription] = useState('');
   const [postImage, setPostImage] = useState<File | null>(null);
+  const { createPost, isLoading } = useCreatePost();
   const [isFocusingTitle, setIsFocusingTitle] = useBoolean();
   const { isOpen, onClose, onOpen } = useDisclosure();
   const createPost = useCreatePost();
@@ -52,6 +54,10 @@ const CreatePost = () => {
       onOpen();
     }
   };
+
+  if (isLoading) {
+    return <Loading pos="fixed" top="50%" left="50%" w="100vw" h="100vh" />;
+  }
 
   useTimeout(isFocusingTitle, () => {
     titleInputRef.current?.focus();
