@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { useSearchAll } from '../hooks/query/useSearchAll';
 import { PostResponse } from '../types/post';
 import { useParams } from 'react-router-dom';
-import PrimaryInfo from '../components/common/PrimaryInfo';
 import SearchBar from '../components/Search/SearchBar';
 import UserCard from '../components/Search/UserCard';
 import NoResult from '../components/common/NoResult';
@@ -10,19 +9,12 @@ import Loading from '../components/common/Loading';
 import AbsoluteCenterBox from '../components/common/AbsoluteCenterBox';
 import PrimaryGrid from '../components/common/PrimaryGrid';
 import PostCard from '../components/PostCard';
-import searchImage from '../assets/images/search.png';
 import { User } from '../types/user';
-import {
-  Image,
-  Tabs,
-  TabList,
-  TabPanels,
-  Tab,
-  TabPanel,
-  Stack,
-} from '@chakra-ui/react';
+import { Image, Stack } from '@chakra-ui/react';
 import PrimaryContainer from '../components/common/PrimaryContainer';
+import UserList from './UserList';
 import NavigationBar from '../components/NavigationBar';
+import PrimaryTabsSet from '../components/common/PrimaryTabsSet';
 
 const Search = () => {
   const navigate = useNavigate();
@@ -43,8 +35,8 @@ const Search = () => {
   isError && navigate('/search');
 
   return (
-    <PrimaryContainer>
-      <Stack p="10px">
+    <>
+      <PrimaryContainer>
         <SearchBar />
         {keyword ? (
           isLoading ? (
@@ -52,13 +44,13 @@ const Search = () => {
               <Loading />
             </AbsoluteCenterBox>
           ) : (
-            <Tabs colorScheme="green">
-              <TabList>
-                <Tab flex={1}>Users ({userResult && userResult.length})</Tab>
-                <Tab flex={1}>Posts ({postResult && postResult.length})</Tab>
-              </TabList>
-              <TabPanels p="10px 0">
-                <TabPanel p={0}>
+            <Box p="10px">
+              <PrimaryTabsSet
+                tabTexts={[
+                  `Users (${userResult && userResult.length})`,
+                  `Posts (${postResult && postResult.length})`,
+                ]}
+                tabPanelChildrens={[
                   <Stack>
                     {userResult?.length !== 0 ? (
                       userResult?.map((res) => (
@@ -67,9 +59,7 @@ const Search = () => {
                     ) : (
                       <NoResult />
                     )}
-                  </Stack>
-                </TabPanel>
-                <TabPanel p={0}>
+                  </Stack>,
                   <Stack>
                     {postResult && postResult.length !== 0 ? (
                       <PrimaryGrid>
@@ -80,24 +70,18 @@ const Search = () => {
                     ) : (
                       <NoResult />
                     )}
-                  </Stack>
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
+                  </Stack>,
+                ]}
+                tabsIsFitted
+              />
+            </Box>
           )
         ) : (
-          <AbsoluteCenterBox>
-            <Image src={searchImage} w="70%" />
-            <PrimaryInfo
-              title="찾는 게 있으신가요?"
-              subTitle="키워드를 검색해보세요"
-            />
-          </AbsoluteCenterBox>
+          <UserList />
         )}
-      </Stack>
-
-      <NavigationBar />
-    </PrimaryContainer>
+        <NavigationBar />
+      </PrimaryContainer>
+    </>
   );
 };
 

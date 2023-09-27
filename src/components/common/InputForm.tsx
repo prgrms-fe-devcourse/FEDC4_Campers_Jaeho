@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import PrimaryButton from './PrimaryButton';
 import { Box, Input, Center } from '@chakra-ui/react';
 import { useCallback } from 'react';
 import { useComment } from '../../hooks/mutation/useComment';
 import _ from 'lodash';
-export const InputForm = ({ postId }) => {
+
+export const InputForm = ({ postId }: { postId: string }) => {
   const [newcomment, setNewcomment] = useState<string>('');
-  const handleChange = (event) => setNewcomment(event.target.value);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setNewcomment(event.target.value);
   const { CreateCommnet } = useComment();
   const handleKeyDown = useCallback(
     _.debounce(
@@ -16,6 +18,7 @@ export const InputForm = ({ postId }) => {
             postId: postId,
             comment: newcomment,
           });
+          setNewcomment('');
         }
       },
       1000,
@@ -29,6 +32,7 @@ export const InputForm = ({ postId }) => {
       postId: postId,
       comment: newcomment,
     });
+    setNewcomment('');
   };
 
   return (
@@ -50,7 +54,7 @@ export const InputForm = ({ postId }) => {
           width={82}
           height={35}
           borderRadius={5}
-          handleClick={handleSubmit}
+          onClick={handleSubmit}
         >
           댓글달기!
         </PrimaryButton>
