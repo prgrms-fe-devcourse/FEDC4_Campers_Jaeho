@@ -8,6 +8,11 @@ import {
   Box,
   Input,
   useDisclosure,
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
 } from '@chakra-ui/react';
 import { MdNotifications } from 'react-icons/md';
 import { AiFillEdit } from 'react-icons/ai';
@@ -216,16 +221,25 @@ const UserProfile = () => {
                   {isFollow ? '언팔로우' : '팔로우'}
                 </PrimaryButton>
               )}
-              <PrimaryGrid spacing={0}>
-                {data.posts.map(({ _id, title, image }) => (
-                  <PostCard
-                    post={{ _id, title, image }}
-                    key={_id}
-                    isShowText={false}
-                    borderRadius="none"
-                  />
-                ))}
-              </PrimaryGrid>
+              <Tabs w="90%" colorScheme="green">
+                <TabList>
+                  <Tab flex={1}>내가 쓴 글!</Tab>
+                </TabList>
+
+                <TabPanels>
+                  <TabPanel px={0}>
+                    <PrimaryGrid spacing={0}>
+                      {data.posts.map(({ _id, title, image }) => (
+                        <PostCard
+                          post={{ _id, title, image }}
+                          key={_id}
+                          borderRadius="none"
+                        />
+                      ))}
+                    </PrimaryGrid>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
             </Stack>
           </PrimaryContainer>
         </>
