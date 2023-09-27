@@ -17,10 +17,11 @@ import {
   Tab,
   TabPanel,
   Stack,
+  Box,
 } from '@chakra-ui/react';
 import PrimaryContainer from '../components/common/PrimaryContainer';
 import UserList from './UserList';
-
+import NavigationBar from '../components/NavigationBar';
 const Search = () => {
   const navigate = useNavigate();
   const { keyword } = useParams<{ keyword: string }>();
@@ -40,51 +41,56 @@ const Search = () => {
   isError && navigate('/search');
 
   return (
-    <PrimaryContainer p="10px">
-      <SearchBar />
-      {keyword ? (
-        isLoading ? (
-          <AbsoluteCenterBox>
-            <Loading />
-          </AbsoluteCenterBox>
+    <>
+      <PrimaryContainer>
+        <SearchBar />
+        {keyword ? (
+          isLoading ? (
+            <AbsoluteCenterBox>
+              <Loading />
+            </AbsoluteCenterBox>
+          ) : (
+            <Box p="10px">
+              <Tabs colorScheme="green">
+                <TabList>
+                  <Tab flex={1}>Users ({userResult && userResult.length})</Tab>
+                  <Tab flex={1}>Posts ({postResult && postResult.length})</Tab>
+                </TabList>
+                <TabPanels p="10px 0">
+                  <TabPanel p={0}>
+                    <Stack>
+                      {userResult?.length !== 0 ? (
+                        userResult?.map((res) => (
+                          <UserCard key={res._id} userData={res} />
+                        ))
+                      ) : (
+                        <NoResult />
+                      )}
+                    </Stack>
+                  </TabPanel>
+                  <TabPanel p={0}>
+                    <Stack>
+                      {postResult && postResult.length !== 0 ? (
+                        <PrimaryGrid>
+                          {postResult.map((post) => (
+                            <PostCard post={post} key={post._id} />
+                          ))}
+                        </PrimaryGrid>
+                      ) : (
+                        <NoResult />
+                      )}
+                    </Stack>
+                  </TabPanel>
+                </TabPanels>
+              </Tabs>
+            </Box>
+          )
         ) : (
-          <Tabs colorScheme="green">
-            <TabList>
-              <Tab flex={1}>Users ({userResult && userResult.length})</Tab>
-              <Tab flex={1}>Posts ({postResult && postResult.length})</Tab>
-            </TabList>
-            <TabPanels p="10px 0">
-              <TabPanel p={0}>
-                <Stack>
-                  {userResult?.length !== 0 ? (
-                    userResult?.map((res) => (
-                      <UserCard key={res._id} userData={res} />
-                    ))
-                  ) : (
-                    <NoResult />
-                  )}
-                </Stack>
-              </TabPanel>
-              <TabPanel p={0}>
-                <Stack>
-                  {postResult && postResult.length !== 0 ? (
-                    <PrimaryGrid>
-                      {postResult.map((post) => (
-                        <PostCard post={post} key={post._id} />
-                      ))}
-                    </PrimaryGrid>
-                  ) : (
-                    <NoResult />
-                  )}
-                </Stack>
-              </TabPanel>
-            </TabPanels>
-          </Tabs>
-        )
-      ) : (
-        <UserList />
-      )}
-    </PrimaryContainer>
+          <UserList />
+        )}
+        <NavigationBar />
+      </PrimaryContainer>
+    </>
   );
 };
 
