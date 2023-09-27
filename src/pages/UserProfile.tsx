@@ -49,7 +49,9 @@ const UserProfile = () => {
   } = useDisclosure();
   const { userId } = useParams();
   const { getSearchUser: { data, error } = {} } = useSearchUser(userId);
-  const { data: notificationData } = useNotification();
+  const {
+    getNewNotification: { data: notificationData },
+  } = useNotification();
   const { postProfileImage, putUserInfo } = useChangeUserInfo();
   const { postCreateNotification } = useHandleNotification();
   const { createPostFollow, deletePostFollow } = useFollow();
@@ -136,7 +138,7 @@ const UserProfile = () => {
           <PrimaryModal isOpen={isOpen} onClose={onClose}>
             <Box>
               {notificationData.length !== 0 ? (
-                notificationData.map(({ message, _id }) => (
+                notificationData.map(({ _id, author: { fullName } }) => (
                   <Flex
                     key={_id}
                     align="center"
@@ -145,7 +147,9 @@ const UserProfile = () => {
                     _hover={{ bgColor: '#D9D9D9' }}
                   >
                     <BiMessageDetail />
-                    <Box m="0 0 0 10px">{message}</Box>
+                    <Box m="0 0 0 10px">
+                      "{fullName}" 님이 알람을 보냈습니다.
+                    </Box>
                   </Flex>
                 ))
               ) : (
@@ -160,7 +164,7 @@ const UserProfile = () => {
                 {isMyInfo && (
                   <CircleIconBg>
                     <MdNotifications
-                      style={{ fontSize: '23px' }}
+                      style={{ fontSize: '25px' }}
                       onClick={onOpen}
                     />
                   </CircleIconBg>
