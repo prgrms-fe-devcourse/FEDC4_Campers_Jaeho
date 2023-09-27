@@ -14,5 +14,5 @@ export const useCreatePost = () => {
     }
   );
 
-  return createPost;
+  return { createPost, isLoading: createPost.isLoading };
 };
