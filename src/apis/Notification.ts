@@ -2,9 +2,12 @@ import { NotificationInfo } from './../types/social';
 import { NotificationResponse } from './../types/user';
 import instance from './axios';
 import { AxiosError } from 'axios';
+import { getLocalStorage } from '../utils/storage';
 
 export const getNotification = async () => {
   try {
+    const token = getLocalStorage('token');
+    if (!token) return [];
     const { data } = await instance.get<NotificationResponse[] | null>(
       '/notifications'
     );

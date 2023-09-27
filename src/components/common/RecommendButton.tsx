@@ -1,14 +1,17 @@
-import { useState, useEffect } from 'react';
-import { Button, ButtonProps, Text, Icon } from '@chakra-ui/react';
-import { MdThumbUp } from 'react-icons/md';
+import { useState } from 'react';
+import { Flex, FlexProps, Text, Box } from '@chakra-ui/react';
 import { useRecommend } from '../../hooks/mutation/useRecommend';
 import { useNotification } from '../../hooks/query/useNotification';
 import { useUserInfoContext } from '../../contexts/UserInfoProvider';
-import { LikeResponse } from '../../types/post';
-type RecommendButtonProps = ButtonProps & {
+import { AiOutlineLike, AiTwotoneLike } from 'react-icons/ai';
+
+type RecommendButtonProps = FlexProps & {
   postId: string;
   isRecommended: boolean;
-  likeInfo?: LikeResponse[];
+  likeInfo?: {
+    user: string;
+    _id: string;
+  }[];
 };
 
 const RecommendButton = ({
@@ -22,7 +25,7 @@ const RecommendButton = ({
   const { createRecommend, deleteRecommend } = useRecommend();
   const { createNewNotification } = useNotification();
   const { userInfo } = useUserInfoContext();
-  console.log(likeInfo?.length);
+
   const handleToggleClicked = () => {
     if (
       createRecommend.isLoading ||
@@ -64,14 +67,33 @@ const RecommendButton = ({
       setIsClicked(true);
     }
   };
-  useEffect(() => {}, []); // The empty array [] means this effect only runs once, similar to componentDidMount
 
   return (
-    <Button {...props} onClick={userInfo ? handleToggleClicked : undefined}>
-      <Icon as={MdThumbUp} color={isClicked ? 'orange' : 'black'} mr={2} />
-      <Text>{count}</Text>
-    </Button>
+    <>
+      <Flex
+        bgColor="gray.100"
+        align="center"
+        p="10px 15px"
+        borderRadius="30px"
+        onClick={() => handleToggleClicked()}
+        transition="all 0.3s"
+        _hover={{ bgColor: 'gray.300' }}
+        {...props}
+      >
+        <Box
+          fontSize="20px"
+          color={isClicked ? '#DF8D58' : 'none'}
+          onClick={() => {}}
+        >
+          {isClicked ? <AiTwotoneLike /> : <AiOutlineLike />}
+        </Box>
+        <Text ml="10px" fontWeight="bold">
+          {count}
+        </Text>
+      </Flex>
+    </>
   );
 };
 
 export default RecommendButton;
+
