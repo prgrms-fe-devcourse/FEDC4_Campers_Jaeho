@@ -30,16 +30,17 @@ import { useUserInfoContext } from '../contexts/UserInfoProvider';
 const Detail = () => {
   const { postId } = useParams<{ postId: string }>();
   const [isDrawerOpen, setIsDrawerOpen] = useBoolean();
-
   const { data: { postInfo, commentInfo, likeInfo } = {}, isLoading } =
     useDetailPost(postId);
-
   const { userInfo } = useUserInfoContext();
-  const doesUserIdExist = (arr: { user: string }[], id: string): boolean => {
-    const foundUser = arr.find((item) => item.user === id);
-
-    return !!foundUser;
+  /*
+  const likePressed = () => {
+    return likeInfo?.find((like) => like.user === userInfo?._id)?._id
+      ? true
+      : false;
   };
+*/
+  console.log('check');
 
   return (
     <Container maxW="100%" h="auto">
@@ -75,18 +76,20 @@ const Detail = () => {
               <Box>
                 {postId && likeInfo && (
                   <RecommendButton
+                    postId={postId}
                     recommendCount={likeInfo?.length ?? null}
-                    isRecommended={
-                      userInfo?._id !== null && userInfo?._id !== undefined
-                        ? doesUserIdExist(likeInfo, userInfo._id)
-                        : false
+                    isRecommended={likeInfo?.some(
+                      (like) => like.user === userInfo?._id
+                    )}
+                    likeId={
+                      likeInfo?.find((like) => like.user === userInfo?._id)
+                        ?._id || ''
                     }
                     bg="#D3DCDE"
                     width={20}
                     height={30}
                     top={10}
                     size={'lg'}
-                    postId={postId}
                   />
                 )}
               </Box>
