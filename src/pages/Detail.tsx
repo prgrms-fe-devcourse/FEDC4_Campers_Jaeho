@@ -150,8 +150,8 @@ const Detail = () => {
                           isOnline={!!isOnline}
                           fullName={fullName}
                           _id={_id}
-                          author_id={author_id}
                           key={_id}
+                          author_id={author_id}
                         />
                       )
                     )}

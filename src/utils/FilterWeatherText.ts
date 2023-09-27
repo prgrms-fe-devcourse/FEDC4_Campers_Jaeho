@@ -25,7 +25,10 @@ export const FilterWeatherText = (keyword: string) => {
     Clear: '해가 쨍쨍',
   };
 
-  const weatherType = { ...commonWeatherType, ...specificWeatherType };
+  const weatherType: { [key: string]: string } = {
+    ...commonWeatherType,
+    ...specificWeatherType,
+  };
 
   return weatherType[keyword] ?? '정보가 없습니다ㅠㅠ';
 };
