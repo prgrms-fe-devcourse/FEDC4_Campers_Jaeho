@@ -12,8 +12,8 @@ import PrimaryLink from '../components/common/PrimaryLink';
 import { Box, Flex, Stack, Text } from '@chakra-ui/react';
 import { GrFormPrevious } from 'react-icons/gr';
 import { InputForm } from '../components/common/InputForm';
-import Comment from '../components/common/Comment';
 import RecommendButton from '../components/common/RecommendButton';
+import Comment from '../components/common/Comment';
 const Detail = () => {
   const { userInfo } = useUserInfoContext();
   const { postId } = useParams<{ postId: string }>();
@@ -185,4 +185,3 @@ const Detail = () => {
   );
 };
 export default Detail;
-

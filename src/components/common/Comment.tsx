@@ -1,42 +1,64 @@
-import instance from './axios';
-import { AxiosError } from 'axios';
+import { Box, Flex, Stack, Text } from '@chakra-ui/react';
+import { AiOutlineClose } from 'react-icons/ai';
+import PrimaryAvatar from './PrimaryAvatar';
+import PrimaryLink from './PrimaryLink';
+import { useComment } from '../../hooks/mutation/useComment';
+import { ROUTES } from '../../constants/routes';
+import { User } from '../../types/user';
 
-type CommentData = {
+const Comment = ({
+  userInfo,
+  comment,
+  image,
+  isOnline,
+  fullName,
+  _id,
+  author_id,
+}: {
+  userInfo: User | null;
+  fullName: string;
   comment: string;
-  postId: string;
+  image: string;
+  isOnline: boolean;
+  _id: string;
+  author_id: string;
+}) => {
+  const { DeleteComment } = useComment();
+  const onHandleDelete = (_id: string) => {
+    DeleteComment.mutate(_id);
+  };
+
+  return (
+    <>
+      <Flex py="10px" pos="relative" key={_id}>
+        <PrimaryLink router={ROUTES.USER_INFO(author_id)}>
+          <PrimaryAvatar
+            src={image ?? '../../src/assets/images/avatar_dear.jpg'}
+            isOnline={!!isOnline}
+            boxSize="40px"
+            mr="15px"
+            transition="all 0.1s"
+            _hover={{ border: '2px solid #28B67E' }}
+          />
+        </PrimaryLink>
+        <Stack flex={1}>
+          <Text fontWeight="bold">{fullName}</Text>
+          <Text>{comment}</Text>
+        </Stack>
+        <Flex w="50px" h="100%" justify="center" fontSize="24">
+          {userInfo?._id === author_id && (
+            <Box
+              color="gray.500"
+              _hover={{ color: 'black' }}
+              onClick={() => onHandleDelete(_id)}
+            >
+              <AiOutlineClose />
+            </Box>
+          )}
+        </Flex>
+      </Flex>
+    </>
+  );
 };
 
-export const createComment = async ({ comment, postId }: CommentData) => {
-  try {
-    const data = await instance.post('/comments/create', {
-      comment,
-      postId,
-    });
-
-    return data;
-  } catch (error) {
-    if (error instanceof AxiosError) {
-      console.error(error.message);
-    } else if (error instanceof Error) {
-      console.error(error.message);
-    } else {
-      console.error(error);
-    }
-  }
-};
-
-export const deleteComment = async (id: string) => {
-  try {
-    const data = await instance.delete('comments/delete', {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      data: { id },
-    });
-
-    return data;
-  } catch (error) {
-    console.error(error);
-  }
-};
-
+export default Comment;
