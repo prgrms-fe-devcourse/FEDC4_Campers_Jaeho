@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, ButtonProps, Text, Icon } from '@chakra-ui/react';
 import { MdThumbUp } from 'react-icons/md';
 import { useRecommend } from '../../hooks/mutation/useRecommend';
@@ -7,57 +7,64 @@ import { useUserInfoContext } from '../../contexts/UserInfoProvider';
 import { LikeResponse } from '../../types/post';
 type RecommendButtonProps = ButtonProps & {
   postId: string;
-  recommendCount: number;
   isRecommended: boolean;
-  likeId: string;
   likeInfo?: LikeResponse[];
 };
 
 const RecommendButton = ({
   likeInfo,
   postId,
-  recommendCount,
   isRecommended,
   ...props
 }: RecommendButtonProps) => {
-  const [count, setCount] = useState(recommendCount);
-  const [likeId, setLikeId] = useState('');
+  const [count, setCount] = useState(likeInfo?.length ? likeInfo.length : 0);
   const [isClicked, setIsClicked] = useState(isRecommended);
   const { createRecommend, deleteRecommend } = useRecommend();
   const { createNewNotification } = useNotification();
   const { userInfo } = useUserInfoContext();
-
-  const handleToggleClicked = async () => {
-    console.log('postId', postId, 'likeId', likeId, likeInfo);
-    if (isClicked) {
-      setCount((prev) => prev - 1);
+  console.log(likeInfo?.length);
+  const handleToggleClicked = () => {
+    if (
+      createRecommend.isLoading ||
+      deleteRecommend.isLoading ||
+      createRecommend.isError ||
+      deleteRecommend.isError
+    )
+      return;
+    const idx = likeInfo?.findIndex((idx) => idx.user === userInfo?._id);
+    if (isClicked === true && idx !== undefined && likeInfo !== undefined) {
+      setCount(count - 1);
+      console.log(isClicked);
+      deleteRecommend.mutate(likeInfo[idx]._id);
+      if (likeInfo[idx] !== null && userInfo !== null) {
+        createNewNotification.mutate({
+          notificationType: 'LIKE',
+          notificationTypeId: likeInfo[idx].user,
+          userId: userInfo._id,
+          postId: postId,
+        });
+      }
       setIsClicked(false);
-      setLikeId('');
-      deleteRecommend.mutate(likeId);
-      if (likeId !== null && userInfo !== null) {
-        createRecommend.mutate(postId);
-        createNewNotification.mutate({
-          notificationType: 'LIKE',
-          notificationTypeId: likeId,
-          userId: userInfo._id,
-          postId: postId,
-        });
-      }
     } else {
-      setCount((prev) => prev + 1);
-      setIsClicked(true);
-
-      if (likeId !== null && userInfo !== null) {
+      setCount(count + 1);
+      if (
+        likeInfo &&
+        idx !== undefined &&
+        likeInfo[idx] !== null &&
+        userInfo !== null
+      ) {
         createRecommend.mutate(postId);
         createNewNotification.mutate({
           notificationType: 'LIKE',
-          notificationTypeId: likeId,
+          notificationTypeId: likeInfo[idx].user,
           userId: userInfo._id,
           postId: postId,
         });
       }
+      setIsClicked(true);
     }
   };
+  useEffect(() => {}, []); // The empty array [] means this effect only runs once, similar to componentDidMount
 
   return (
     <Button {...props} onClick={userInfo ? handleToggleClicked : undefined}>
