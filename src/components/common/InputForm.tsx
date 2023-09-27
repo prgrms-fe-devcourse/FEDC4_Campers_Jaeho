@@ -1,10 +1,15 @@
 import { useState } from 'react';
 import PrimaryButton from './PrimaryButton';
-import { Box, Input, Center } from '@chakra-ui/react';
+import { Box, Input } from '@chakra-ui/react';
 import { useCallback } from 'react';
 import { useComment } from '../../hooks/mutation/useComment';
 import _ from 'lodash';
-export const InputForm = ({ postId }) => {
+
+type InputFormProps = {
+  postId: string;
+};
+
+export const InputForm = ({ postId }: InputFormProps) => {
   const [newcomment, setNewcomment] = useState<string>('');
   const handleChange = (event) => setNewcomment(event.target.value);
   const { CreateCommnet } = useComment();
@@ -32,29 +37,17 @@ export const InputForm = ({ postId }) => {
   };
 
   return (
-    <Box bg="#ECE9E9" maxW="100%">
-      <Center>
-        <Input
-          focusBorderColor="green.400"
-          maxW="94%"
-          height={101}
-          borderRadius={5}
-          bg="gray.100"
-          onKeyDown={handleKeyDown}
-          value={newcomment}
-          onChange={handleChange}
-        />
-      </Center>
-      <Box display="flex" justifyContent="flex-end" p="20px">
-        <PrimaryButton
-          width={82}
-          height={35}
-          borderRadius={5}
-          handleClick={handleSubmit}
-        >
-          댓글달기!
-        </PrimaryButton>
-      </Box>
+    <Box w="100%">
+      <Input
+        minH="100px"
+        placeholder="착한 마음 착한 말"
+        onKeyDown={handleKeyDown}
+        value={newcomment}
+        onChange={handleChange}
+      />
+      <PrimaryButton w="100%" onClick={handleSubmit}>
+        댓글달기!
+      </PrimaryButton>
     </Box>
   );
 };
