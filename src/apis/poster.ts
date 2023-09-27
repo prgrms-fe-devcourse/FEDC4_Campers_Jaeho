@@ -4,11 +4,9 @@ import { PostResponse, CommentResponse, UpdatePost } from '../types/post';
 
 export const createPoster = async (formData: FormData) => {
   try {
-    console.log(formData.getAll('title'));
     const response = await instance.post('posts/create', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-    console.log(response);
 
     return response;
   } catch (error) {
@@ -49,11 +47,10 @@ export const searchPoster = async (postId: string) => {
       user,
       _id,
     }));
-
-
+    
     const { title, description } = JSON.parse(data.title);
 
-    const response = {
+    return {
       postInfo: {
         authorId,
         fullName,
@@ -68,8 +65,6 @@ export const searchPoster = async (postId: string) => {
       commentInfo,
       likeInfo,
     };
-
-    return response;
   } catch (error) {
     if (error instanceof AxiosError) {
       console.error(error as Error);
@@ -81,6 +76,7 @@ export const searchPoster = async (postId: string) => {
 export const updatePost = async (updateData: UpdatePost) => {
   try {
     const formData = new FormData();
+
     formData.append('postId', updateData.postId);
     formData.append('title', updateData.title);
     updateData.image && formData.append('image', updateData.image);
