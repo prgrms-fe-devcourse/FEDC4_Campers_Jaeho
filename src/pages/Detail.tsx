@@ -180,24 +180,25 @@
 //   );
 // };
 // export default Detail;
-
+import { FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDetailPost } from '../hooks/query/useDetailPost';
-import PrimaryContainer from '../components/common/PrimaryContainer';
-import { Box, Flex, Stack, Text, Textarea } from '@chakra-ui/react';
-import { AiOutlineLike, AiTwotoneLike } from 'react-icons/ai';
-import { FormEvent, useEffect, useState } from 'react';
-import PrimaryAvatar from '../components/common/PrimaryAvatar';
-import TemperatureBar from '../components/common/TemperatureBar';
-import PrimaryLink from '../components/common/PrimaryLink';
-import { ROUTES } from '../constants/routes';
-import CircleIconBg from '../components/common/CircleIconBg';
-import { AiOutlineClose } from 'react-icons/ai';
-import { useUserInfoContext } from '../contexts/UserInfoProvider';
-import PrimaryButton from '../components/common/PrimaryButton';
 import { useComment } from '../hooks/mutation/useComment';
 import { usePost } from '../hooks/mutation/usePost';
 import { useRecommend } from '../hooks/mutation/useRecommend';
+import { useUserInfoContext } from '../contexts/UserInfoProvider';
+import { ROUTES } from '../constants/routes';
+import PrimaryButton from '../components/common/PrimaryButton';
+import PrimaryContainer from '../components/common/PrimaryContainer';
+import CircleIconBg from '../components/common/CircleIconBg';
+import PrimaryAvatar from '../components/common/PrimaryAvatar';
+import TemperatureBar from '../components/common/TemperatureBar';
+import PrimaryLink from '../components/common/PrimaryLink';
+import { Box, Flex, Stack, Text, Textarea } from '@chakra-ui/react';
+import { AiOutlineLike, AiTwotoneLike } from 'react-icons/ai';
+import { GrFormPrevious } from 'react-icons/gr';
+import { AiOutlineClose } from 'react-icons/ai';
+
 const Detail = () => {
   const { userInfo } = useUserInfoContext();
   const { postId } = useParams<{ postId: string }>();
@@ -207,8 +208,7 @@ const Detail = () => {
   const { createRecommend, deleteRecommend } = useRecommend();
   const { DeletePost } = usePost();
   const { CreateCommnet, DeleteComment } = useComment();
-  console.log(likeInfo);
-  console.log(postInfo?.authorId);
+
   const handleLike = (_id: string) => {
     if (isILike) {
       const res = deleteRecommend.mutate(_id);
@@ -252,7 +252,15 @@ const Detail = () => {
               bgPosition="center"
               borderBottomRadius="10px"
               boxShadow="xl"
-            />
+              p="10px"
+            >
+              <PrimaryLink router={-1} pos="absolute">
+                <CircleIconBg _hover={{ bgColor: 'rgba(255,255,255,0.5)' }}>
+                  <GrFormPrevious fontSize="25px" />
+                </CircleIconBg>
+              </PrimaryLink>
+            </Box>
+
             <Stack p="20px">
               <Stack borderBottom="1px solid #eee">
                 <Text color="gray.500">{postInfo.updatedAt.slice(0, 10)}</Text>
