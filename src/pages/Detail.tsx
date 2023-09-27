@@ -185,7 +185,6 @@ import { useParams } from 'react-router-dom';
 import { useDetailPost } from '../hooks/query/useDetailPost';
 import { useComment } from '../hooks/mutation/useComment';
 import { usePost } from '../hooks/mutation/usePost';
-import { useRecommend } from '../hooks/mutation/useRecommend';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { ROUTES } from '../constants/routes';
 import PrimaryButton from '../components/common/PrimaryButton';
@@ -205,21 +204,9 @@ const Detail = () => {
   const { data: { postInfo, commentInfo, likeInfo } = {} } =
     useDetailPost(postId);
   const [isILike, setIsILike] = useState(false);
-  const { createRecommend, deleteRecommend } = useRecommend();
   const { DeletePost } = usePost();
   const { CreateCommnet, DeleteComment } = useComment();
 
-  const handleLike = (_id: string) => {
-    if (isILike) {
-      const res = deleteRecommend.mutate(_id);
-      console.log(res);
-    } else {
-      const res = createRecommend.mutate(_id);
-      console.log(res);
-    }
-
-    setIsILike(!isILike);
-  };
   const handleDeletePost = (_id: string) => DeletePost.mutate(_id);
   const handleDeleteComment = (_id: string) => DeleteComment.mutate(_id);
   const handleCreateComment = (e: FormEvent<HTMLFormElement>) => {
@@ -265,7 +252,14 @@ const Detail = () => {
               <Stack borderBottom="1px solid #eee">
                 <Text color="gray.500">{postInfo.updatedAt.slice(0, 10)}</Text>
                 <Flex align="center">
-                  <Text fontWeight="bold" fontSize="28px" flex={1}>
+                  <Text
+                    fontWeight="bold"
+                    fontSize="28px"
+                    flex={1}
+                    overflow="hidden"
+                    whiteSpace="nowrap"
+                    textOverflow="ellipsis"
+                  >
                     {postInfo.title}
                   </Text>
                   <Flex
@@ -277,7 +271,9 @@ const Detail = () => {
                     <Box
                       fontSize="20px"
                       color={isILike ? '#DF8D58' : 'none'}
-                      onClick={() => handleLike(postInfo._id)}
+                      onClick={() =>
+                        handleLike(postInfo._id, postInfo.authorId)
+                      }
                     >
                       {isILike ? <AiTwotoneLike /> : <AiOutlineLike />}
                     </Box>
@@ -316,25 +312,27 @@ const Detail = () => {
               <Stack py="10px">
                 <Text whiteSpace="pre-line">{postInfo.description}</Text>
               </Stack>
-              <Flex
-                gap="10px"
-                justify="flex-end"
-                borderBottom="1px solid #eee"
-                py="10px"
-                fontSize="14px"
-                color="gray.500"
-              >
-                <CircleIconBg w="60px" borderRadius="30px">
-                  <Text>수정</Text>
-                </CircleIconBg>
-                <CircleIconBg
-                  w="60px"
-                  borderRadius="30px "
-                  onClick={() => handleDeletePost(postInfo._id)}
-                >
-                  <Text>삭제</Text>
-                </CircleIconBg>
-              </Flex>
+              {userInfo?._id === postInfo.authorId && (
+                <>
+                  <Flex
+                    gap="10px"
+                    justify="flex-end"
+                    borderBottom="1px solid #eee"
+                    py="10px"
+                    fontSize="14px"
+                    color="gray.500"
+                  >
+                    <CircleIconBg
+                      w="60px"
+                      borderRadius="30px "
+                      onClick={() => handleDeletePost(postInfo._id)}
+                    >
+                      <Text>삭제</Text>
+                    </CircleIconBg>
+                  </Flex>
+                </>
+              )}
+
               {commentInfo ? (
                 <>
                   <Stack>
