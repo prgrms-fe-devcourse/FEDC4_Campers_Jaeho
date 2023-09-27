@@ -1,6 +1,13 @@
 import { useLocation } from '../hooks/useLocation';
 import { useWeather } from '../hooks/query/useWeather';
-import { Flex, Box, Text, Stack, Center } from '@chakra-ui/react';
+import {
+  Flex,
+  Box,
+  Text,
+  Stack,
+  Center,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import {
   FilterWeatherText,
   handleImageKeyword,
@@ -12,11 +19,7 @@ import Loading from './common/Loading';
 const Weather = () => {
   const location = useLocation();
   const { data, isLoading, isError } = useWeather(location.lat, location.lon);
-  console.log(location);
-  // if (isLoading)
-  //   return (
-
-  //   );
+  const textColor = useColorModeValue('black', '#2D3748');
 
   if (isError) return <Box>Error...</Box>;
 
@@ -51,7 +54,7 @@ const Weather = () => {
               >
                 <GrLocation />
                 <Box>
-                  <Text> {data.name}</Text>
+                  <Text color={textColor}> {data.name}</Text>
                 </Box>
               </Flex>
               <Text fontWeight="bold" fontSize="24px">
