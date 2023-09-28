@@ -1,20 +1,22 @@
-import { useState } from 'react';
-import {
-  Flex,
-  FlexProps,
-  Text,
-  Box,
-  useColorModeValue,
-} from '@chakra-ui/react';
-import { useRecommend } from '../../hooks/mutation/useRecommend';
-import { useNotification } from '../../hooks/query/useNotification';
-import { useUserInfoContext } from '../../contexts/UserInfoProvider';
-import { AiOutlineLike, AiTwotoneLike } from 'react-icons/ai';
+// createNewNotification.mutate({
+//   notificationType: 'LIKE',
+//   notificationTypeId: ,
+//   userId: user_id,
+//   postId: postId,
+// });
 
-type RecommendButtonProps = FlexProps & {
+import { useState, useEffect } from 'react';
+import { useRecommend } from '../../hooks/mutation/useRecommend';
+// import { debounce } from 'lodash';
+import { AiTwotoneLike } from 'react-icons/ai';
+import { Flex, Text, Button, ButtonProps, useToast } from '@chakra-ui/react';
+import { useDebounce } from '../../hooks/useDebounce';
+import { useUserInfoContext } from '../../contexts/UserInfoProvider';
+// import { useNotification } from '../../hooks/query/useNotification';
+// import { CreateRecommend } from '../../apis/social';
+type RecommendButtonProps = ButtonProps & {
   postId: string;
-  isRecommended: boolean;
-  likeInfo?: {
+  likeInfo: {
     user: string;
     _id: string;
   }[];
@@ -23,87 +25,74 @@ type RecommendButtonProps = FlexProps & {
 const RecommendButton = ({
   likeInfo,
   postId,
-  isRecommended,
   ...props
 }: RecommendButtonProps) => {
-  const [count, setCount] = useState(likeInfo?.length ? likeInfo.length : 0);
-  const [isClicked, setIsClicked] = useState(isRecommended);
-  const { createRecommend, deleteRecommend } = useRecommend();
-  const { createNewNotification } = useNotification();
+  const toast = useToast();
   const { userInfo } = useUserInfoContext();
-  const Color = useColorModeValue('rgba(0,0,0,0.1)', 'rgba(255,255,255,0.1)');
-  const HoverColor = useColorModeValue(
-    'rgba(0,0,0,0.2)',
-    'rgba(255,255,255,0.2)'
-  );
+  const { createRecommend, deleteRecommend } = useRecommend();
+  // const { createNewNotification } = useNotification();
+  const [isLikedOnServer, setIsLikedOnServer] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [totalLikeCnt, setTotalLikeCnt] = useState(0);
 
-  const handleToggleClicked = () => {
-    if (
-      createRecommend.isLoading ||
-      deleteRecommend.isLoading ||
-      createRecommend.isError ||
-      deleteRecommend.isError
-    )
-      return;
-    const idx = likeInfo?.findIndex((idx) => idx.user === userInfo?._id);
-    if (isClicked === true && idx !== undefined && likeInfo !== undefined) {
-      setCount(count - 1);
-      console.log(isClicked);
-      deleteRecommend.mutate(likeInfo[idx]._id);
-      if (likeInfo[idx] !== null && userInfo !== null) {
-        createNewNotification.mutate({
-          notificationType: 'LIKE',
-          notificationTypeId: likeInfo[idx].user,
-          userId: userInfo._id,
-          postId: postId,
-        });
-      }
-      setIsClicked(false);
+  // 유저가 로그인 했을시, 디바운스리퀘스트. 아니면 토스트 띄우기
+  const handleClickLikeBtn = () => {
+    if (userInfo) {
+      handleLike(isLikedOnServer, !isLiked);
+      setIsLiked(!isLiked);
     } else {
-      setCount(count + 1);
-      if (
-        likeInfo &&
-        idx !== undefined &&
-        likeInfo[idx] !== null &&
-        userInfo !== null
-      ) {
-        createRecommend.mutate(postId);
-        createNewNotification.mutate({
-          notificationType: 'LIKE',
-          notificationTypeId: likeInfo[idx].user,
-          userId: userInfo._id,
-          postId: postId,
-        });
-      }
-      setIsClicked(true);
+      toast({
+        title: '회원이시라면 추천하실 수 있어요!',
+        description: '계정이 필요하신가요? >>',
+        status: 'info',
+        duration: 3000,
+        isClosable: true,
+        colorScheme: 'green',
+      });
     }
   };
 
+  const handleLike = useDebounce(
+    (isLikedOnServer: boolean, isLiked: boolean) => {
+      // 예상되는 서버의 내 좋아요 상태와, 지금 상태가 일치하면 굳이 리퀘 안 날림
+      if (isLikedOnServer !== isLiked) {
+        if (isLiked) {
+          createRecommend.mutate(postId);
+          console.log('좋');
+        } else {
+          const targetId = likeInfo.find(({ user }) => user === userInfo?._id)
+            ?._id;
+          if (targetId) deleteRecommend.mutate(targetId);
+          console.log('취');
+        }
+        // 일단 성공 여부와 관계없이 서버 예상 상태 변환
+        setIsLikedOnServer(isLiked);
+      }
+    },
+    2000
+  );
+
+  // 초기세팅. 유저의 로그인 여부, 좋아요 여부를 확인하고 권한, 변수세팅
+  useEffect(() => {
+    const userID = userInfo?._id;
+    const isAreadyILike =
+      userID && likeInfo.find(({ user }) => user === userID) ? 1 : 0;
+    setIsLiked(!!isAreadyILike);
+    setTotalLikeCnt(likeInfo.length - isAreadyILike);
+    setIsLikedOnServer(!!isAreadyILike);
+  }, [userInfo]);
+
   return (
-    <>
-      <Flex
-        bgColor={Color}
-        align="center"
-        p="10px 15px"
-        borderRadius="30px"
-        onClick={() => handleToggleClicked()}
-        transition="all 0.3s"
-        _hover={{ bgColor: HoverColor }}
-        {...props}
-      >
-        <Box
-          fontSize="20px"
-          color={isClicked ? '#DF8D58' : 'none'}
-          onClick={() => {}}
-        >
-          {isClicked ? <AiTwotoneLike /> : <AiOutlineLike />}
-        </Box>
+    <Button onClick={handleClickLikeBtn} {...props}>
+      <Flex>
+        <Flex fontSize="20px" color={isLiked ? '#DF8D58' : 'none'}>
+          <AiTwotoneLike />
+        </Flex>
         <Text ml="10px" fontWeight="bold">
-          {count}
+          {totalLikeCnt + (isLiked ? 1 : 0)}
         </Text>
       </Flex>
-    </>
+    </Button>
   );
 };
-
 export default RecommendButton;
