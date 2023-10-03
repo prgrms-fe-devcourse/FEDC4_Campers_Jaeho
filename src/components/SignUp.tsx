@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
-import { ButtonGroup, useDisclosure } from '@chakra-ui/react';
+import { ButtonGroup, useBoolean, useDisclosure } from '@chakra-ui/react';
 import PrimaryButton from './common/PrimaryButton';
 import PrimaryAlertDialogSet from './common/PrimaryAlertDialogSet';
 import AuthInputFieldWithForm from './Auth/AuthInputFieldWithForm';
@@ -9,6 +9,7 @@ import { signup } from '../apis/auth';
 import { setLocalStorage } from '../utils/storage';
 import passwordValidation from '../utils/passwordValidation';
 import { SignUpValues as SignUpFormValues } from '../types/auth';
+import useTimeout from '../hooks/useTimeout';
 
 const SignUp = () => {
   const {
@@ -21,13 +22,14 @@ const SignUp = () => {
   const navigate = useNavigate();
   const { setUserInfo } = useUserInfoContext();
   const { isOpen, onClose, onOpen } = useDisclosure();
+  const [isEmailFocusing, setIsEmailFocusing] = useBoolean();
 
   const handleConfirm = () => {
     onClose();
-    setFocus('email');
     reset({
       email: '',
     });
+    setIsEmailFocusing.on();
   };
 
   const onSubmit = async (data: SignUpFormValues) => {
@@ -78,6 +80,8 @@ const SignUp = () => {
       },
     }),
   };
+
+  useTimeout(isEmailFocusing, () => setFocus('email'));
 
   return (
     <>
