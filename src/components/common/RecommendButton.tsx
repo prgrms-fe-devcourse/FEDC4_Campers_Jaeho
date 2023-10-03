@@ -1,19 +1,11 @@
-// createNewNotification.mutate({
-//   notificationType: 'LIKE',
-//   notificationTypeId: ,
-//   userId: user_id,
-//   postId: postId,
-// });
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRecommend } from '../../hooks/mutation/useRecommend';
-// import { debounce } from 'lodash';
+import { debounce } from 'lodash';
 import { AiTwotoneLike } from 'react-icons/ai';
 import { Flex, Text, Button, ButtonProps, useToast } from '@chakra-ui/react';
-import { useDebounce } from '../../hooks/useDebounce';
 import { useUserInfoContext } from '../../contexts/UserInfoProvider';
-// import { useNotification } from '../../hooks/query/useNotification';
-// import { CreateRecommend } from '../../apis/social';
+import { useNotification } from '../../hooks/query/useNotification';
+
 type RecommendButtonProps = ButtonProps & {
   postId: string;
   likeInfo: {
@@ -28,12 +20,18 @@ const RecommendButton = ({
   ...props
 }: RecommendButtonProps) => {
   const toast = useToast();
-  const { userInfo } = useUserInfoContext();
-  const { createRecommend, deleteRecommend } = useRecommend();
-  // const { createNewNotification } = useNotification();
   const [isLikedOnServer, setIsLikedOnServer] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [totalLikeCnt, setTotalLikeCnt] = useState(0);
+  const { userInfo } = useUserInfoContext();
+  const {
+    createRecommend: {
+      mutate: createRecommendMutate,
+      data: createRecommendData,
+    },
+    deleteRecommend: { mutate: deleteRecommendMutate },
+  } = useRecommend();
+  const { createNewNotification } = useNotification();
 
   // 유저가 로그인 했을시, 디바운스리퀘스트. 아니면 토스트 띄우기
   const handleClickLikeBtn = () => {
@@ -51,26 +49,34 @@ const RecommendButton = ({
       });
     }
   };
-
-  const handleLike = useDebounce(
-    (isLikedOnServer: boolean, isLiked: boolean) => {
+  const handleLike = useCallback(
+    debounce((isLikedOnServer: boolean, isLiked: boolean) => {
       // 예상되는 서버의 내 좋아요 상태와, 지금 상태가 일치하면 굳이 리퀘 안 날림
       if (isLikedOnServer !== isLiked) {
         if (isLiked) {
-          createRecommend.mutate(postId);
-          console.log('좋');
+          createRecommendMutate(postId);
         } else {
-          const targetId = likeInfo.find(({ user }) => user === userInfo?._id)
-            ?._id;
-          if (targetId) deleteRecommend.mutate(targetId);
-          console.log('취');
+          const id = likeInfo.find(({ user }) => user === userInfo?._id)?._id;
+          if (id) deleteRecommendMutate(id);
         }
         // 일단 성공 여부와 관계없이 서버 예상 상태 변환
         setIsLikedOnServer(isLiked);
       }
-    },
-    2000
+    }, 500),
+    []
   );
+
+  // 알림
+  useEffect(() => {
+    if (createRecommendData && userInfo) {
+      createNewNotification.mutate({
+        notificationType: 'LIKE',
+        notificationTypeId: createRecommendData.data._id,
+        userId: userInfo._id,
+        postId: postId,
+      });
+    }
+  }, [createRecommendData]);
 
   // 초기세팅. 유저의 로그인 여부, 좋아요 여부를 확인하고 권한, 변수세팅
   useEffect(() => {
