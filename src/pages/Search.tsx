@@ -9,18 +9,18 @@ import Loading from '../components/common/Loading';
 import AbsoluteCenterBox from '../components/common/AbsoluteCenterBox';
 import PrimaryGrid from '../components/common/PrimaryGrid';
 import PostCard from '../components/PostCard';
-import { User } from '../types/user';
-import { Box, Stack } from '@chakra-ui/react';
 import PrimaryContainer from '../components/common/PrimaryContainer';
-import UserList from './UserList';
 import NavigationBar from '../components/NavigationBar';
 import PrimaryTabsSet from '../components/common/PrimaryTabsSet';
+import { User } from '../types/user';
+import { Stack } from '@chakra-ui/react';
+import { useFilter } from '../hooks/useFilter';
 
 const Search = () => {
   const navigate = useNavigate();
   const { keyword } = useParams<{ keyword: string }>();
   const { data, isLoading, isError } = useSearchAll(keyword);
-
+  const { filteredData } = useFilter();
   const userResult = data?.filter((item): item is User => 'fullName' in item);
   const postResult = data
     ?.filter((item): item is PostResponse => 'title' in item)
@@ -36,22 +36,22 @@ const Search = () => {
 
   return (
     <>
-      <PrimaryContainer>
+      <PrimaryContainer pb="60px">
         <SearchBar />
-        {keyword ? (
-          isLoading ? (
-            <AbsoluteCenterBox>
-              <Loading />
-            </AbsoluteCenterBox>
-          ) : (
-            <Box p="10px">
+        <Stack px="10px">
+          {keyword ? (
+            isLoading ? (
+              <AbsoluteCenterBox>
+                <Loading />
+              </AbsoluteCenterBox>
+            ) : (
               <PrimaryTabsSet
                 tabTexts={[
                   `Users (${userResult && userResult.length})`,
                   `Posts (${postResult && postResult.length})`,
                 ]}
                 tabPanelChildrens={[
-                  <Stack>
+                  <>
                     {userResult?.length !== 0 ? (
                       userResult?.map((res) => (
                         <UserCard key={res._id} userData={res} />
@@ -59,9 +59,9 @@ const Search = () => {
                     ) : (
                       <NoResult />
                     )}
-                  </Stack>,
-                  <Stack>
-                    {postResult && postResult.length !== 0 ? (
+                  </>,
+                  <>
+                    {postResult && postResult?.length !== 0 ? (
                       <PrimaryGrid>
                         {postResult.map((post) => (
                           <PostCard post={post} key={post._id} />
@@ -70,15 +70,23 @@ const Search = () => {
                     ) : (
                       <NoResult />
                     )}
-                  </Stack>,
+                  </>,
                 ]}
                 tabsIsFitted
               />
-            </Box>
-          )
-        ) : (
-          <UserList />
-        )}
+            )
+          ) : (
+            <>
+              {filteredData && (
+                <>
+                  {filteredData.map((userData) => (
+                    <UserCard userData={userData} key={userData._id} />
+                  ))}
+                </>
+              )}
+            </>
+          )}
+        </Stack>
         <NavigationBar />
       </PrimaryContainer>
     </>
