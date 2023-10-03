@@ -9,7 +9,7 @@ import titleValidation from '../utils/titleValidation';
 export const searchPosterAll = async (id: string, pageParam: number) => {
   try {
     const { data } = await instance.get<PostResponse[]>(
-      `posts/channel/${id}?limit=12&offset=${pageParam}`
+      `posts/channel/${id}?limit=6&offset=${pageParam}`
     );
 
     return data.map(({ title, updatedAt, _id, likes, image }) => ({
