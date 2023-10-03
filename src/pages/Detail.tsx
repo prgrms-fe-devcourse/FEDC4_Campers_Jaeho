@@ -1,58 +1,55 @@
 import { useParams } from 'react-router-dom';
 import { useDetailPost } from '../hooks/query/useDetailPost';
-import { usePost } from '../hooks/mutation/usePost';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { ROUTES } from '../constants/routes';
 import PrimaryButton from '../components/common/PrimaryButton';
 import PrimaryContainer from '../components/common/PrimaryContainer';
-import CircleIconBg from '../components/common/CircleIconBg';
 import PrimaryAvatar from '../components/common/PrimaryAvatar';
 import TemperatureBar from '../components/common/TemperatureBar';
 import PrimaryLink from '../components/common/PrimaryLink';
 import RecommendButton from '../components/common/RecommendButton';
+import PrimaryHeader from '../components/common/PrimaryHeader';
+import { InputForm } from '../components/common/InputForm';
 import Comment from '../components/common/Comment';
 import { Box, Flex, Stack, Text } from '@chakra-ui/react';
-import { InputForm } from '../components/common/InputForm';
-import PrimaryHeader from '../components/common/PrimaryHeader';
+import MoreText from '../components/Post/MoreText';
 
 const Detail = () => {
   const { userInfo } = useUserInfoContext();
   const { postId } = useParams<{ postId: string }>();
   const { data: { postInfo, commentInfo, likeInfo } = {} } =
     useDetailPost(postId);
-  const { DeletePost } = usePost();
-
-  const handleDeletePost = (_id: string) => DeletePost.mutate(_id);
 
   return (
     <>
       <PrimaryContainer pb="30px">
-        {postInfo ? (
+        {postInfo && (
           <>
             <Box
               w="100%"
-              height="300px"
+              h="300px"
+              p="10px"
               bgImg={postInfo.image ?? '../src/assets/images/no_image.png'}
               bgRepeat="no-repeat"
               bgSize="cover;"
               bgPosition="center"
               borderBottomRadius="10px"
               boxShadow="xl"
-              p="10px"
             >
               <PrimaryHeader />
             </Box>
             <Stack p="20px">
-              <Stack borderBottom="1px solid #eee">
+              <Stack pb="1px solid #eee">
                 <Text color="gray.500">{postInfo.updatedAt.slice(0, 10)}</Text>
                 <Flex align="center">
                   <Text
                     fontWeight="bold"
-                    fontSize="28px"
+                    fontSize="24px"
                     flex={1}
                     overflow="hidden"
-                    whiteSpace="nowrap"
                     textOverflow="ellipsis"
+                    wordBreak="break-word"
+                    whiteSpace="nowrap"
                   >
                     {postInfo.title}
                   </Text>
@@ -60,13 +57,6 @@ const Detail = () => {
                     <RecommendButton
                       postId={postId || ''}
                       likeInfo={likeInfo}
-                      isRecommended={
-                        !!(likeInfo?.findIndex(
-                          (idx) => idx.user === userInfo?._id
-                        ) >= 0
-                          ? true
-                          : false)
-                      }
                     />
                   )}
                 </Flex>
@@ -78,10 +68,10 @@ const Detail = () => {
                     borderRadius="20px"
                     cursor="pointer"
                     transition="all 0.3s"
-                    _hover={{ bgColor: 'gray.200' }}
+                    _hover={{ bgColor: 'rgba(255,255,255,0.1)' }}
                   >
                     <PrimaryAvatar
-                      src={postInfo.authorImage ?? 'https://bit.ly/dan-abramov'}
+                      src={postInfo.authorImage}
                       isOnline={!!postInfo?.isOnline}
                       boxSize="40px"
                       mr="10px"
@@ -97,34 +87,32 @@ const Detail = () => {
                   </PrimaryLink>
                 </Flex>
               </Stack>
-              <Stack py="10px">
+              <MoreText startingHeight="160px">
                 <Text whiteSpace="pre-line">{postInfo.description}</Text>
-              </Stack>
+              </MoreText>
               {userInfo?._id === postInfo.authorId && (
-                <>
-                  <Flex
-                    gap="10px"
-                    justify="flex-end"
-                    borderBottom="1px solid #eee"
-                    py="10px"
-                    fontSize="14px"
-                    color="gray.500"
+                <Flex py="10px" justify="end" borderBottom="1px solid gray">
+                  <PrimaryButton
+                    p="0"
+                    h="30px"
+                    w="60px"
+                    fontSize="12px"
+                    my={0}
+                    bgColor="gray"
+                    color="white"
+                    _hover={{
+                      bgColor: 'red',
+                    }}
                   >
-                    <CircleIconBg
-                      w="60px"
-                      borderRadius="30px "
-                      onClick={() => handleDeletePost(postInfo._id)}
-                    >
-                      <Text>삭제</Text>
-                    </CircleIconBg>
-                  </Flex>
-                </>
+                    삭제
+                  </PrimaryButton>
+                </Flex>
               )}
-              {commentInfo ? (
+              {commentInfo && (
                 <>
                   <Stack>
                     <Text py="10px" fontWeight="bold">
-                      댓글
+                      댓글 {commentInfo.length}개
                     </Text>
                     {commentInfo.map(
                       ({
@@ -149,9 +137,7 @@ const Detail = () => {
                     )}
                   </Stack>
                   {userInfo ? (
-                    <>
-                      <InputForm postId={postId ? postId : ''} />
-                    </>
+                    <InputForm postId={postId ? postId : ''} />
                   ) : (
                     <Stack>
                       <PrimaryLink router={ROUTES.AUTH}>
@@ -162,13 +148,9 @@ const Detail = () => {
                     </Stack>
                   )}
                 </>
-              ) : (
-                <></>
               )}
             </Stack>
           </>
-        ) : (
-          <></>
         )}
       </PrimaryContainer>
     </>
