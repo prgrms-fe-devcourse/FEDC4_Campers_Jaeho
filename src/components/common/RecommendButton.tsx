@@ -23,6 +23,7 @@ const RecommendButton = ({
   const [isLikedOnServer, setIsLikedOnServer] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [totalLikeCnt, setTotalLikeCnt] = useState(0);
+  const [likeId, setLikeId] = useState('');
   const { userInfo } = useUserInfoContext();
   const {
     createRecommend: {
@@ -33,7 +34,6 @@ const RecommendButton = ({
   } = useRecommend();
   const { createNewNotification } = useNotification();
 
-  // 유저가 로그인 했을시, 디바운스리퀘스트. 아니면 토스트 띄우기
   const handleClickLikeBtn = () => {
     if (userInfo) {
       handleLike(isLikedOnServer, !isLiked);
@@ -51,38 +51,35 @@ const RecommendButton = ({
   };
   const handleLike = useCallback(
     debounce((isLikedOnServer: boolean, isLiked: boolean) => {
-      // 예상되는 서버의 내 좋아요 상태와, 지금 상태가 일치하면 굳이 리퀘 안 날림
       if (isLikedOnServer !== isLiked) {
         if (isLiked) {
           createRecommendMutate(postId);
         } else {
-          const id = likeInfo.find(({ user }) => user === userInfo?._id)?._id;
-          if (id) deleteRecommendMutate(id);
+          if (likeId) deleteRecommendMutate(likeId);
         }
-        // 일단 성공 여부와 관계없이 서버 예상 상태 변환
         setIsLikedOnServer(isLiked);
       }
     }, 500),
-    []
+    [likeId]
   );
 
-  // 알림
   useEffect(() => {
     if (createRecommendData && userInfo) {
       createNewNotification.mutate({
         notificationType: 'LIKE',
         notificationTypeId: createRecommendData.data._id,
         userId: userInfo._id,
-        postId: postId,
+        postId,
       });
+      setLikeId(createRecommendData.data._id);
     }
   }, [createRecommendData]);
 
-  // 초기세팅. 유저의 로그인 여부, 좋아요 여부를 확인하고 권한, 변수세팅
   useEffect(() => {
     const userID = userInfo?._id;
-    const isAreadyILike =
-      userID && likeInfo.find(({ user }) => user === userID) ? 1 : 0;
+    const beforeLikeId = likeInfo.find(({ user }) => user === userID)?._id;
+    const isAreadyILike = userID && beforeLikeId ? 1 : 0;
+    if (beforeLikeId) setLikeId(beforeLikeId);
     setIsLiked(!!isAreadyILike);
     setTotalLikeCnt(likeInfo.length - isAreadyILike);
     setIsLikedOnServer(!!isAreadyILike);
