@@ -41,7 +41,6 @@ const RecommendButton = ({
     } else {
       toast({
         title: '회원이시라면 추천하실 수 있어요!',
-        description: '계정이 필요하신가요? >>',
         status: 'info',
         duration: 3000,
         isClosable: true,
