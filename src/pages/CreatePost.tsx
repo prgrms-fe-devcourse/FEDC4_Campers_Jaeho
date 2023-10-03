@@ -63,9 +63,8 @@ const CreatePost = () => {
     titleInputRef.current?.focus();
   }, []);
 
-  if (isLoading) {
-    return <Loading pos="fixed" top="50%" left="50%" w="100vw" h="100vh" />;
-  }
+  if (isLoading)
+    <Loading pos="fixed" top="50%" left="50%" w="100vw" h="100vh" />;
 
   return (
     <>
@@ -87,26 +86,28 @@ const CreatePost = () => {
           <form onSubmit={handleSubmit}>
             <Stack spacing={6}>
               <FormControl>
-                <FormLabel>제목</FormLabel>
+                <FormLabel fontWeight="bold">제목</FormLabel>
                 <Input
                   ref={titleInputRef}
                   placeholder="제목을 입력하세요"
                   value={postTitle}
                   onChange={(event) => setPostTitle(event.target.value)}
-                  type="text"
+                  required
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>후기</FormLabel>
+                <FormLabel fontWeight="bold">후기</FormLabel>
                 <Textarea
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
                   minH="250px"
-                  h="auto"
+                  spellCheck="false"
+                  required
                 />
               </FormControl>
+              <Text as="b">사진</Text>
               <UploadImage handleOnChange={handleChange} />
-              <PrimaryButton type="submit" w="200px">
+              <PrimaryButton type="submit" w="100%">
                 글 올리기
               </PrimaryButton>
             </Stack>

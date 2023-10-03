@@ -6,7 +6,7 @@ const useMainPageRender = (id: string) => {
 
   return useInfiniteQuery([], fetchPage, {
     getNextPageParam: (lastPage, allPages) =>
-      lastPage?.length === 12 && allPages.length * 12,
+      lastPage?.length === 6 && allPages.length * 6,
   });
 };
 

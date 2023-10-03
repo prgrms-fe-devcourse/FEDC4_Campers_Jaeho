@@ -1,6 +1,30 @@
 import { useState, useEffect } from 'react';
 import { useUserInfoContext } from '../contexts/UserInfoProvider';
 import { useNavigate, useParams } from 'react-router-dom';
+import { Button, useToast } from '@chakra-ui/react';
+import { MdNotifications } from 'react-icons/md';
+import { AiFillEdit } from 'react-icons/ai';
+import PrimaryHeader from '../components/common/PrimaryHeader';
+import UploadImage from '../components/common/UploadImage';
+import PrimaryInfo from '../components/common/PrimaryInfo';
+import PrimaryButton from '../components/common/PrimaryButton';
+import PrimaryGrid from '../components/common/PrimaryGrid';
+import TemperatureBar from '../components/common/TemperatureBar';
+import PostCard from '../components/PostCard';
+import NotificationCard from '../components/UserProfile/NotificationCard';
+import PrimaryModal from '../components/common/PrimaryModal';
+import { useSearchUser } from '../hooks/query/useSearchUser';
+import { useNotification } from '../hooks/query/useNotification';
+import { useChangeUserInfo } from '../hooks/mutation/useChangeUserInfo';
+import PrimaryText from '../components/common/PrimaryText';
+import { isSameUser } from '../utils/isSameUser';
+import { useHandleNotification } from '../hooks/mutation/useHandleNotification';
+import { useFollow } from '../hooks/mutation/useFollow';
+import { logout } from '../apis/auth';
+import PrimaryAlertDialogSet from '../components/common/PrimaryAlertDialogSet';
+import PrimaryContainer from '../components/common/PrimaryContainer';
+import CircleIconBg from '../components/common/CircleIconBg';
+import { HamburgerIcon } from '@chakra-ui/icons';
 import {
   Flex,
   Stack,
@@ -14,33 +38,11 @@ import {
   TabPanels,
   TabPanel,
 } from '@chakra-ui/react';
-import { MdNotifications } from 'react-icons/md';
-import { AiFillEdit } from 'react-icons/ai';
-import { BiMessageDetail } from 'react-icons/bi';
-import PrimaryHeader from '../components/common/PrimaryHeader';
-import UploadImage from '../components/common/UploadImage';
-import PrimaryInfo from '../components/common/PrimaryInfo';
-import PrimaryButton from '../components/common/PrimaryButton';
-import PrimaryGrid from '../components/common/PrimaryGrid';
-import TemperatureBar from '../components/common/TemperatureBar';
-import PostCard from '../components/PostCard';
-import PrimaryModal from '../components/common/PrimaryModal';
-import { useSearchUser } from '../hooks/query/useSearchUser';
-import { useNotification } from '../hooks/query/useNotification';
-import { useChangeUserInfo } from '../hooks/mutation/useChangeUserInfo';
-import PrimaryText from '../components/common/PrimaryText';
-import { isSameUser } from '../utils/isSameUser';
-import PrimaryImage from '../components/common/PrimaryImage';
-import { useHandleNotification } from '../hooks/mutation/useHandleNotification';
-import { useFollow } from '../hooks/mutation/useFollow';
-import { logout } from '../apis/auth';
-import PrimaryAlertDialogSet from '../components/common/PrimaryAlertDialogSet';
-import PrimaryContainer from '../components/common/PrimaryContainer';
-import CircleIconBg from '../components/common/CircleIconBg';
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const { userInfo, setUserInfo } = useUserInfoContext();
+  const toast = useToast();
   const [userImage, setUserImage] = useState<File | null>(null);
   const [isEdit, setIsEdit] = useState(false);
   const [userName, setUserName] = useState('');
@@ -68,6 +70,13 @@ const UserProfile = () => {
       setUserInfo({
         ...userInfo,
         image: URL.createObjectURL(file),
+      });
+      toast({
+        title: '변경 중!',
+        description: '조금만 기다려주세요~',
+        status: 'loading',
+        duration: 2500,
+        colorScheme: 'green',
       });
     }
   };
@@ -143,20 +152,16 @@ const UserProfile = () => {
           <PrimaryModal isOpen={isOpen} onClose={onClose}>
             <Box>
               {notificationData.length !== 0 ? (
-                notificationData.map(({ _id, author: { fullName } }) => (
-                  <Flex
-                    key={_id}
-                    align="center"
-                    p="10px"
-                    transition="all 0.3s"
-                    _hover={{ bgColor: '#D9D9D9' }}
-                  >
-                    <BiMessageDetail />
-                    <Box m="0 0 0 10px">
-                      "{fullName}" 님이 알람을 보냈습니다.
-                    </Box>
-                  </Flex>
-                ))
+                notificationData.map(
+                  ({ _id, author: { fullName }, post, follow }) => (
+                    <NotificationCard
+                      _id={_id}
+                      fullName={fullName}
+                      router={post ?? follow}
+                      key={_id}
+                    />
+                  )
+                )
               ) : (
                 <Center p="20px 0">아직 뭐가 없네요..</Center>
               )}
@@ -164,39 +169,41 @@ const UserProfile = () => {
           </PrimaryModal>
           <PrimaryContainer>
             <PrimaryHeader>
-              <Box flex={1}></Box>
+              <Box flex={1} />
               <Flex gap="10px" fontSize="25px">
                 {isMyInfo && (
-                  <CircleIconBg>
-                    <MdNotifications onClick={onOpen} />
+                  <CircleIconBg onClick={onOpen}>
+                    <MdNotifications />
                   </CircleIconBg>
                 )}
               </Flex>
             </PrimaryHeader>
             <Stack spacing={4} align="center">
-              {isMyInfo ? (
-                <UploadImage
-                  borderRadius="full"
-                  handleOnChange={handleChange}
-                  image={data.image}
-                />
-              ) : (
-                <PrimaryImage imageSrc={data.image} borderRadius="full" />
-              )}
-              <Flex align="center">
-                {isEdit ? (
-                  <Input
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}
-                  />
-                ) : (
-                  <PrimaryText as="b" mr={1}>
-                    {data.fullName}
-                  </PrimaryText>
-                )}
-                {isMyInfo && <AiFillEdit onClick={() => setIsEdit(!isEdit)} />}
-              </Flex>
-              <PrimaryText color="gray.300">{data.email}</PrimaryText>
+              <UploadImage
+                borderRadius="full"
+                handleOnChange={handleChange}
+                isUploadDisable={!isMyInfo}
+                boxSize={170}
+                src={data.image ?? '../../src/assets/images/avatar_penguin.jpg'}
+              />
+              <Stack align="center" spacing={1}>
+                <Flex align="center" fontSize="xl" gap="0.5em">
+                  {isEdit ? (
+                    <Input
+                      value={userName}
+                      onChange={(e) => setUserName(e.target.value)}
+                    />
+                  ) : (
+                    <PrimaryText as="b">{data.fullName}</PrimaryText>
+                  )}
+                  {isMyInfo && (
+                    <AiFillEdit onClick={() => setIsEdit(!isEdit)} />
+                  )}
+                </Flex>
+                <PrimaryText fontSize="sm" color="gray.500">
+                  {data.email}
+                </PrimaryText>
+              </Stack>
               <TemperatureBar value={60} maxW="50%" />
               <Flex gap={10} textAlign="center">
                 <PrimaryInfo title={`${data.posts.length}`} subTitle="게시물" />
@@ -210,19 +217,20 @@ const UserProfile = () => {
                 />
               </Flex>
               {isMyInfo ? (
-                <PrimaryButton w="150px" onClick={onLogoutOpen}>
+                <Button px="3em" onClick={onLogoutOpen}>
                   로그아웃
-                </PrimaryButton>
+                </Button>
               ) : (
-                <PrimaryButton w="150px" onClick={handleFollow}>
+                <PrimaryButton w="10em" onClick={handleFollow}>
                   {isFollow ? '언팔로우' : '팔로우'}
                 </PrimaryButton>
               )}
               <Tabs w="90%" colorScheme="green">
                 <TabList>
-                  <Tab flex={1}>내가 쓴 글!</Tab>
+                  <Tab flex={1} fontSize="1.7rem">
+                    <HamburgerIcon />
+                  </Tab>
                 </TabList>
-
                 <TabPanels>
                   <TabPanel px={0}>
                     <PrimaryGrid spacing={0}>

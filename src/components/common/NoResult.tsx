@@ -1,6 +1,8 @@
 import PrimaryInfo from './PrimaryInfo';
-import { Image, ImageProps, Text, Box } from '@chakra-ui/react';
+import { Image, ImageProps, Box } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import PrimaryButton from './PrimaryButton';
+
 const NoResult = ({ src }: ImageProps) => {
   const navigate = useNavigate();
 
@@ -10,11 +12,11 @@ const NoResult = ({ src }: ImageProps) => {
       <PrimaryInfo
         title="검색 결과가 없습니다..."
         subTitle="검색어가 정확한지 확인해보세요!"
-        mb={6}
+        mb={3}
       />
-      <Text color="green.400" as="b" onClick={() => navigate('/createpost')}>
-        이 곳에 대한 첫 글 남기기
-      </Text>
+      <PrimaryButton onClick={() => navigate('/createpost')}>
+        이 곳에 대한 첫 글 남겨보기
+      </PrimaryButton>
     </Box>
   );
 };

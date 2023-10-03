@@ -1,20 +1,14 @@
-import { useState } from 'react';
-import {
-  Flex,
-  FlexProps,
-  Text,
-  Box,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRecommend } from '../../hooks/mutation/useRecommend';
-import { useNotification } from '../../hooks/query/useNotification';
+import { debounce } from 'lodash';
+import { AiTwotoneLike } from 'react-icons/ai';
+import { Flex, Text, Button, ButtonProps, useToast } from '@chakra-ui/react';
 import { useUserInfoContext } from '../../contexts/UserInfoProvider';
-import { AiOutlineLike, AiTwotoneLike } from 'react-icons/ai';
+import { useNotification } from '../../hooks/query/useNotification';
 
-type RecommendButtonProps = FlexProps & {
+type RecommendButtonProps = ButtonProps & {
   postId: string;
-  isRecommended: boolean;
-  likeInfo?: {
+  likeInfo: {
     user: string;
     _id: string;
   }[];
@@ -23,87 +17,84 @@ type RecommendButtonProps = FlexProps & {
 const RecommendButton = ({
   likeInfo,
   postId,
-  isRecommended,
   ...props
 }: RecommendButtonProps) => {
-  const [count, setCount] = useState(likeInfo?.length ? likeInfo.length : 0);
-  const [isClicked, setIsClicked] = useState(isRecommended);
-  const { createRecommend, deleteRecommend } = useRecommend();
-  const { createNewNotification } = useNotification();
+  const toast = useToast();
+  const [isLikedOnServer, setIsLikedOnServer] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [totalLikeCnt, setTotalLikeCnt] = useState(0);
+  const [likeId, setLikeId] = useState('');
   const { userInfo } = useUserInfoContext();
-  const Color = useColorModeValue('rgba(0,0,0,0.1)', 'rgba(255,255,255,0.1)');
-  const HoverColor = useColorModeValue(
-    'rgba(0,0,0,0.2)',
-    'rgba(255,255,255,0.2)'
-  );
+  const {
+    createRecommend: {
+      mutate: createRecommendMutate,
+      data: createRecommendData,
+    },
+    deleteRecommend: { mutate: deleteRecommendMutate },
+  } = useRecommend();
+  const { createNewNotification } = useNotification();
 
-  const handleToggleClicked = () => {
-    if (
-      createRecommend.isLoading ||
-      deleteRecommend.isLoading ||
-      createRecommend.isError ||
-      deleteRecommend.isError
-    )
-      return;
-    const idx = likeInfo?.findIndex((idx) => idx.user === userInfo?._id);
-    if (isClicked === true && idx !== undefined && likeInfo !== undefined) {
-      setCount(count - 1);
-      console.log(isClicked);
-      deleteRecommend.mutate(likeInfo[idx]._id);
-      if (likeInfo[idx] !== null && userInfo !== null) {
-        createNewNotification.mutate({
-          notificationType: 'LIKE',
-          notificationTypeId: likeInfo[idx].user,
-          userId: userInfo._id,
-          postId: postId,
-        });
-      }
-      setIsClicked(false);
+  const handleClickLikeBtn = () => {
+    if (userInfo) {
+      handleLike(isLikedOnServer, !isLiked);
+      setIsLiked(!isLiked);
     } else {
-      setCount(count + 1);
-      if (
-        likeInfo &&
-        idx !== undefined &&
-        likeInfo[idx] !== null &&
-        userInfo !== null
-      ) {
-        createRecommend.mutate(postId);
-        createNewNotification.mutate({
-          notificationType: 'LIKE',
-          notificationTypeId: likeInfo[idx].user,
-          userId: userInfo._id,
-          postId: postId,
-        });
-      }
-      setIsClicked(true);
+      toast({
+        title: '회원이시라면 추천하실 수 있어요!',
+        status: 'info',
+        duration: 3000,
+        isClosable: true,
+        colorScheme: 'green',
+      });
     }
   };
+  const handleLike = useCallback(
+    debounce((isLikedOnServer: boolean, isLiked: boolean) => {
+      if (isLikedOnServer !== isLiked) {
+        if (isLiked) {
+          createRecommendMutate(postId);
+        } else {
+          if (likeId) deleteRecommendMutate(likeId);
+        }
+        setIsLikedOnServer(isLiked);
+      }
+    }, 500),
+    [likeId]
+  );
+
+  useEffect(() => {
+    if (createRecommendData && userInfo) {
+      createNewNotification.mutate({
+        notificationType: 'LIKE',
+        notificationTypeId: createRecommendData.data._id,
+        userId: userInfo._id,
+        postId,
+      });
+      setLikeId(createRecommendData.data._id);
+    }
+  }, [createRecommendData]);
+
+  useEffect(() => {
+    const userID = userInfo?._id;
+    const beforeLikeId = likeInfo.find(({ user }) => user === userID)?._id;
+    const isAreadyILike = userID && beforeLikeId ? 1 : 0;
+    if (beforeLikeId) setLikeId(beforeLikeId);
+    setIsLiked(!!isAreadyILike);
+    setTotalLikeCnt(likeInfo.length - isAreadyILike);
+    setIsLikedOnServer(!!isAreadyILike);
+  }, [userInfo]);
 
   return (
-    <>
-      <Flex
-        bgColor={Color}
-        align="center"
-        p="10px 15px"
-        borderRadius="30px"
-        onClick={() => handleToggleClicked()}
-        transition="all 0.3s"
-        _hover={{ bgColor: HoverColor }}
-        {...props}
-      >
-        <Box
-          fontSize="20px"
-          color={isClicked ? '#DF8D58' : 'none'}
-          onClick={() => {}}
-        >
-          {isClicked ? <AiTwotoneLike /> : <AiOutlineLike />}
-        </Box>
+    <Button onClick={handleClickLikeBtn} {...props}>
+      <Flex>
+        <Flex fontSize="20px" color={isLiked ? '#DF8D58' : 'none'}>
+          <AiTwotoneLike />
+        </Flex>
         <Text ml="10px" fontWeight="bold">
-          {count}
+          {totalLikeCnt + (isLiked ? 1 : 0)}
         </Text>
       </Flex>
-    </>
+    </Button>
   );
 };
-
 export default RecommendButton;

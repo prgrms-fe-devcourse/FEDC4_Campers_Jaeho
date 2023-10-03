@@ -12,8 +12,8 @@ const SearchBar = () => {
   const { keyword, handleChange, handleSubmit } = useSearch();
 
   return (
-    <Box p="10px 10px 0 10px">
-      <form onSubmit={handleSubmit} style={{ width: '100%' }}>
+    <Box p="10px">
+      <form onSubmit={handleSubmit}>
         <InputGroup>
           <Input placeholder="유저 또는 게시물 검색!" onChange={handleChange} />
           <InputRightElement>
