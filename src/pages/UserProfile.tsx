@@ -158,6 +158,7 @@ const UserProfile = () => {
                       _id={_id}
                       fullName={fullName}
                       router={post ?? follow}
+                      key={_id}
                     />
                   )
                 )
