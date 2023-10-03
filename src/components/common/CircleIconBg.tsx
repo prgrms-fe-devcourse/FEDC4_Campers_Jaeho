@@ -7,7 +7,7 @@ const CircleIconBg = ({ children, ...props }: ButtonProps) => {
       cursor="pointer"
       transition="all 0.3s"
       borderRadius="50%"
-      p="10px"
+      p="0px"
       fontSize="20px"
       {...props}
     >

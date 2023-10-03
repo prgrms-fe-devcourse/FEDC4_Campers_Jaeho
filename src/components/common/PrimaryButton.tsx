@@ -1,11 +1,10 @@
 import { ComponentProps } from 'react';
 import { Button } from '@chakra-ui/react';
 
-type PrimaryButtonProps = ComponentProps<typeof Button> & {
-  hoverBgColor?: string;
-};
-
-const PrimaryButton = ({ children, ...props }: PrimaryButtonProps) => {
+const PrimaryButton = ({
+  children,
+  ...props
+}: ComponentProps<typeof Button>) => {
   return (
     <Button
       my={2}

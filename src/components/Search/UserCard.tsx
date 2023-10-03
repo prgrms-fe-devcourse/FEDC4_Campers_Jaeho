@@ -19,7 +19,7 @@ const UserCard = ({ userData }: { userData: UserCardProps }) => {
     <Card
       transition="all 0.3s"
       cursor="pointer"
-      _hover={{ bgColor: 'gray.100' }}
+      _hover={{ bgColor: 'rgba(122,122,122,0.1)' }}
     >
       <PrimaryLink router={ROUTES.USER_INFO(_id)} p="20px">
         <Flex gap={4} align="center">

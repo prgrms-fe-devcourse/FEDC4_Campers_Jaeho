@@ -1,7 +1,6 @@
 import { Flex, FlexProps } from '@chakra-ui/react';
 import CircleIconBg from './CircleIconBg';
 import PrimaryLink from './PrimaryLink';
-// import { ChevronLeftIcon } from '@chakra-ui/icons';
 import { IoIosArrowBack } from 'react-icons/io';
 
 type PrimaryHeaderProps = FlexProps & {
@@ -16,8 +15,8 @@ const PrimaryHeader = ({
   return (
     <Flex
       align="center"
-      minH="60px"
-      p="10px"
+      minH="80px"
+      px="10px"
       pos="relative"
       gap="10px"
       {...props}

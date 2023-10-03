@@ -7,7 +7,7 @@ const AbsoluteCenterBox = ({ children, ...props }: StackProps) => {
       pos="absolute"
       top="50%"
       left="50%"
-      transform="translate(-50%, -60%)"
+      transform="translate(-50%, -50%)"
       w="100%"
       {...props}
     >
