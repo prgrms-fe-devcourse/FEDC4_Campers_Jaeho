@@ -2,6 +2,7 @@ import { Stack, Center, Box, Image, Flex, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { ROUTES } from '../constants/routes';
 import { SearchIcon } from '@chakra-ui/icons';
+import ContentEmpty from '../assets/images/content_empty.png';
 import NavigationBar from '../components/NavigationBar';
 import PrimaryHeader from '../components/common/PrimaryHeader';
 import PrimaryLink from '../components/common/PrimaryLink';
@@ -74,10 +75,7 @@ const Main = () => {
                 이곳은 심해..
               </Text>
             </Stack>
-            <PrimaryImage
-              boxSize="120"
-              imageSrc={'../../src/assets/images/content_empty.png'}
-            />
+            <PrimaryImage boxSize="120" imageSrc={ContentEmpty} />
           </Flex>
         )}
       </Stack>
