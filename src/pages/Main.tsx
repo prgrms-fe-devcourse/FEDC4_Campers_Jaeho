@@ -19,9 +19,8 @@ import Loading from '../components/common/Loading';
 import PrimaryImage from '../components/common/PrimaryImage';
 
 const Main = () => {
-  const { VITE_MAIN_CHANNELID } = import.meta.env;
   const { data, hasNextPage, fetchNextPage, isFetchingNextPage } =
-    useMainPageRender(VITE_MAIN_CHANNELID);
+    useMainPageRender(import.meta.env.VITE_MAIN_CHANNELID);
   const { ref, inView } = useObserver();
 
   useEffect(() => {
