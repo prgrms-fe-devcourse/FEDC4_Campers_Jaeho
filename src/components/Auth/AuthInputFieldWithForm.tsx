@@ -8,7 +8,6 @@ import {
   InputRightElement,
   Text,
   useBoolean,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
@@ -23,7 +22,6 @@ const AuthInputFieldWithForm = forwardRef<
   AuthInputFieldWithFormProps
 >(({ message, label, helperTexts, type, id, ...inputProps }, ref) => {
   const [isShow, setIsShow] = useBoolean();
-  const textColor = useColorModeValue('#2D3748', 'white');
 
   return (
     <FormControl isRequired isInvalid={message ? true : false}>
@@ -36,7 +34,6 @@ const AuthInputFieldWithForm = forwardRef<
           id={id}
           ref={ref}
           type={type === 'password' ? (isShow ? 'text' : 'password') : type}
-          bgColor="gray.200"
         />
         {type === 'password' && (
           <InputRightElement onClick={() => setIsShow.toggle()}>
@@ -46,12 +43,7 @@ const AuthInputFieldWithForm = forwardRef<
       </InputGroup>
       {helperTexts &&
         helperTexts.map((helperText, index) => (
-          <Text
-            key={index}
-            fontSize="xs"
-            color={textColor}
-            wordBreak="keep-all"
-          >
+          <Text key={index} mt={2} fontSize="xs" wordBreak="keep-all">
             {helperText}
           </Text>
         ))}
