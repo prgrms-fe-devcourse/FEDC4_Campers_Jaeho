@@ -1,8 +1,8 @@
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { useColorMode } from '@chakra-ui/react';
-import CircleIconBg from './CircleIconBg';
+import CircleIconBg from './common/CircleIconBg';
 
-const DarkMode = () => {
+const ThemeToggle = () => {
   const { colorMode, toggleColorMode } = useColorMode();
 
   return (
@@ -12,4 +12,4 @@ const DarkMode = () => {
   );
 };
 
-export default DarkMode;
+export default ThemeToggle;
