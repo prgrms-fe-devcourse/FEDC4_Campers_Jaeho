@@ -13,7 +13,7 @@ import useMainPageRender from '../hooks/query/useMainPageRender';
 import useObserver from '../hooks/useObserver';
 import PrimaryContainer from '../components/common/PrimaryContainer';
 import Weather from '../components/Weather';
-import DarkMode from '../components/common/DarkMode';
+import ThemeToggle from '../components/ThemeToggle';
 import Logo from '../assets/images/Campers.png';
 import Loading from '../components/common/Loading';
 import PrimaryImage from '../components/common/PrimaryImage';
@@ -34,7 +34,7 @@ const Main = () => {
       <PrimaryHeader isShowBackBtn={false}>
         <Image w="140px" src={Logo} />
         <Box flex={1} />
-        <DarkMode />
+        <ThemeToggle />
         <PrimaryLink router={ROUTES.SEARCH}>
           <CircleIconBg>
             <SearchIcon />
